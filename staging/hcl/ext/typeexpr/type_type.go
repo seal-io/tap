@@ -46,7 +46,8 @@ func TypeConstraintFromVal(v cty.Value) cty.Type {
 // ConvertFunc is a cty function that implements type conversions.
 //
 // Its signature is as follows:
-//     convert(value, type_constraint)
+//
+//	convert(value, type_constraint)
 //
 // ...where type_constraint is a type constraint expression as defined by
 // typeexpr.TypeConstraint.
@@ -59,7 +60,7 @@ var ConvertFunc function.Function
 
 func init() {
 	TypeConstraintType = cty.CapsuleWithOps("type constraint", reflect.TypeOf(cty.Type{}), &cty.CapsuleOps{
-		ExtensionData: func(key interface{}) interface{} {
+		ExtensionData: func(key any) any {
 			switch key {
 			case customdecode.CustomExpressionDecoder:
 				return customdecode.CustomExpressionDecoderFunc(
@@ -78,11 +79,11 @@ func init() {
 		TypeGoString: func(_ reflect.Type) string {
 			return "typeexpr.TypeConstraintType"
 		},
-		GoString: func(raw interface{}) string {
+		GoString: func(raw any) string {
 			tyPtr := raw.(*cty.Type)
 			return fmt.Sprintf("typeexpr.TypeConstraintVal(%#v)", *tyPtr)
 		},
-		RawEquals: func(a, b interface{}) bool {
+		RawEquals: func(a, b any) bool {
 			aPtr := a.(*cty.Type)
 			bPtr := b.(*cty.Type)
 			return (*aPtr).Equals(*bPtr)

@@ -96,7 +96,7 @@ type flusher interface {
 	Flush() error
 }
 
-func flush(maybeFlusher interface{}) error {
+func flush(maybeFlusher any) error {
 	if f, ok := maybeFlusher.(flusher); ok {
 		return f.Flush()
 	}

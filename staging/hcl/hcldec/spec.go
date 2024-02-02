@@ -912,7 +912,7 @@ func (s *BlockMapSpec) decode(content *hcl.BodyContent, blockLabels []blockLabel
 		panic("cty.DynamicPseudoType attributes may not be used inside a BlockMapSpec")
 	}
 
-	elems := map[string]interface{}{}
+	elems := map[string]any{}
 	for _, childBlock := range content.Blocks {
 		if childBlock.Type != s.TypeName {
 			continue
@@ -931,9 +931,9 @@ func (s *BlockMapSpec) decode(content *hcl.BodyContent, blockLabels []blockLabel
 		targetMap := elems
 		for _, key := range childBlock.Labels[:len(s.LabelNames)-1] {
 			if _, exists := targetMap[key]; !exists {
-				targetMap[key] = make(map[string]interface{})
+				targetMap[key] = make(map[string]any)
 			}
-			targetMap = targetMap[key].(map[string]interface{})
+			targetMap = targetMap[key].(map[string]any)
 		}
 
 		diags = append(diags, childDiags...)
@@ -963,8 +963,8 @@ func (s *BlockMapSpec) decode(content *hcl.BodyContent, blockLabels []blockLabel
 		return cty.MapValEmpty(s.Nested.impliedType()), diags
 	}
 
-	var ctyMap func(map[string]interface{}, int) cty.Value
-	ctyMap = func(raw map[string]interface{}, depth int) cty.Value {
+	var ctyMap func(map[string]any, int) cty.Value
+	ctyMap = func(raw map[string]any, depth int) cty.Value {
 		vals := make(map[string]cty.Value, len(raw))
 		if depth == 1 {
 			for k, v := range raw {
@@ -972,7 +972,7 @@ func (s *BlockMapSpec) decode(content *hcl.BodyContent, blockLabels []blockLabel
 			}
 		} else {
 			for k, v := range raw {
-				vals[k] = ctyMap(v.(map[string]interface{}), depth-1)
+				vals[k] = ctyMap(v.(map[string]any), depth-1)
 			}
 		}
 		return cty.MapVal(vals)
@@ -1066,7 +1066,7 @@ func (s *BlockObjectSpec) decode(content *hcl.BodyContent, blockLabels []blockLa
 		panic("BlockObjectSpec with no Nested Spec")
 	}
 
-	elems := map[string]interface{}{}
+	elems := map[string]any{}
 	for _, childBlock := range content.Blocks {
 		if childBlock.Type != s.TypeName {
 			continue
@@ -1085,9 +1085,9 @@ func (s *BlockObjectSpec) decode(content *hcl.BodyContent, blockLabels []blockLa
 		targetMap := elems
 		for _, key := range childBlock.Labels[:len(s.LabelNames)-1] {
 			if _, exists := targetMap[key]; !exists {
-				targetMap[key] = make(map[string]interface{})
+				targetMap[key] = make(map[string]any)
 			}
-			targetMap = targetMap[key].(map[string]interface{})
+			targetMap = targetMap[key].(map[string]any)
 		}
 
 		diags = append(diags, childDiags...)
@@ -1117,8 +1117,8 @@ func (s *BlockObjectSpec) decode(content *hcl.BodyContent, blockLabels []blockLa
 		return cty.EmptyObjectVal, diags
 	}
 
-	var ctyObj func(map[string]interface{}, int) cty.Value
-	ctyObj = func(raw map[string]interface{}, depth int) cty.Value {
+	var ctyObj func(map[string]any, int) cty.Value
+	ctyObj = func(raw map[string]any, depth int) cty.Value {
 		vals := make(map[string]cty.Value, len(raw))
 		if depth == 1 {
 			for k, v := range raw {
@@ -1126,7 +1126,7 @@ func (s *BlockObjectSpec) decode(content *hcl.BodyContent, blockLabels []blockLa
 			}
 		} else {
 			for k, v := range raw {
-				vals[k] = ctyObj(v.(map[string]interface{}), depth-1)
+				vals[k] = ctyObj(v.(map[string]any), depth-1)
 			}
 		}
 		return cty.ObjectVal(vals)

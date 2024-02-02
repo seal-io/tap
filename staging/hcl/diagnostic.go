@@ -87,7 +87,7 @@ type Diagnostic struct {
 	// type that wraps other Extra values should additionally implement
 	// interface DiagnosticExtraUnwrapper to return the value they are wrapping
 	// so that callers can access inner values to type-assert against.
-	Extra interface{}
+	Extra any
 }
 
 // Diagnostics is a list of Diagnostic instances.
@@ -121,7 +121,7 @@ func (d Diagnostics) Error() string {
 // This is provided as a convenience for returning from a function that
 // collects and then returns a set of diagnostics:
 //
-//     return nil, diags.Append(&hcl.Diagnostic{ ... })
+//	return nil, diags.Append(&hcl.Diagnostic{ ... })
 //
 // Note that this modifies the array underlying the diagnostics slice, so
 // must be used carefully within a single codepath. It is incorrect (and rude)
@@ -185,5 +185,5 @@ type DiagnosticExtraUnwrapper interface {
 	//
 	// Implementers should never create unwrap "cycles" where a nested extra
 	// value returns a value that was also wrapping it.
-	UnwrapDiagnosticExtra() interface{}
+	UnwrapDiagnosticExtra() any
 }

@@ -141,7 +141,7 @@ func (d *Defaults) applyAsMap(value cty.Value) map[string]cty.Value {
 	return elements
 }
 
-func (d *Defaults) getChild(key interface{}) *Defaults {
+func (d *Defaults) getChild(key any) *Defaults {
 	// Children for tuples are keyed by an int.
 	// Children for objects are keyed by a string.
 	// Children for maps, lists, and sets are always keyed by the empty string.

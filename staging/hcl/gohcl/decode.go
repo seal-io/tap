@@ -30,7 +30,7 @@ import (
 // are returned then the given value may have been partially-populated but
 // may still be accessed by a careful caller for static analysis and editor
 // integration use-cases.
-func DecodeBody(body hcl.Body, ctx *hcl.EvalContext, val interface{}) hcl.Diagnostics {
+func DecodeBody(body hcl.Body, ctx *hcl.EvalContext, val any) hcl.Diagnostics {
 	rv := reflect.ValueOf(val)
 	if rv.Kind() != reflect.Ptr {
 		panic(fmt.Sprintf("target value must be a pointer, not %s", rv.Type().String()))
@@ -288,7 +288,7 @@ func decodeBlockToValue(block *hcl.Block, ctx *hcl.EvalContext, v reflect.Value)
 // are returned then the given value may have been partially-populated but
 // may still be accessed by a careful caller for static analysis and editor
 // integration use-cases.
-func DecodeExpression(expr hcl.Expression, ctx *hcl.EvalContext, val interface{}) hcl.Diagnostics {
+func DecodeExpression(expr hcl.Expression, ctx *hcl.EvalContext, val any) hcl.Diagnostics {
 	srcVal, diags := expr.Value(ctx)
 
 	convTy, err := gocty.ImpliedType(val)

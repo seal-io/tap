@@ -22,7 +22,7 @@ import (
 // This uses the tags on the fields of the struct to discover how each
 // field's value should be expressed within configuration. If an invalid
 // mapping is attempted, this function will panic.
-func ImpliedBodySchema(val interface{}) (schema *hcl.BodySchema, partial bool) {
+func ImpliedBodySchema(val any) (schema *hcl.BodySchema, partial bool) {
 	ty := reflect.TypeOf(val)
 
 	if ty.Kind() == reflect.Ptr {

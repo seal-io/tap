@@ -15,7 +15,7 @@ type File struct {
 	// Nav is used to integrate with the "hcled" editor integration package,
 	// and with diagnostic information formatters. It is not for direct use
 	// by a calling application.
-	Nav interface{}
+	Nav any
 }
 
 // Block represents a nested block within a Body.

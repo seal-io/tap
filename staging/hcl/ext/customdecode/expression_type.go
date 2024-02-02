@@ -88,7 +88,7 @@ func init() {
 	goExpressionType := reflect.TypeOf((*hcl.Expression)(nil)).Elem()
 
 	ExpressionType = cty.CapsuleWithOps("expression", goExpressionType, &cty.CapsuleOps{
-		ExtensionData: func(key interface{}) interface{} {
+		ExtensionData: func(key any) any {
 			switch key {
 			case CustomExpressionDecoder:
 				return CustomExpressionDecoderFunc(
@@ -103,18 +103,18 @@ func init() {
 		TypeGoString: func(_ reflect.Type) string {
 			return "customdecode.ExpressionType"
 		},
-		GoString: func(raw interface{}) string {
+		GoString: func(raw any) string {
 			exprPtr := raw.(*hcl.Expression)
 			return fmt.Sprintf("customdecode.ExpressionVal(%#v)", *exprPtr)
 		},
-		RawEquals: func(a, b interface{}) bool {
+		RawEquals: func(a, b any) bool {
 			aPtr := a.(*hcl.Expression)
 			bPtr := b.(*hcl.Expression)
 			return reflect.DeepEqual(*aPtr, *bPtr)
 		},
 	})
 	ExpressionClosureType = cty.CapsuleWithOps("expression closure", reflect.TypeOf(ExpressionClosure{}), &cty.CapsuleOps{
-		ExtensionData: func(key interface{}) interface{} {
+		ExtensionData: func(key any) any {
 			switch key {
 			case CustomExpressionDecoder:
 				return CustomExpressionDecoderFunc(
@@ -132,11 +132,11 @@ func init() {
 		TypeGoString: func(_ reflect.Type) string {
 			return "customdecode.ExpressionClosureType"
 		},
-		GoString: func(raw interface{}) string {
+		GoString: func(raw any) string {
 			closure := raw.(*ExpressionClosure)
 			return fmt.Sprintf("customdecode.ExpressionClosureVal(%#v)", closure)
 		},
-		RawEquals: func(a, b interface{}) bool {
+		RawEquals: func(a, b any) bool {
 			closureA := a.(*ExpressionClosure)
 			closureB := b.(*ExpressionClosure)
 			// The expression itself compares by deep equality, but EvalContexts

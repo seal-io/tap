@@ -341,7 +341,7 @@ func stripJSONNullProperties(src []byte) []byte {
 	dec := json.NewDecoder(bytes.NewReader(src))
 	dec.UseNumber()
 
-	var v interface{}
+	var v any
 	err := dec.Decode(&v)
 	if err != nil {
 		// We expect valid JSON
@@ -357,9 +357,9 @@ func stripJSONNullProperties(src []byte) []byte {
 	return new
 }
 
-func stripNullMapElements(v interface{}) interface{} {
+func stripNullMapElements(v any) any {
 	switch tv := v.(type) {
-	case map[string]interface{}:
+	case map[string]any:
 		for k, ev := range tv {
 			if ev == nil {
 				delete(tv, k)
@@ -368,7 +368,7 @@ func stripNullMapElements(v interface{}) interface{} {
 			}
 		}
 		return v
-	case []interface{}:
+	case []any:
 		for i, ev := range tv {
 			tv[i] = stripNullMapElements(ev)
 		}

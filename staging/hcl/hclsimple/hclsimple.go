@@ -56,7 +56,7 @@ import (
 // need detailed control over the decoding process. Because this function is
 // just wrapping functionality elsewhere, if it doesn't meet your needs then
 // please consider copying it into your program and adapting it as needed.
-func Decode(filename string, src []byte, ctx *hcl.EvalContext, target interface{}) error {
+func Decode(filename string, src []byte, ctx *hcl.EvalContext, target any) error {
 	var file *hcl.File
 	var diags hcl.Diagnostics
 
@@ -86,7 +86,7 @@ func Decode(filename string, src []byte, ctx *hcl.EvalContext, target interface{
 
 // DecodeFile is a wrapper around Decode that first reads the given filename
 // from disk. See the Decode documentation for more information.
-func DecodeFile(filename string, ctx *hcl.EvalContext, target interface{}) error {
+func DecodeFile(filename string, ctx *hcl.EvalContext, target any) error {
 	src, err := ioutil.ReadFile(filename)
 	if err != nil {
 		if os.IsNotExist(err) {

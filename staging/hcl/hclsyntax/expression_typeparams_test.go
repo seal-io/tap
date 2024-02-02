@@ -95,11 +95,11 @@ func TestExpressionDiagnosticExtra(t *testing.T) {
 }
 
 type diagnosticExtraWrapper struct {
-	wrapped interface{}
+	wrapped any
 }
 
 var _ hcl.DiagnosticExtraUnwrapper = diagnosticExtraWrapper{}
 
-func (w diagnosticExtraWrapper) UnwrapDiagnosticExtra() interface{} {
+func (w diagnosticExtraWrapper) UnwrapDiagnosticExtra() any {
 	return w.wrapped
 }
