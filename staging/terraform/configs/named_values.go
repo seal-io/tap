@@ -6,12 +6,13 @@ package configs
 import (
 	"fmt"
 
+	"github.com/zclconf/go-cty/cty"
+	"github.com/zclconf/go-cty/cty/convert"
+
 	"github.com/hashicorp/hcl/v2"
 	"github.com/hashicorp/hcl/v2/ext/typeexpr"
 	"github.com/hashicorp/hcl/v2/gohcl"
 	"github.com/hashicorp/hcl/v2/hclsyntax"
-	"github.com/zclconf/go-cty/cty"
-	"github.com/zclconf/go-cty/cty/convert"
 
 	"github.com/hashicorp/terraform/addrs"
 )
@@ -46,12 +47,14 @@ type Variable struct {
 	NullableSet bool
 
 	DeclRange hcl.Range
+	Tokens    hcl.Tokens
 }
 
 func decodeVariableBlock(block *hcl.Block, override bool) (*Variable, hcl.Diagnostics) {
 	v := &Variable{
 		Name:      block.Labels[0],
 		DeclRange: block.DefRange,
+		Tokens:    block.Tokens,
 	}
 
 	// Unless we're building an override, we'll set some defaults
@@ -404,6 +407,7 @@ type Output struct {
 	SensitiveSet   bool
 
 	DeclRange hcl.Range
+	Tokens    hcl.Tokens
 }
 
 func decodeOutputBlock(block *hcl.Block, override bool) (*Output, hcl.Diagnostics) {
@@ -412,6 +416,7 @@ func decodeOutputBlock(block *hcl.Block, override bool) (*Output, hcl.Diagnostic
 	o := &Output{
 		Name:      block.Labels[0],
 		DeclRange: block.DefRange,
+		Tokens:    block.Tokens,
 	}
 
 	schema := outputBlockSchema
@@ -488,6 +493,7 @@ type Local struct {
 	Expr hcl.Expression
 
 	DeclRange hcl.Range
+	Tokens    hcl.Tokens
 }
 
 func decodeLocalsBlock(block *hcl.Block) ([]*Local, hcl.Diagnostics) {
@@ -511,6 +517,7 @@ func decodeLocalsBlock(block *hcl.Block) ([]*Local, hcl.Diagnostics) {
 			Name:      name,
 			Expr:      attr.Expr,
 			DeclRange: attr.Range,
+			Tokens:    attr.Tokens,
 		})
 	}
 	return locals, diags

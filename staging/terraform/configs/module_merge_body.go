@@ -16,13 +16,13 @@ import (
 // replace _all_ of the blocks of the same type in "base" in the new
 // body.
 func MergeBodies(base, override hcl.Body) hcl.Body {
-	return mergeBody{
+	return MergeBody{
 		Base:     base,
 		Override: override,
 	}
 }
 
-// mergeBody is a hcl.Body implementation that wraps a pair of other bodies
+// MergeBody is a hcl.Body implementation that wraps a pair of other bodies
 // and allows attributes and blocks within the override to take precedence
 // over those defined in the base body.
 //
@@ -34,14 +34,14 @@ func MergeBodies(base, override hcl.Body) hcl.Body {
 // This cannot possibly "do the right thing" in all cases, because we don't
 // have enough information about user intent. However, this behavior is intended
 // to be reasonable for simple overriding use-cases.
-type mergeBody struct {
+type MergeBody struct {
 	Base     hcl.Body
 	Override hcl.Body
 }
 
-var _ hcl.Body = mergeBody{}
+var _ hcl.Body = MergeBody{}
 
-func (b mergeBody) Content(schema *hcl.BodySchema) (*hcl.BodyContent, hcl.Diagnostics) {
+func (b MergeBody) Content(schema *hcl.BodySchema) (*hcl.BodyContent, hcl.Diagnostics) {
 	var diags hcl.Diagnostics
 	baseSchema := schemaWithDynamic(schema)
 	overrideSchema := schemaWithDynamic(schemaForOverrides(schema))
@@ -56,7 +56,7 @@ func (b mergeBody) Content(schema *hcl.BodySchema) (*hcl.BodyContent, hcl.Diagno
 	return content, diags
 }
 
-func (b mergeBody) PartialContent(schema *hcl.BodySchema) (*hcl.BodyContent, hcl.Body, hcl.Diagnostics) {
+func (b MergeBody) PartialContent(schema *hcl.BodySchema) (*hcl.BodyContent, hcl.Body, hcl.Diagnostics) {
 	var diags hcl.Diagnostics
 	baseSchema := schemaWithDynamic(schema)
 	overrideSchema := schemaWithDynamic(schemaForOverrides(schema))
@@ -73,7 +73,7 @@ func (b mergeBody) PartialContent(schema *hcl.BodySchema) (*hcl.BodyContent, hcl
 	return content, remain, diags
 }
 
-func (b mergeBody) prepareContent(base *hcl.BodyContent, override *hcl.BodyContent) *hcl.BodyContent {
+func (b MergeBody) prepareContent(base *hcl.BodyContent, override *hcl.BodyContent) *hcl.BodyContent {
 	content := &hcl.BodyContent{
 		Attributes: make(hcl.Attributes),
 	}
@@ -120,7 +120,7 @@ func (b mergeBody) prepareContent(base *hcl.BodyContent, override *hcl.BodyConte
 	return content
 }
 
-func (b mergeBody) JustAttributes() (hcl.Attributes, hcl.Diagnostics) {
+func (b MergeBody) JustAttributes() (hcl.Attributes, hcl.Diagnostics) {
 	var diags hcl.Diagnostics
 	ret := make(hcl.Attributes)
 
@@ -139,6 +139,6 @@ func (b mergeBody) JustAttributes() (hcl.Attributes, hcl.Diagnostics) {
 	return ret, diags
 }
 
-func (b mergeBody) MissingItemRange() hcl.Range {
+func (b MergeBody) MissingItemRange() hcl.Range {
 	return b.Base.MissingItemRange()
 }
