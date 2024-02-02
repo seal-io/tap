@@ -77,7 +77,7 @@ func Empty(propagate bool) *PathMatcher {
 //
 // The new PathMatcher is created fresh, and the existing one is unchanged.
 func Append(matcher *PathMatcher, message json.RawMessage) *PathMatcher {
-	var values [][]interface{}
+	var values [][]any
 	if err := json.Unmarshal(message, &values); err != nil {
 		panic("failed to unmarshal attribute paths: " + err.Error())
 	}
@@ -93,7 +93,7 @@ func Append(matcher *PathMatcher, message json.RawMessage) *PathMatcher {
 //
 // The new PathMatcher is created fresh, and the existing one is unchanged.
 func AppendSingle(matcher *PathMatcher, message json.RawMessage) *PathMatcher {
-	var values []interface{}
+	var values []any
 	if err := json.Unmarshal(message, &values); err != nil {
 		panic("failed to unmarshal attribute paths: " + err.Error())
 	}
@@ -112,7 +112,7 @@ type PathMatcher struct {
 	// is no (easy) way to reproduce the original cty.Paths object. Instead,
 	// we simply rely on the external callers to know the type information and
 	// call the correct GetChild function.
-	Paths [][]interface{}
+	Paths [][]any
 
 	// Propagate tells the matcher that it should propagate any matches it finds
 	// onto the children of that match.

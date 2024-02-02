@@ -113,7 +113,7 @@ func TestBackendPrepare(t *testing.T) {
 					"foo": &Schema{
 						Type:     TypeString,
 						Optional: true,
-						DefaultFunc: func() (interface{}, error) {
+						DefaultFunc: func() (any, error) {
 							return "baz", nil
 						},
 					},

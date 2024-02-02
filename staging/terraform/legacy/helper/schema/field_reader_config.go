@@ -123,7 +123,7 @@ func (r *ConfigFieldReader) readField(
 		if schema.PromoteSingle {
 			result, err := r.readPrimitive(k, schema.Elem.(*Schema))
 			if err == nil && result.Exists {
-				result.Value = []interface{}{result.Value}
+				result.Value = []any{result.Value}
 				return result, nil
 			}
 		}
@@ -163,7 +163,7 @@ func (r *ConfigFieldReader) readMap(k string, schema *Schema) (FieldReadResult, 
 		mraw = "${INTERPOLATED}"
 	}
 
-	result := make(map[string]interface{})
+	result := make(map[string]any)
 	computed := false
 	switch m := mraw.(type) {
 	case string:
@@ -173,7 +173,7 @@ func (r *ConfigFieldReader) readMap(k string, schema *Schema) (FieldReadResult, 
 		v, _ := r.Config.Get(k)
 
 		// If this isn't a map[string]interface, it must be computed.
-		mapV, ok := v.(map[string]interface{})
+		mapV, ok := v.(map[string]any)
 		if !ok {
 			return FieldReadResult{
 				Exists:   true,
@@ -185,9 +185,9 @@ func (r *ConfigFieldReader) readMap(k string, schema *Schema) (FieldReadResult, 
 		for i, iv := range mapV {
 			result[i] = iv
 		}
-	case []interface{}:
+	case []any:
 		for i, innerRaw := range m {
-			for ik := range innerRaw.(map[string]interface{}) {
+			for ik := range innerRaw.(map[string]any) {
 				key := fmt.Sprintf("%s.%d.%s", k, i, ik)
 				if r.Config.IsComputed(key) {
 					computed = true
@@ -198,7 +198,7 @@ func (r *ConfigFieldReader) readMap(k string, schema *Schema) (FieldReadResult, 
 				result[ik] = v
 			}
 		}
-	case []map[string]interface{}:
+	case []map[string]any:
 		for i, innerRaw := range m {
 			for ik := range innerRaw {
 				key := fmt.Sprintf("%s.%d.%s", k, i, ik)
@@ -211,7 +211,7 @@ func (r *ConfigFieldReader) readMap(k string, schema *Schema) (FieldReadResult, 
 				result[ik] = v
 			}
 		}
-	case map[string]interface{}:
+	case map[string]any:
 		for ik := range m {
 			key := fmt.Sprintf("%s.%s", k, ik)
 			if r.Config.IsComputed(key) {
@@ -234,7 +234,7 @@ func (r *ConfigFieldReader) readMap(k string, schema *Schema) (FieldReadResult, 
 		return FieldReadResult{}, nil
 	}
 
-	var value interface{}
+	var value any
 	if !computed {
 		value = result
 	}
@@ -304,7 +304,7 @@ func (r *ConfigFieldReader) readSet(
 	}
 
 	// Build up the set from the list elements
-	for i, v := range raw.Value.([]interface{}) {
+	for i, v := range raw.Value.([]any) {
 		// Check if any of the keys in this item are computed
 		computed := r.hasComputedSubKeys(
 			fmt.Sprintf("%s.%d", strings.Join(address, "."), i), schema)

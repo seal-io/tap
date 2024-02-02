@@ -21,7 +21,7 @@ const (
 )
 
 func defaultBoolFunc(k string, dv bool) schema.SchemaDefaultFunc {
-	return func() (interface{}, error) {
+	return func() (any, error) {
 		if v := os.Getenv(k); v != "" {
 			return strconv.ParseBool(v)
 		}

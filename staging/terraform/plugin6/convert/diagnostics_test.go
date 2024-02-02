@@ -60,7 +60,7 @@ func TestProtoDiagnostics(t *testing.T) {
 func TestDiagnostics(t *testing.T) {
 	type diagFlat struct {
 		Severity tfdiags.Severity
-		Attr     []interface{}
+		Attr     []any
 		Summary  string
 		Detail   string
 	}
@@ -202,7 +202,7 @@ func TestDiagnostics(t *testing.T) {
 					Severity: tfdiags.Error,
 					Summary:  "error",
 					Detail:   "error detail",
-					Attr:     []interface{}{"attribute_name"},
+					Attr:     []any{"attribute_name"},
 				},
 			},
 		},
@@ -299,25 +299,25 @@ func TestDiagnostics(t *testing.T) {
 					Severity: tfdiags.Error,
 					Summary:  "error 1",
 					Detail:   "error 1 detail",
-					Attr:     []interface{}{"attr"},
+					Attr:     []any{"attr"},
 				},
 				{
 					Severity: tfdiags.Error,
 					Summary:  "error 2",
 					Detail:   "error 2 detail",
-					Attr:     []interface{}{"attr", "sub"},
+					Attr:     []any{"attr", "sub"},
 				},
 				{
 					Severity: tfdiags.Warning,
 					Summary:  "warning",
 					Detail:   "warning detail",
-					Attr:     []interface{}{"attr", 1, "sub"},
+					Attr:     []any{"attr", 1, "sub"},
 				},
 				{
 					Severity: tfdiags.Error,
 					Summary:  "error 3",
 					Detail:   "error 3 detail",
-					Attr:     []interface{}{"attr", "idx", "sub"},
+					Attr:     []any{"attr", "idx", "sub"},
 				},
 			},
 		},
@@ -328,7 +328,7 @@ func TestDiagnostics(t *testing.T) {
 		for _, item := range ds {
 			desc := item.Description()
 
-			var attr []interface{}
+			var attr []any
 
 			for _, a := range tfdiags.GetAttribute(item) {
 				switch step := a.(type) {

@@ -57,7 +57,7 @@ func TestMemoizeSource(t *testing.T) {
 		}
 
 		gotLog := mock.CallLog()
-		wantLog := [][]interface{}{
+		wantLog := [][]any{
 			// Only one call for the main provider, because the others were returned from the cache.
 			{"AvailableVersions", provider},
 
@@ -131,7 +131,7 @@ func TestMemoizeSource(t *testing.T) {
 		}
 
 		gotLog := mock.CallLog()
-		wantLog := [][]interface{}{
+		wantLog := [][]any{
 			// Only one call for the main provider, because the others were returned from the cache.
 			{"PackageMeta", provider, version, platform},
 
@@ -157,7 +157,7 @@ func TestMemoizeSource(t *testing.T) {
 		}
 
 		gotLog := mock.CallLog()
-		wantLog := [][]interface{}{
+		wantLog := [][]any{
 			// Only one call, because the other was returned from the cache.
 			{"AvailableVersions", nonexistProvider},
 		}
@@ -179,7 +179,7 @@ func TestMemoizeSource(t *testing.T) {
 		}
 
 		gotLog := mock.CallLog()
-		wantLog := [][]interface{}{
+		wantLog := [][]any{
 			// Only one call, because the other was returned from the cache.
 			{"PackageMeta", nonexistProvider, version, platform},
 		}

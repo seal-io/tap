@@ -46,7 +46,7 @@ func TestBackend_impl(t *testing.T) {
 
 func TestBackendConfig(t *testing.T) {
 	testACC(t)
-	config := map[string]interface{}{
+	config := map[string]any{
 		"region":         "us-west-1",
 		"bucket":         "tf-test",
 		"key":            "state",
@@ -82,12 +82,12 @@ func TestBackendConfig_AssumeRole(t *testing.T) {
 	testACC(t)
 
 	testCases := []struct {
-		Config           map[string]interface{}
+		Config           map[string]any
 		Description      string
 		MockStsEndpoints []*awsbase.MockEndpoint
 	}{
 		{
-			Config: map[string]interface{}{
+			Config: map[string]any{
 				"bucket":       "tf-test",
 				"key":          "state",
 				"region":       "us-west-1",
@@ -113,7 +113,7 @@ func TestBackendConfig_AssumeRole(t *testing.T) {
 			},
 		},
 		{
-			Config: map[string]interface{}{
+			Config: map[string]any{
 				"assume_role_duration_seconds": 3600,
 				"bucket":                       "tf-test",
 				"key":                          "state",
@@ -140,7 +140,7 @@ func TestBackendConfig_AssumeRole(t *testing.T) {
 			},
 		},
 		{
-			Config: map[string]interface{}{
+			Config: map[string]any{
 				"bucket":       "tf-test",
 				"external_id":  awsbase.MockStsAssumeRoleExternalId,
 				"key":          "state",
@@ -168,7 +168,7 @@ func TestBackendConfig_AssumeRole(t *testing.T) {
 			},
 		},
 		{
-			Config: map[string]interface{}{
+			Config: map[string]any{
 				"assume_role_policy": awsbase.MockStsAssumeRolePolicy,
 				"bucket":             "tf-test",
 				"key":                "state",
@@ -196,8 +196,8 @@ func TestBackendConfig_AssumeRole(t *testing.T) {
 			},
 		},
 		{
-			Config: map[string]interface{}{
-				"assume_role_policy_arns": []interface{}{awsbase.MockStsAssumeRolePolicyArn},
+			Config: map[string]any{
+				"assume_role_policy_arns": []any{awsbase.MockStsAssumeRolePolicyArn},
 				"bucket":                  "tf-test",
 				"key":                     "state",
 				"region":                  "us-west-1",
@@ -224,8 +224,8 @@ func TestBackendConfig_AssumeRole(t *testing.T) {
 			},
 		},
 		{
-			Config: map[string]interface{}{
-				"assume_role_tags": map[string]interface{}{
+			Config: map[string]any{
+				"assume_role_tags": map[string]any{
 					awsbase.MockStsAssumeRoleTagKey: awsbase.MockStsAssumeRoleTagValue,
 				},
 				"bucket":       "tf-test",
@@ -255,11 +255,11 @@ func TestBackendConfig_AssumeRole(t *testing.T) {
 			},
 		},
 		{
-			Config: map[string]interface{}{
-				"assume_role_tags": map[string]interface{}{
+			Config: map[string]any{
+				"assume_role_tags": map[string]any{
 					awsbase.MockStsAssumeRoleTagKey: awsbase.MockStsAssumeRoleTagValue,
 				},
-				"assume_role_transitive_tag_keys": []interface{}{awsbase.MockStsAssumeRoleTagKey},
+				"assume_role_transitive_tag_keys": []any{awsbase.MockStsAssumeRoleTagKey},
 				"bucket":                          "tf-test",
 				"key":                             "state",
 				"region":                          "us-west-1",
@@ -317,7 +317,7 @@ func TestBackendConfig_AssumeRole(t *testing.T) {
 
 func TestBackendConfig_invalidKey(t *testing.T) {
 	testACC(t)
-	cfg := hcl2shim.HCL2ValueFromConfigValue(map[string]interface{}{
+	cfg := hcl2shim.HCL2ValueFromConfigValue(map[string]any{
 		"region":         "us-west-1",
 		"bucket":         "tf-test",
 		"key":            "/leading-slash",
@@ -330,7 +330,7 @@ func TestBackendConfig_invalidKey(t *testing.T) {
 		t.Fatal("expected config validation error")
 	}
 
-	cfg = hcl2shim.HCL2ValueFromConfigValue(map[string]interface{}{
+	cfg = hcl2shim.HCL2ValueFromConfigValue(map[string]any{
 		"region":         "us-west-1",
 		"bucket":         "tf-test",
 		"key":            "trailing-slash/",
@@ -346,7 +346,7 @@ func TestBackendConfig_invalidKey(t *testing.T) {
 
 func TestBackendConfig_invalidSSECustomerKeyLength(t *testing.T) {
 	testACC(t)
-	cfg := hcl2shim.HCL2ValueFromConfigValue(map[string]interface{}{
+	cfg := hcl2shim.HCL2ValueFromConfigValue(map[string]any{
 		"region":           "us-west-1",
 		"bucket":           "tf-test",
 		"encrypt":          true,
@@ -363,7 +363,7 @@ func TestBackendConfig_invalidSSECustomerKeyLength(t *testing.T) {
 
 func TestBackendConfig_invalidSSECustomerKeyEncoding(t *testing.T) {
 	testACC(t)
-	cfg := hcl2shim.HCL2ValueFromConfigValue(map[string]interface{}{
+	cfg := hcl2shim.HCL2ValueFromConfigValue(map[string]any{
 		"region":           "us-west-1",
 		"bucket":           "tf-test",
 		"encrypt":          true,
@@ -380,7 +380,7 @@ func TestBackendConfig_invalidSSECustomerKeyEncoding(t *testing.T) {
 
 func TestBackendConfig_conflictingEncryptionSchema(t *testing.T) {
 	testACC(t)
-	cfg := hcl2shim.HCL2ValueFromConfigValue(map[string]interface{}{
+	cfg := hcl2shim.HCL2ValueFromConfigValue(map[string]any{
 		"region":           "us-west-1",
 		"bucket":           "tf-test",
 		"key":              "state",
@@ -402,7 +402,7 @@ func TestBackend(t *testing.T) {
 	bucketName := fmt.Sprintf("terraform-remote-s3-test-%x", time.Now().Unix())
 	keyName := "testState"
 
-	b := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]interface{}{
+	b := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]any{
 		"bucket":  bucketName,
 		"key":     keyName,
 		"encrypt": true,
@@ -420,14 +420,14 @@ func TestBackendLocked(t *testing.T) {
 	bucketName := fmt.Sprintf("terraform-remote-s3-test-%x", time.Now().Unix())
 	keyName := "test/state"
 
-	b1 := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]interface{}{
+	b1 := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]any{
 		"bucket":         bucketName,
 		"key":            keyName,
 		"encrypt":        true,
 		"dynamodb_table": bucketName,
 	})).(*Backend)
 
-	b2 := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]interface{}{
+	b2 := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]any{
 		"bucket":         bucketName,
 		"key":            keyName,
 		"encrypt":        true,
@@ -447,7 +447,7 @@ func TestBackendSSECustomerKey(t *testing.T) {
 	testACC(t)
 	bucketName := fmt.Sprintf("terraform-remote-s3-test-%x", time.Now().Unix())
 
-	b := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]interface{}{
+	b := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]any{
 		"bucket":           bucketName,
 		"encrypt":          true,
 		"key":              "test-SSE-C",
@@ -466,7 +466,7 @@ func TestBackendExtraPaths(t *testing.T) {
 	bucketName := fmt.Sprintf("terraform-remote-s3-test-%x", time.Now().Unix())
 	keyName := "test/state/tfstate"
 
-	b := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]interface{}{
+	b := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]any{
 		"bucket":  bucketName,
 		"key":     keyName,
 		"encrypt": true,
@@ -594,7 +594,7 @@ func TestBackendPrefixInWorkspace(t *testing.T) {
 	testACC(t)
 	bucketName := fmt.Sprintf("terraform-remote-s3-test-%x", time.Now().Unix())
 
-	b := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]interface{}{
+	b := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]any{
 		"bucket":               bucketName,
 		"key":                  "test-env.tfstate",
 		"workspace_key_prefix": "env",
@@ -622,7 +622,7 @@ func TestKeyEnv(t *testing.T) {
 	keyName := "some/paths/tfstate"
 
 	bucket0Name := fmt.Sprintf("terraform-remote-s3-test-%x-0", time.Now().Unix())
-	b0 := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]interface{}{
+	b0 := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]any{
 		"bucket":               bucket0Name,
 		"key":                  keyName,
 		"encrypt":              true,
@@ -633,7 +633,7 @@ func TestKeyEnv(t *testing.T) {
 	defer deleteS3Bucket(t, b0.s3Client, bucket0Name)
 
 	bucket1Name := fmt.Sprintf("terraform-remote-s3-test-%x-1", time.Now().Unix())
-	b1 := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]interface{}{
+	b1 := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]any{
 		"bucket":               bucket1Name,
 		"key":                  keyName,
 		"encrypt":              true,
@@ -644,7 +644,7 @@ func TestKeyEnv(t *testing.T) {
 	defer deleteS3Bucket(t, b1.s3Client, bucket1Name)
 
 	bucket2Name := fmt.Sprintf("terraform-remote-s3-test-%x-2", time.Now().Unix())
-	b2 := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]interface{}{
+	b2 := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]any{
 		"bucket":  bucket2Name,
 		"key":     keyName,
 		"encrypt": true,

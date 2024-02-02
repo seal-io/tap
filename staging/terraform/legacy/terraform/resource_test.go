@@ -31,7 +31,7 @@ func TestResourceConfigGet(t *testing.T) {
 		Config cty.Value
 		Schema *configschema.Block
 		Key    string
-		Value  interface{}
+		Value  any
 	}{
 		{
 			Config: cty.ObjectVal(map[string]cty.Value{
@@ -268,7 +268,7 @@ func TestResourceConfigEqual_computedKeyOrder(t *testing.T) {
 func TestUnknownCheckWalker(t *testing.T) {
 	cases := []struct {
 		Name   string
-		Input  interface{}
+		Input  any
 		Result bool
 	}{
 		{
@@ -285,15 +285,15 @@ func TestUnknownCheckWalker(t *testing.T) {
 
 		{
 			"list",
-			[]interface{}{"foo", hcl2shim.UnknownVariableValue},
+			[]any{"foo", hcl2shim.UnknownVariableValue},
 			true,
 		},
 
 		{
 			"nested list",
-			[]interface{}{
+			[]any{
 				"foo",
-				[]interface{}{hcl2shim.UnknownVariableValue},
+				[]any{hcl2shim.UnknownVariableValue},
 			},
 			true,
 		},
@@ -332,8 +332,8 @@ func TestNewResourceConfigShimmed(t *testing.T) {
 				},
 			},
 			Expected: &ResourceConfig{
-				Raw:    map[string]interface{}{},
-				Config: map[string]interface{}{},
+				Raw:    map[string]any{},
+				Config: map[string]any{},
 			},
 		},
 		{
@@ -350,10 +350,10 @@ func TestNewResourceConfigShimmed(t *testing.T) {
 				},
 			},
 			Expected: &ResourceConfig{
-				Raw: map[string]interface{}{
+				Raw: map[string]any{
 					"foo": "bar",
 				},
-				Config: map[string]interface{}{
+				Config: map[string]any{
 					"foo": "bar",
 				},
 			},
@@ -372,8 +372,8 @@ func TestNewResourceConfigShimmed(t *testing.T) {
 				},
 			},
 			Expected: &ResourceConfig{
-				Raw:    map[string]interface{}{},
-				Config: map[string]interface{}{},
+				Raw:    map[string]any{},
+				Config: map[string]any{},
 			},
 		},
 		{
@@ -391,10 +391,10 @@ func TestNewResourceConfigShimmed(t *testing.T) {
 			},
 			Expected: &ResourceConfig{
 				ComputedKeys: []string{"foo"},
-				Raw: map[string]interface{}{
+				Raw: map[string]any{
 					"foo": hcl2shim.UnknownVariableValue,
 				},
-				Config: map[string]interface{}{
+				Config: map[string]any{
 					"foo": hcl2shim.UnknownVariableValue,
 				},
 			},
@@ -419,11 +419,11 @@ func TestNewResourceConfigShimmed(t *testing.T) {
 			},
 			Expected: &ResourceConfig{
 				ComputedKeys: []string{"bar", "baz"},
-				Raw: map[string]interface{}{
+				Raw: map[string]any{
 					"bar": hcl2shim.UnknownVariableValue,
 					"baz": hcl2shim.UnknownVariableValue,
 				},
-				Config: map[string]interface{}{
+				Config: map[string]any{
 					"bar": hcl2shim.UnknownVariableValue,
 					"baz": hcl2shim.UnknownVariableValue,
 				},
@@ -448,8 +448,8 @@ func TestNewResourceConfigShimmed(t *testing.T) {
 				},
 			},
 			Expected: &ResourceConfig{
-				Raw:    map[string]interface{}{},
-				Config: map[string]interface{}{},
+				Raw:    map[string]any{},
+				Config: map[string]any{},
 			},
 		},
 		{
@@ -472,11 +472,11 @@ func TestNewResourceConfigShimmed(t *testing.T) {
 			},
 			Expected: &ResourceConfig{
 				ComputedKeys: []string{"bar", "baz"},
-				Raw: map[string]interface{}{
+				Raw: map[string]any{
 					"bar": hcl2shim.UnknownVariableValue,
 					"baz": hcl2shim.UnknownVariableValue,
 				},
-				Config: map[string]interface{}{
+				Config: map[string]any{
 					"bar": hcl2shim.UnknownVariableValue,
 					"baz": hcl2shim.UnknownVariableValue,
 				},
@@ -518,16 +518,16 @@ func TestNewResourceConfigShimmed(t *testing.T) {
 			},
 			Expected: &ResourceConfig{
 				ComputedKeys: []string{"bar.0.baz.0.list"},
-				Raw: map[string]interface{}{
-					"bar": []interface{}{map[string]interface{}{
-						"baz": []interface{}{map[string]interface{}{
+				Raw: map[string]any{
+					"bar": []any{map[string]any{
+						"baz": []any{map[string]any{
 							"list": "74D93920-ED26-11E3-AC10-0800200C9A66",
 						}},
 					}},
 				},
-				Config: map[string]interface{}{
-					"bar": []interface{}{map[string]interface{}{
-						"baz": []interface{}{map[string]interface{}{
+				Config: map[string]any{
+					"bar": []any{map[string]any{
+						"baz": []any{map[string]any{
 							"list": "74D93920-ED26-11E3-AC10-0800200C9A66",
 						}},
 					}},
@@ -560,13 +560,13 @@ func TestNewResourceConfigShimmed(t *testing.T) {
 			},
 			Expected: &ResourceConfig{
 				ComputedKeys: []string{"bar.0.val"},
-				Raw: map[string]interface{}{
-					"bar": []interface{}{map[string]interface{}{
+				Raw: map[string]any{
+					"bar": []any{map[string]any{
 						"val": "74D93920-ED26-11E3-AC10-0800200C9A66",
 					}},
 				},
-				Config: map[string]interface{}{
-					"bar": []interface{}{map[string]interface{}{
+				Config: map[string]any{
+					"bar": []any{map[string]any{
 						"val": "74D93920-ED26-11E3-AC10-0800200C9A66",
 					}},
 				},
@@ -611,32 +611,32 @@ func TestNewResourceConfigShimmed(t *testing.T) {
 			},
 			Expected: &ResourceConfig{
 				ComputedKeys: []string{"bar.0.val", "baz.0.obj.attr", "baz.1.obj"},
-				Raw: map[string]interface{}{
-					"bar": []interface{}{map[string]interface{}{
+				Raw: map[string]any{
+					"bar": []any{map[string]any{
 						"val": "74D93920-ED26-11E3-AC10-0800200C9A66",
 					}},
-					"baz": []interface{}{
-						map[string]interface{}{
-							"obj": map[string]interface{}{
+					"baz": []any{
+						map[string]any{
+							"obj": map[string]any{
 								"attr": "74D93920-ED26-11E3-AC10-0800200C9A66",
 							},
 						},
-						map[string]interface{}{
+						map[string]any{
 							"obj": "74D93920-ED26-11E3-AC10-0800200C9A66",
 						},
 					},
 				},
-				Config: map[string]interface{}{
-					"bar": []interface{}{map[string]interface{}{
+				Config: map[string]any{
+					"bar": []any{map[string]any{
 						"val": "74D93920-ED26-11E3-AC10-0800200C9A66",
 					}},
-					"baz": []interface{}{
-						map[string]interface{}{
-							"obj": map[string]interface{}{
+					"baz": []any{
+						map[string]any{
+							"obj": map[string]any{
 								"attr": "74D93920-ED26-11E3-AC10-0800200C9A66",
 							},
 						},
-						map[string]interface{}{
+						map[string]any{
 							"obj": "74D93920-ED26-11E3-AC10-0800200C9A66",
 						},
 					},
@@ -662,8 +662,8 @@ func TestNewResourceConfigShimmed(t *testing.T) {
 				},
 			},
 			Expected: &ResourceConfig{
-				Raw:    map[string]interface{}{},
-				Config: map[string]interface{}{},
+				Raw:    map[string]any{},
+				Config: map[string]any{},
 			},
 		},
 	} {

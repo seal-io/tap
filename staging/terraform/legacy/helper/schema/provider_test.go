@@ -102,7 +102,7 @@ func TestProviderGetSchema(t *testing.T) {
 func TestProviderConfigure(t *testing.T) {
 	cases := []struct {
 		P      *Provider
-		Config map[string]interface{}
+		Config map[string]any
 		Err    bool
 	}{
 		{
@@ -120,7 +120,7 @@ func TestProviderConfigure(t *testing.T) {
 					},
 				},
 
-				ConfigureFunc: func(d *ResourceData) (interface{}, error) {
+				ConfigureFunc: func(d *ResourceData) (any, error) {
 					if d.Get("foo").(int) == 42 {
 						return nil, nil
 					}
@@ -128,7 +128,7 @@ func TestProviderConfigure(t *testing.T) {
 					return nil, fmt.Errorf("nope")
 				},
 			},
-			Config: map[string]interface{}{
+			Config: map[string]any{
 				"foo": 42,
 			},
 			Err: false,
@@ -143,7 +143,7 @@ func TestProviderConfigure(t *testing.T) {
 					},
 				},
 
-				ConfigureFunc: func(d *ResourceData) (interface{}, error) {
+				ConfigureFunc: func(d *ResourceData) (any, error) {
 					if d.Get("foo").(int) == 42 {
 						return nil, nil
 					}
@@ -151,7 +151,7 @@ func TestProviderConfigure(t *testing.T) {
 					return nil, fmt.Errorf("nope")
 				},
 			},
-			Config: map[string]interface{}{
+			Config: map[string]any{
 				"foo": 52,
 			},
 			Err: true,
@@ -249,7 +249,7 @@ func TestProviderDataSources(t *testing.T) {
 func TestProviderValidate(t *testing.T) {
 	cases := []struct {
 		P      *Provider
-		Config map[string]interface{}
+		Config map[string]any
 		Err    bool
 	}{
 		{
@@ -289,10 +289,10 @@ func TestProviderDiff_legacyTimeoutType(t *testing.T) {
 		},
 	}
 
-	invalidCfg := map[string]interface{}{
+	invalidCfg := map[string]any{
 		"foo": 42,
-		"timeouts": []interface{}{
-			map[string]interface{}{
+		"timeouts": []any{
+			map[string]any{
 				"create": "40m",
 			},
 		},
@@ -327,9 +327,9 @@ func TestProviderDiff_timeoutInvalidValue(t *testing.T) {
 		},
 	}
 
-	invalidCfg := map[string]interface{}{
+	invalidCfg := map[string]any{
 		"foo": 42,
-		"timeouts": map[string]interface{}{
+		"timeouts": map[string]any{
 			"create": "invalid",
 		},
 	}
@@ -356,7 +356,7 @@ func TestProviderValidateResource(t *testing.T) {
 	cases := []struct {
 		P      *Provider
 		Type   string
-		Config map[string]interface{}
+		Config map[string]any
 		Err    bool
 	}{
 		{
@@ -413,7 +413,7 @@ func TestProviderImportState_default(t *testing.T) {
 
 func TestProviderImportState_setsId(t *testing.T) {
 	var val string
-	stateFunc := func(d *ResourceData, meta interface{}) ([]*ResourceData, error) {
+	stateFunc := func(d *ResourceData, meta any) ([]*ResourceData, error) {
 		val = d.Id()
 		return []*ResourceData{d}, nil
 	}
@@ -442,7 +442,7 @@ func TestProviderImportState_setsId(t *testing.T) {
 
 func TestProviderImportState_setsType(t *testing.T) {
 	var tVal string
-	stateFunc := func(d *ResourceData, meta interface{}) ([]*ResourceData, error) {
+	stateFunc := func(d *ResourceData, meta any) ([]*ResourceData, error) {
 		d.SetId("foo")
 		tVal = d.State().Ephemeral.Type
 		return []*ResourceData{d}, nil

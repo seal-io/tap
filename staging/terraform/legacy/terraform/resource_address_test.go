@@ -610,7 +610,7 @@ func TestResourceAddressContains(t *testing.T) {
 func TestResourceAddressEquals(t *testing.T) {
 	cases := map[string]struct {
 		Address *ResourceAddress
-		Other   interface{}
+		Other   any
 		Expect  bool
 	}{
 		"basic match": {

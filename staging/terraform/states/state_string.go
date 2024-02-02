@@ -219,9 +219,9 @@ func (ms *Module) testString() string {
 			switch vTyped := lv.(type) {
 			case string:
 				buf.WriteString(fmt.Sprintf("%s = %s\n", k, vTyped))
-			case []interface{}:
+			case []any:
 				buf.WriteString(fmt.Sprintf("%s = %s\n", k, vTyped))
-			case map[string]interface{}:
+			case map[string]any:
 				var mapKeys []string
 				for key := range vTyped {
 					mapKeys = append(mapKeys, key)

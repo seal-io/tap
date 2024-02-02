@@ -55,13 +55,13 @@ func TestBackendConfig(t *testing.T) {
 	testCases := []struct {
 		Name                     string
 		EnvVars                  map[string]string
-		Config                   map[string]interface{}
+		Config                   map[string]any
 		ExpectConfigurationError string
 		ExpectConnectionError    string
 	}{
 		{
 			Name: "valid-config",
-			Config: map[string]interface{}{
+			Config: map[string]any{
 				"conn_str":    connStr,
 				"schema_name": fmt.Sprintf("terraform_%s", t.Name()),
 			},
@@ -72,7 +72,7 @@ func TestBackendConfig(t *testing.T) {
 				"PGSSLMODE":  "disable",
 				"PGDATABASE": databaseName,
 			},
-			Config: map[string]interface{}{
+			Config: map[string]any{
 				"schema_name": fmt.Sprintf("terraform_%s", t.Name()),
 			},
 		},
@@ -81,7 +81,7 @@ func TestBackendConfig(t *testing.T) {
 			EnvVars: map[string]string{
 				"PG_CONN_STR": connStr,
 			},
-			Config: map[string]interface{}{
+			Config: map[string]any{
 				"schema_name": fmt.Sprintf("terraform_%s", t.Name()),
 			},
 		},
@@ -91,7 +91,7 @@ func TestBackendConfig(t *testing.T) {
 				"PGUSER":     "baduser",
 				"PGPASSWORD": "badpassword",
 			},
-			Config: map[string]interface{}{
+			Config: map[string]any{
 				"conn_str":    connStr,
 				"schema_name": fmt.Sprintf("terraform_%s", t.Name()),
 			},
@@ -102,7 +102,7 @@ func TestBackendConfig(t *testing.T) {
 			EnvVars: map[string]string{
 				"PGHOST": "hostthatdoesnotexist",
 			},
-			Config: map[string]interface{}{
+			Config: map[string]any{
 				"schema_name": fmt.Sprintf("terraform_%s", t.Name()),
 			},
 			ExpectConnectionError: `no such host`,
@@ -116,7 +116,7 @@ func TestBackendConfig(t *testing.T) {
 				"PG_SKIP_INDEX_CREATION":  "f",
 				"PGDATABASE":              databaseName,
 			},
-			Config: map[string]interface{}{
+			Config: map[string]any{
 				"schema_name": fmt.Sprintf("terraform_%s", t.Name()),
 			},
 		},
@@ -127,7 +127,7 @@ func TestBackendConfig(t *testing.T) {
 				"PG_SKIP_SCHEMA_CREATION": "foo",
 				"PGDATABASE":              databaseName,
 			},
-			Config: map[string]interface{}{
+			Config: map[string]any{
 				"schema_name": fmt.Sprintf("terraform_%s", t.Name()),
 			},
 			ExpectConfigurationError: `error getting default for "skip_schema_creation"`,
@@ -295,7 +295,7 @@ func TestBackendConfigSkipOptions(t *testing.T) {
 		t.Run(tc.Name, func(t *testing.T) {
 			schemaName := tc.Name
 
-			config := backend.TestWrapConfig(map[string]interface{}{
+			config := backend.TestWrapConfig(map[string]any{
 				"conn_str":             connStr,
 				"schema_name":          schemaName,
 				"skip_schema_creation": tc.SkipSchemaCreation,
@@ -382,7 +382,7 @@ func TestBackendStates(t *testing.T) {
 			}
 			defer dbCleaner.Query(fmt.Sprintf("DROP SCHEMA IF EXISTS %s CASCADE", pq.QuoteIdentifier(schemaName)))
 
-			config := backend.TestWrapConfig(map[string]interface{}{
+			config := backend.TestWrapConfig(map[string]any{
 				"conn_str":    connStr,
 				"schema_name": schemaName,
 			})
@@ -407,7 +407,7 @@ func TestBackendStateLocks(t *testing.T) {
 	}
 	defer dbCleaner.Query(fmt.Sprintf("DROP SCHEMA IF EXISTS %s CASCADE", schemaName))
 
-	config := backend.TestWrapConfig(map[string]interface{}{
+	config := backend.TestWrapConfig(map[string]any{
 		"conn_str":    connStr,
 		"schema_name": schemaName,
 	})
@@ -436,7 +436,7 @@ func TestBackendConcurrentLock(t *testing.T) {
 
 	getStateMgr := func(schemaName string) (statemgr.Full, *statemgr.LockInfo) {
 		defer dbCleaner.Query(fmt.Sprintf("DROP SCHEMA IF EXISTS %s CASCADE", schemaName))
-		config := backend.TestWrapConfig(map[string]interface{}{
+		config := backend.TestWrapConfig(map[string]any{
 			"conn_str":    connStr,
 			"schema_name": schemaName,
 		})

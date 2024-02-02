@@ -11,22 +11,22 @@ import (
 // converted the relevant interfaces into maps for easier access.
 type ChangeMap struct {
 	// Before contains the value before the proposed change.
-	Before map[string]interface{}
+	Before map[string]any
 
 	// After contains the value after the proposed change.
-	After map[string]interface{}
+	After map[string]any
 
 	// Unknown contains the unknown status of any elements/attributes of this
 	// map/object.
-	Unknown map[string]interface{}
+	Unknown map[string]any
 
 	// BeforeSensitive contains the before sensitive status of any
 	// elements/attributes of this map/object.
-	BeforeSensitive map[string]interface{}
+	BeforeSensitive map[string]any
 
 	// AfterSensitive contains the after sensitive status of any
 	// elements/attributes of this map/object.
-	AfterSensitive map[string]interface{}
+	AfterSensitive map[string]any
 
 	// ReplacePaths matches the same attributes in Change exactly.
 	ReplacePaths attribute_path.Matcher
@@ -144,7 +144,7 @@ func (m ChangeMap) AllKeys() []string {
 	return dedupedKeys
 }
 
-func getFromGenericMap(generic map[string]interface{}, key string) (interface{}, bool) {
+func getFromGenericMap(generic map[string]any, key string) (any, bool) {
 	if generic == nil {
 		return nil, false
 	}
@@ -155,8 +155,8 @@ func getFromGenericMap(generic map[string]interface{}, key string) (interface{},
 	return nil, false
 }
 
-func genericToMap(generic interface{}) map[string]interface{} {
-	if concrete, ok := generic.(map[string]interface{}); ok {
+func genericToMap(generic any) map[string]any {
+	if concrete, ok := generic.(map[string]any); ok {
 		return concrete
 	}
 	return nil

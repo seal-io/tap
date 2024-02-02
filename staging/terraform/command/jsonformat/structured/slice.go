@@ -11,21 +11,21 @@ import (
 // converted the relevant interfaces into slices for easier access.
 type ChangeSlice struct {
 	// Before contains the value before the proposed change.
-	Before []interface{}
+	Before []any
 
 	// After contains the value after the proposed change.
-	After []interface{}
+	After []any
 
 	// Unknown contains the unknown status of any elements of this list/set.
-	Unknown []interface{}
+	Unknown []any
 
 	// BeforeSensitive contains the before sensitive status of any elements of
 	// this list/set.
-	BeforeSensitive []interface{}
+	BeforeSensitive []any
 
 	// AfterSensitive contains the after sensitive status of any elements of
 	// this list/set.
-	AfterSensitive []interface{}
+	AfterSensitive []any
 
 	// ReplacePaths matches the same attributes in Change exactly.
 	ReplacePaths attribute_path.Matcher
@@ -76,7 +76,7 @@ func (s ChangeSlice) GetChild(beforeIx, afterIx int) Change {
 	}
 }
 
-func getFromGenericSlice(generic []interface{}, ix int) (interface{}, bool) {
+func getFromGenericSlice(generic []any, ix int) (any, bool) {
 	if generic == nil {
 		return nil, false
 	}
@@ -86,8 +86,8 @@ func getFromGenericSlice(generic []interface{}, ix int) (interface{}, bool) {
 	return generic[ix], true
 }
 
-func genericToSlice(generic interface{}) []interface{} {
-	if concrete, ok := generic.([]interface{}); ok {
+func genericToSlice(generic any) []any {
+	if concrete, ok := generic.([]any); ok {
 		return concrete
 	}
 	return nil

@@ -39,7 +39,7 @@ func (m *MockProviderClient) EXPECT() *MockProviderClientMockRecorder {
 // ApplyResourceChange mocks base method.
 func (m *MockProviderClient) ApplyResourceChange(arg0 context.Context, arg1 *tfplugin6.ApplyResourceChange_Request, arg2 ...grpc.CallOption) (*tfplugin6.ApplyResourceChange_Response, error) {
 	m.ctrl.T.Helper()
-	varargs := []interface{}{arg0, arg1}
+	varargs := []any{arg0, arg1}
 	for _, a := range arg2 {
 		varargs = append(varargs, a)
 	}
@@ -50,16 +50,16 @@ func (m *MockProviderClient) ApplyResourceChange(arg0 context.Context, arg1 *tfp
 }
 
 // ApplyResourceChange indicates an expected call of ApplyResourceChange.
-func (mr *MockProviderClientMockRecorder) ApplyResourceChange(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+func (mr *MockProviderClientMockRecorder) ApplyResourceChange(arg0, arg1 any, arg2 ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	varargs := append([]any{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ApplyResourceChange", reflect.TypeOf((*MockProviderClient)(nil).ApplyResourceChange), varargs...)
 }
 
 // ConfigureProvider mocks base method.
 func (m *MockProviderClient) ConfigureProvider(arg0 context.Context, arg1 *tfplugin6.ConfigureProvider_Request, arg2 ...grpc.CallOption) (*tfplugin6.ConfigureProvider_Response, error) {
 	m.ctrl.T.Helper()
-	varargs := []interface{}{arg0, arg1}
+	varargs := []any{arg0, arg1}
 	for _, a := range arg2 {
 		varargs = append(varargs, a)
 	}
@@ -70,16 +70,16 @@ func (m *MockProviderClient) ConfigureProvider(arg0 context.Context, arg1 *tfplu
 }
 
 // ConfigureProvider indicates an expected call of ConfigureProvider.
-func (mr *MockProviderClientMockRecorder) ConfigureProvider(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+func (mr *MockProviderClientMockRecorder) ConfigureProvider(arg0, arg1 any, arg2 ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	varargs := append([]any{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ConfigureProvider", reflect.TypeOf((*MockProviderClient)(nil).ConfigureProvider), varargs...)
 }
 
 // GetProviderSchema mocks base method.
 func (m *MockProviderClient) GetProviderSchema(arg0 context.Context, arg1 *tfplugin6.GetProviderSchema_Request, arg2 ...grpc.CallOption) (*tfplugin6.GetProviderSchema_Response, error) {
 	m.ctrl.T.Helper()
-	varargs := []interface{}{arg0, arg1}
+	varargs := []any{arg0, arg1}
 	for _, a := range arg2 {
 		varargs = append(varargs, a)
 	}
@@ -90,16 +90,16 @@ func (m *MockProviderClient) GetProviderSchema(arg0 context.Context, arg1 *tfplu
 }
 
 // GetProviderSchema indicates an expected call of GetProviderSchema.
-func (mr *MockProviderClientMockRecorder) GetProviderSchema(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+func (mr *MockProviderClientMockRecorder) GetProviderSchema(arg0, arg1 any, arg2 ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	varargs := append([]any{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetProviderSchema", reflect.TypeOf((*MockProviderClient)(nil).GetProviderSchema), varargs...)
 }
 
 // ImportResourceState mocks base method.
 func (m *MockProviderClient) ImportResourceState(arg0 context.Context, arg1 *tfplugin6.ImportResourceState_Request, arg2 ...grpc.CallOption) (*tfplugin6.ImportResourceState_Response, error) {
 	m.ctrl.T.Helper()
-	varargs := []interface{}{arg0, arg1}
+	varargs := []any{arg0, arg1}
 	for _, a := range arg2 {
 		varargs = append(varargs, a)
 	}
@@ -110,16 +110,16 @@ func (m *MockProviderClient) ImportResourceState(arg0 context.Context, arg1 *tfp
 }
 
 // ImportResourceState indicates an expected call of ImportResourceState.
-func (mr *MockProviderClientMockRecorder) ImportResourceState(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+func (mr *MockProviderClientMockRecorder) ImportResourceState(arg0, arg1 any, arg2 ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	varargs := append([]any{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ImportResourceState", reflect.TypeOf((*MockProviderClient)(nil).ImportResourceState), varargs...)
 }
 
 // PlanResourceChange mocks base method.
 func (m *MockProviderClient) PlanResourceChange(arg0 context.Context, arg1 *tfplugin6.PlanResourceChange_Request, arg2 ...grpc.CallOption) (*tfplugin6.PlanResourceChange_Response, error) {
 	m.ctrl.T.Helper()
-	varargs := []interface{}{arg0, arg1}
+	varargs := []any{arg0, arg1}
 	for _, a := range arg2 {
 		varargs = append(varargs, a)
 	}
@@ -130,16 +130,16 @@ func (m *MockProviderClient) PlanResourceChange(arg0 context.Context, arg1 *tfpl
 }
 
 // PlanResourceChange indicates an expected call of PlanResourceChange.
-func (mr *MockProviderClientMockRecorder) PlanResourceChange(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+func (mr *MockProviderClientMockRecorder) PlanResourceChange(arg0, arg1 any, arg2 ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	varargs := append([]any{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PlanResourceChange", reflect.TypeOf((*MockProviderClient)(nil).PlanResourceChange), varargs...)
 }
 
 // ReadDataSource mocks base method.
 func (m *MockProviderClient) ReadDataSource(arg0 context.Context, arg1 *tfplugin6.ReadDataSource_Request, arg2 ...grpc.CallOption) (*tfplugin6.ReadDataSource_Response, error) {
 	m.ctrl.T.Helper()
-	varargs := []interface{}{arg0, arg1}
+	varargs := []any{arg0, arg1}
 	for _, a := range arg2 {
 		varargs = append(varargs, a)
 	}
@@ -150,16 +150,16 @@ func (m *MockProviderClient) ReadDataSource(arg0 context.Context, arg1 *tfplugin
 }
 
 // ReadDataSource indicates an expected call of ReadDataSource.
-func (mr *MockProviderClientMockRecorder) ReadDataSource(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+func (mr *MockProviderClientMockRecorder) ReadDataSource(arg0, arg1 any, arg2 ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	varargs := append([]any{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadDataSource", reflect.TypeOf((*MockProviderClient)(nil).ReadDataSource), varargs...)
 }
 
 // ReadResource mocks base method.
 func (m *MockProviderClient) ReadResource(arg0 context.Context, arg1 *tfplugin6.ReadResource_Request, arg2 ...grpc.CallOption) (*tfplugin6.ReadResource_Response, error) {
 	m.ctrl.T.Helper()
-	varargs := []interface{}{arg0, arg1}
+	varargs := []any{arg0, arg1}
 	for _, a := range arg2 {
 		varargs = append(varargs, a)
 	}
@@ -170,16 +170,16 @@ func (m *MockProviderClient) ReadResource(arg0 context.Context, arg1 *tfplugin6.
 }
 
 // ReadResource indicates an expected call of ReadResource.
-func (mr *MockProviderClientMockRecorder) ReadResource(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+func (mr *MockProviderClientMockRecorder) ReadResource(arg0, arg1 any, arg2 ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	varargs := append([]any{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadResource", reflect.TypeOf((*MockProviderClient)(nil).ReadResource), varargs...)
 }
 
 // StopProvider mocks base method.
 func (m *MockProviderClient) StopProvider(arg0 context.Context, arg1 *tfplugin6.StopProvider_Request, arg2 ...grpc.CallOption) (*tfplugin6.StopProvider_Response, error) {
 	m.ctrl.T.Helper()
-	varargs := []interface{}{arg0, arg1}
+	varargs := []any{arg0, arg1}
 	for _, a := range arg2 {
 		varargs = append(varargs, a)
 	}
@@ -190,16 +190,16 @@ func (m *MockProviderClient) StopProvider(arg0 context.Context, arg1 *tfplugin6.
 }
 
 // StopProvider indicates an expected call of StopProvider.
-func (mr *MockProviderClientMockRecorder) StopProvider(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+func (mr *MockProviderClientMockRecorder) StopProvider(arg0, arg1 any, arg2 ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	varargs := append([]any{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "StopProvider", reflect.TypeOf((*MockProviderClient)(nil).StopProvider), varargs...)
 }
 
 // UpgradeResourceState mocks base method.
 func (m *MockProviderClient) UpgradeResourceState(arg0 context.Context, arg1 *tfplugin6.UpgradeResourceState_Request, arg2 ...grpc.CallOption) (*tfplugin6.UpgradeResourceState_Response, error) {
 	m.ctrl.T.Helper()
-	varargs := []interface{}{arg0, arg1}
+	varargs := []any{arg0, arg1}
 	for _, a := range arg2 {
 		varargs = append(varargs, a)
 	}
@@ -210,16 +210,16 @@ func (m *MockProviderClient) UpgradeResourceState(arg0 context.Context, arg1 *tf
 }
 
 // UpgradeResourceState indicates an expected call of UpgradeResourceState.
-func (mr *MockProviderClientMockRecorder) UpgradeResourceState(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+func (mr *MockProviderClientMockRecorder) UpgradeResourceState(arg0, arg1 any, arg2 ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	varargs := append([]any{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpgradeResourceState", reflect.TypeOf((*MockProviderClient)(nil).UpgradeResourceState), varargs...)
 }
 
 // ValidateDataResourceConfig mocks base method.
 func (m *MockProviderClient) ValidateDataResourceConfig(arg0 context.Context, arg1 *tfplugin6.ValidateDataResourceConfig_Request, arg2 ...grpc.CallOption) (*tfplugin6.ValidateDataResourceConfig_Response, error) {
 	m.ctrl.T.Helper()
-	varargs := []interface{}{arg0, arg1}
+	varargs := []any{arg0, arg1}
 	for _, a := range arg2 {
 		varargs = append(varargs, a)
 	}
@@ -230,16 +230,16 @@ func (m *MockProviderClient) ValidateDataResourceConfig(arg0 context.Context, ar
 }
 
 // ValidateDataResourceConfig indicates an expected call of ValidateDataResourceConfig.
-func (mr *MockProviderClientMockRecorder) ValidateDataResourceConfig(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+func (mr *MockProviderClientMockRecorder) ValidateDataResourceConfig(arg0, arg1 any, arg2 ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	varargs := append([]any{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ValidateDataResourceConfig", reflect.TypeOf((*MockProviderClient)(nil).ValidateDataResourceConfig), varargs...)
 }
 
 // ValidateProviderConfig mocks base method.
 func (m *MockProviderClient) ValidateProviderConfig(arg0 context.Context, arg1 *tfplugin6.ValidateProviderConfig_Request, arg2 ...grpc.CallOption) (*tfplugin6.ValidateProviderConfig_Response, error) {
 	m.ctrl.T.Helper()
-	varargs := []interface{}{arg0, arg1}
+	varargs := []any{arg0, arg1}
 	for _, a := range arg2 {
 		varargs = append(varargs, a)
 	}
@@ -250,16 +250,16 @@ func (m *MockProviderClient) ValidateProviderConfig(arg0 context.Context, arg1 *
 }
 
 // ValidateProviderConfig indicates an expected call of ValidateProviderConfig.
-func (mr *MockProviderClientMockRecorder) ValidateProviderConfig(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+func (mr *MockProviderClientMockRecorder) ValidateProviderConfig(arg0, arg1 any, arg2 ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	varargs := append([]any{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ValidateProviderConfig", reflect.TypeOf((*MockProviderClient)(nil).ValidateProviderConfig), varargs...)
 }
 
 // ValidateResourceConfig mocks base method.
 func (m *MockProviderClient) ValidateResourceConfig(arg0 context.Context, arg1 *tfplugin6.ValidateResourceConfig_Request, arg2 ...grpc.CallOption) (*tfplugin6.ValidateResourceConfig_Response, error) {
 	m.ctrl.T.Helper()
-	varargs := []interface{}{arg0, arg1}
+	varargs := []any{arg0, arg1}
 	for _, a := range arg2 {
 		varargs = append(varargs, a)
 	}
@@ -270,8 +270,8 @@ func (m *MockProviderClient) ValidateResourceConfig(arg0 context.Context, arg1 *
 }
 
 // ValidateResourceConfig indicates an expected call of ValidateResourceConfig.
-func (mr *MockProviderClientMockRecorder) ValidateResourceConfig(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+func (mr *MockProviderClientMockRecorder) ValidateResourceConfig(arg0, arg1 any, arg2 ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	varargs := append([]any{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ValidateResourceConfig", reflect.TypeOf((*MockProviderClient)(nil).ValidateResourceConfig), varargs...)
 }

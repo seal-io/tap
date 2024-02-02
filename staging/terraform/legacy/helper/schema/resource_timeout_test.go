@@ -18,7 +18,7 @@ func TestResourceTimeout_ConfigDecode_badkey(t *testing.T) {
 		// what the resource has defined in source
 		ResourceDefaultTimeout *ResourceTimeout
 		// configuration provider by user in tf file
-		Config map[string]interface{}
+		Config map[string]any
 		// what we expect the parsed ResourceTimeout to be
 		Expected *ResourceTimeout
 		// Should we have an error (key not defined in source)
@@ -48,7 +48,7 @@ func TestResourceTimeout_ConfigDecode_badkey(t *testing.T) {
 		{
 			Name:                   "Use something besides 'minutes'",
 			ResourceDefaultTimeout: timeoutForValues(10, 0, 5, 0, 3),
-			Config: map[string]interface{}{
+			Config: map[string]any{
 				"create": "2h",
 			},
 			Expected:  timeoutForValues(120, 0, 5, 0, 3),
@@ -63,7 +63,7 @@ func TestResourceTimeout_ConfigDecode_badkey(t *testing.T) {
 			}
 
 			conf := terraform.NewResourceConfigRaw(
-				map[string]interface{}{
+				map[string]any{
 					"foo":             "bar",
 					TimeoutsConfigKey: c.Config,
 				},
@@ -100,9 +100,9 @@ func TestResourceTimeout_ConfigDecode(t *testing.T) {
 	}
 
 	c := terraform.NewResourceConfigRaw(
-		map[string]interface{}{
+		map[string]any{
 			"foo": "bar",
-			TimeoutsConfigKey: map[string]interface{}{
+			TimeoutsConfigKey: map[string]any{
 				"create": "2m",
 				"update": "1m",
 			},
@@ -134,10 +134,10 @@ func TestResourceTimeout_legacyConfigDecode(t *testing.T) {
 	}
 
 	c := terraform.NewResourceConfigRaw(
-		map[string]interface{}{
+		map[string]any{
 			"foo": "bar",
-			TimeoutsConfigKey: []interface{}{
-				map[string]interface{}{
+			TimeoutsConfigKey: []any{
+				map[string]any{
 					"create": "2m",
 					"update": "1m",
 				},
@@ -164,26 +164,26 @@ func TestResourceTimeout_legacyConfigDecode(t *testing.T) {
 func TestResourceTimeout_DiffEncode_basic(t *testing.T) {
 	cases := []struct {
 		Timeout  *ResourceTimeout
-		Expected map[string]interface{}
+		Expected map[string]any
 		// Not immediately clear when an error would hit
 		ShouldErr bool
 	}{
 		// Two fields
 		{
 			Timeout:   timeoutForValues(10, 0, 5, 0, 0),
-			Expected:  map[string]interface{}{TimeoutKey: expectedForValues(10, 0, 5, 0, 0)},
+			Expected:  map[string]any{TimeoutKey: expectedForValues(10, 0, 5, 0, 0)},
 			ShouldErr: false,
 		},
 		// Two fields, one is Default
 		{
 			Timeout:   timeoutForValues(10, 0, 0, 0, 7),
-			Expected:  map[string]interface{}{TimeoutKey: expectedForValues(10, 0, 0, 0, 7)},
+			Expected:  map[string]any{TimeoutKey: expectedForValues(10, 0, 0, 0, 7)},
 			ShouldErr: false,
 		},
 		// All fields
 		{
 			Timeout:   timeoutForValues(10, 3, 4, 1, 7),
-			Expected:  map[string]interface{}{TimeoutKey: expectedForValues(10, 3, 4, 1, 7)},
+			Expected:  map[string]any{TimeoutKey: expectedForValues(10, 3, 4, 1, 7)},
 			ShouldErr: false,
 		},
 		// No fields
@@ -232,19 +232,19 @@ func TestResourceTimeout_MetaDecode_basic(t *testing.T) {
 	}{
 		// Two fields
 		{
-			State:     &terraform.InstanceDiff{Meta: map[string]interface{}{TimeoutKey: expectedForValues(10, 0, 5, 0, 0)}},
+			State:     &terraform.InstanceDiff{Meta: map[string]any{TimeoutKey: expectedForValues(10, 0, 5, 0, 0)}},
 			Expected:  timeoutForValues(10, 0, 5, 0, 0),
 			ShouldErr: false,
 		},
 		// Two fields, one is Default
 		{
-			State:     &terraform.InstanceDiff{Meta: map[string]interface{}{TimeoutKey: expectedForValues(10, 0, 0, 0, 7)}},
+			State:     &terraform.InstanceDiff{Meta: map[string]any{TimeoutKey: expectedForValues(10, 0, 0, 0, 7)}},
 			Expected:  timeoutForValues(10, 7, 7, 7, 7),
 			ShouldErr: false,
 		},
 		// All fields
 		{
-			State:     &terraform.InstanceDiff{Meta: map[string]interface{}{TimeoutKey: expectedForValues(10, 3, 4, 1, 7)}},
+			State:     &terraform.InstanceDiff{Meta: map[string]any{TimeoutKey: expectedForValues(10, 3, 4, 1, 7)}},
 			Expected:  timeoutForValues(10, 3, 4, 1, 7),
 			ShouldErr: false,
 		},
@@ -326,8 +326,8 @@ func expectedTimeoutForValues(create, read, update, del, def int) *ResourceTimeo
 	return &rt
 }
 
-func expectedForValues(create, read, update, del, def int) map[string]interface{} {
-	ex := make(map[string]interface{})
+func expectedForValues(create, read, update, del, def int) map[string]any {
+	ex := make(map[string]any)
 
 	if create != 0 {
 		ex["create"] = DefaultTimeout(time.Duration(create) * time.Minute).Nanoseconds()
@@ -356,8 +356,8 @@ func expectedForValues(create, read, update, del, def int) map[string]interface{
 	return ex
 }
 
-func expectedConfigForValues(create, read, update, delete, def int) map[string]interface{} {
-	ex := make(map[string]interface{}, 0)
+func expectedConfigForValues(create, read, update, delete, def int) map[string]any {
+	ex := make(map[string]any, 0)
 
 	if create != 0 {
 		ex["create"] = fmt.Sprintf("%dm", create)

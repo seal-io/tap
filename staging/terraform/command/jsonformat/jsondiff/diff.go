@@ -14,7 +14,7 @@ import (
 	"github.com/hashicorp/terraform/plans"
 )
 
-type TransformPrimitiveJson func(before, after interface{}, ctype cty.Type, action plans.Action) computed.Diff
+type TransformPrimitiveJson func(before, after any, ctype cty.Type, action plans.Action) computed.Diff
 type TransformObjectJson func(map[string]computed.Diff, plans.Action) computed.Diff
 type TransformArrayJson func([]computed.Diff, plans.Action) computed.Diff
 type TransformUnknownJson func(computed.Diff, plans.Action) computed.Diff
@@ -115,7 +115,7 @@ func (opts JsonOpts) processArray(change structured.ChangeSlice) computed.Diff {
 		return opts.Transform(change.GetChild(beforeIx, afterIx))
 	}
 
-	isObjType := func(value interface{}) bool {
+	isObjType := func(value any) bool {
 		return GetType(value) == Object
 	}
 

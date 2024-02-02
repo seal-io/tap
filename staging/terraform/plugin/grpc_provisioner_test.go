@@ -75,7 +75,7 @@ func TestGRPCProvisioner_ValidateProvisionerConfig(t *testing.T) {
 		gomock.Any(),
 	).Return(&proto.ValidateProvisionerConfig_Response{}, nil)
 
-	cfg := hcl2shim.HCL2ValueFromConfigValue(map[string]interface{}{"attr": "value"})
+	cfg := hcl2shim.HCL2ValueFromConfigValue(map[string]any{"attr": "value"})
 	resp := p.ValidateProvisionerConfig(provisioners.ValidateProvisionerConfigRequest{Config: cfg})
 	checkDiags(t, resp.Diagnostics)
 }

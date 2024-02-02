@@ -36,7 +36,7 @@ digraph {
 				root := &testDrawableOrigin{"root"}
 				g.Add(root)
 
-				levelOne := []interface{}{"foo", "bar"}
+				levelOne := []any{"foo", "bar"}
 				for i, s := range levelOne {
 					levelOne[i] = &testDrawable{
 						VertexName: s.(string),

@@ -21,7 +21,7 @@ func validateDiff(t *testing.T, diff computed.Diff, expectedAction plans.Action,
 	}
 }
 
-func ValidatePrimitive(before, after interface{}, action plans.Action, replace bool) ValidateDiffFunction {
+func ValidatePrimitive(before, after any, action plans.Action, replace bool) ValidateDiffFunction {
 	return func(t *testing.T, diff computed.Diff) {
 		validateDiff(t, diff, action, replace)
 

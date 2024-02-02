@@ -141,7 +141,7 @@ func (p *Provisioner) Apply(
 		// terraform.ResourceConfig so that we can use that type to more
 		// easily build a ResourceData structure. We do this by simply treating
 		// the conn info as configuration input.
-		raw := make(map[string]interface{})
+		raw := make(map[string]any)
 		if s != nil {
 			for k, v := range s.Ephemeral.ConnInfo {
 				raw[k] = v

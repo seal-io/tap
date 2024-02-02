@@ -168,7 +168,7 @@ func (f *StateFilter) filterSingle(a *ResourceAddress) []*StateFilterResult {
 }
 
 // relevant checks for relevance of this address against the given value.
-func (f *StateFilter) relevant(addr *ResourceAddress, raw interface{}) bool {
+func (f *StateFilter) relevant(addr *ResourceAddress, raw any) bool {
 	switch v := raw.(type) {
 	case *ModuleState:
 		path := v.Path[1:]
@@ -223,7 +223,7 @@ type StateFilterResult struct {
 	// Value is the actual value. This must be type switched on. It can be
 	// any data structures that `State` can hold: `ModuleState`,
 	// `ResourceState`, `InstanceState`.
-	Value interface{}
+	Value any
 }
 
 func (r *StateFilterResult) String() string {

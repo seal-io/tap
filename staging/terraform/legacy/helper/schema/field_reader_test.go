@@ -94,7 +94,7 @@ func TestAddrToSchema(t *testing.T) {
 				"set": &Schema{
 					Type: TypeSet,
 					Elem: &Schema{Type: TypeInt},
-					Set: func(a interface{}) int {
+					Set: func(a any) int {
 						return a.(int)
 					},
 				},
@@ -108,7 +108,7 @@ func TestAddrToSchema(t *testing.T) {
 				"set": &Schema{
 					Type: TypeSet,
 					Elem: &Schema{Type: TypeInt},
-					Set: func(a interface{}) int {
+					Set: func(a any) int {
 						return a.(int)
 					},
 				},
@@ -122,7 +122,7 @@ func TestAddrToSchema(t *testing.T) {
 				"set": &Schema{
 					Type: TypeSet,
 					Elem: &Schema{Type: TypeInt},
-					Set: func(a interface{}) int {
+					Set: func(a any) int {
 						return a.(int)
 					},
 				},
@@ -164,8 +164,8 @@ func TestAddrToSchema(t *testing.T) {
 							"value": &Schema{Type: TypeString},
 						},
 					},
-					Set: func(a interface{}) int {
-						return a.(map[string]interface{})["index"].(int)
+					Set: func(a any) int {
+						return a.(map[string]any)["index"].(int)
 					},
 				},
 			},
@@ -238,7 +238,7 @@ func testFieldReader(t *testing.T, f func(map[string]*Schema) FieldReader) {
 		"set": &Schema{
 			Type: TypeSet,
 			Elem: &Schema{Type: TypeInt},
-			Set: func(a interface{}) int {
+			Set: func(a any) int {
 				return a.(int)
 			},
 		},
@@ -250,14 +250,14 @@ func testFieldReader(t *testing.T, f func(map[string]*Schema) FieldReader) {
 					"value": &Schema{Type: TypeString},
 				},
 			},
-			Set: func(a interface{}) int {
-				return a.(map[string]interface{})["index"].(int)
+			Set: func(a any) int {
+				return a.(map[string]any)["index"].(int)
 			},
 		},
 		"setEmpty": &Schema{
 			Type: TypeSet,
 			Elem: &Schema{Type: TypeInt},
-			Set: func(a interface{}) int {
+			Set: func(a any) int {
 				return a.(int)
 			},
 		},
@@ -321,7 +321,7 @@ func testFieldReader(t *testing.T, f func(map[string]*Schema) FieldReader) {
 		"list": {
 			[]string{"list"},
 			FieldReadResult{
-				Value: []interface{}{
+				Value: []any{
 					"foo",
 					"bar",
 				},
@@ -334,7 +334,7 @@ func testFieldReader(t *testing.T, f func(map[string]*Schema) FieldReader) {
 		"listInt": {
 			[]string{"listInt"},
 			FieldReadResult{
-				Value: []interface{}{
+				Value: []any{
 					21,
 					42,
 				},
@@ -347,7 +347,7 @@ func testFieldReader(t *testing.T, f func(map[string]*Schema) FieldReader) {
 		"map": {
 			[]string{"map"},
 			FieldReadResult{
-				Value: map[string]interface{}{
+				Value: map[string]any{
 					"foo": "bar",
 					"bar": "baz",
 				},
@@ -360,7 +360,7 @@ func testFieldReader(t *testing.T, f func(map[string]*Schema) FieldReader) {
 		"mapInt": {
 			[]string{"mapInt"},
 			FieldReadResult{
-				Value: map[string]interface{}{
+				Value: map[string]any{
 					"one": 1,
 					"two": 2,
 				},
@@ -373,7 +373,7 @@ func testFieldReader(t *testing.T, f func(map[string]*Schema) FieldReader) {
 		"mapIntNestedSchema": {
 			[]string{"mapIntNestedSchema"},
 			FieldReadResult{
-				Value: map[string]interface{}{
+				Value: map[string]any{
 					"one": 1,
 					"two": 2,
 				},
@@ -386,7 +386,7 @@ func testFieldReader(t *testing.T, f func(map[string]*Schema) FieldReader) {
 		"mapFloat": {
 			[]string{"mapFloat"},
 			FieldReadResult{
-				Value: map[string]interface{}{
+				Value: map[string]any{
 					"oneDotTwo": 1.2,
 				},
 				Exists:   true,
@@ -398,7 +398,7 @@ func testFieldReader(t *testing.T, f func(map[string]*Schema) FieldReader) {
 		"mapBool": {
 			[]string{"mapBool"},
 			FieldReadResult{
-				Value: map[string]interface{}{
+				Value: map[string]any{
 					"True":  true,
 					"False": false,
 				},
@@ -421,7 +421,7 @@ func testFieldReader(t *testing.T, f func(map[string]*Schema) FieldReader) {
 		"set": {
 			[]string{"set"},
 			FieldReadResult{
-				Value:    []interface{}{10, 50},
+				Value:    []any{10, 50},
 				Exists:   true,
 				Computed: false,
 			},
@@ -431,12 +431,12 @@ func testFieldReader(t *testing.T, f func(map[string]*Schema) FieldReader) {
 		"setDeep": {
 			[]string{"setDeep"},
 			FieldReadResult{
-				Value: []interface{}{
-					map[string]interface{}{
+				Value: []any{
+					map[string]any{
 						"index": 10,
 						"value": "foo",
 					},
-					map[string]interface{}{
+					map[string]any{
 						"index": 50,
 						"value": "bar",
 					},
@@ -450,7 +450,7 @@ func testFieldReader(t *testing.T, f func(map[string]*Schema) FieldReader) {
 		"setEmpty": {
 			[]string{"setEmpty"},
 			FieldReadResult{
-				Value:  []interface{}{},
+				Value:  []any{},
 				Exists: false,
 			},
 			false,

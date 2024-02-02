@@ -10,7 +10,7 @@ import (
 	"strconv"
 )
 
-func SerializeValueForHash(buf *bytes.Buffer, val interface{}, schema *Schema) {
+func SerializeValueForHash(buf *bytes.Buffer, val any, schema *Schema) {
 	if val == nil {
 		buf.WriteRune(';')
 		return
@@ -31,14 +31,14 @@ func SerializeValueForHash(buf *bytes.Buffer, val interface{}, schema *Schema) {
 		buf.WriteString(val.(string))
 	case TypeList:
 		buf.WriteRune('(')
-		l := val.([]interface{})
+		l := val.([]any)
 		for _, innerVal := range l {
 			serializeCollectionMemberForHash(buf, innerVal, schema.Elem)
 		}
 		buf.WriteRune(')')
 	case TypeMap:
 
-		m := val.(map[string]interface{})
+		m := val.(map[string]any)
 		var keys []string
 		for k := range m {
 			keys = append(keys, k)
@@ -87,12 +87,12 @@ func SerializeValueForHash(buf *bytes.Buffer, val interface{}, schema *Schema) {
 // Its primary purpose is as input into a hashing function in order
 // to hash complex substructures when used in sets, and so the serialization
 // is not reversible.
-func SerializeResourceForHash(buf *bytes.Buffer, val interface{}, resource *Resource) {
+func SerializeResourceForHash(buf *bytes.Buffer, val any, resource *Resource) {
 	if val == nil {
 		return
 	}
 	sm := resource.Schema
-	m := val.(map[string]interface{})
+	m := val.(map[string]any)
 	var keys []string
 	for k := range sm {
 		keys = append(keys, k)
@@ -114,7 +114,7 @@ func SerializeResourceForHash(buf *bytes.Buffer, val interface{}, resource *Reso
 	}
 }
 
-func serializeCollectionMemberForHash(buf *bytes.Buffer, val interface{}, elem interface{}) {
+func serializeCollectionMemberForHash(buf *bytes.Buffer, val any, elem any) {
 	switch tElem := elem.(type) {
 	case *Schema:
 		SerializeValueForHash(buf, val, tElem)

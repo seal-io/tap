@@ -35,7 +35,7 @@ func timeoutKeys() []string {
 }
 
 // could be time.Duration, int64 or float64
-func DefaultTimeout(tx interface{}) *time.Duration {
+func DefaultTimeout(tx any) *time.Duration {
 	var td time.Duration
 	switch raw := tx.(type) {
 	case time.Duration:
@@ -66,11 +66,11 @@ func (t *ResourceTimeout) ConfigDecode(s *Resource, c *terraform.ResourceConfig)
 	}
 
 	if raw, ok := c.Config[TimeoutsConfigKey]; ok {
-		var rawTimeouts []map[string]interface{}
+		var rawTimeouts []map[string]any
 		switch raw := raw.(type) {
-		case map[string]interface{}:
+		case map[string]any:
 			rawTimeouts = append(rawTimeouts, raw)
-		case []map[string]interface{}:
+		case []map[string]any:
 			rawTimeouts = raw
 		case string:
 			if raw == hcl2shim.UnknownVariableValue {
@@ -81,9 +81,9 @@ func (t *ResourceTimeout) ConfigDecode(s *Resource, c *terraform.ResourceConfig)
 				log.Printf("[ERROR] Invalid timeout value: %q", raw)
 				return fmt.Errorf("Invalid Timeout value found")
 			}
-		case []interface{}:
+		case []any:
 			for _, r := range raw {
-				if rMap, ok := r.(map[string]interface{}); ok {
+				if rMap, ok := r.(map[string]any); ok {
 					rawTimeouts = append(rawTimeouts, rMap)
 				} else {
 					// Go will not allow a fallthrough
@@ -168,8 +168,8 @@ func (t *ResourceTimeout) StateEncode(is *terraform.InstanceState) error {
 // and stores it in the Meta field of the interface it's given.
 // Assumes the interface is either *terraform.InstanceState or
 // *terraform.InstanceDiff, returns an error otherwise
-func (t *ResourceTimeout) metaEncode(ids interface{}) error {
-	m := make(map[string]interface{})
+func (t *ResourceTimeout) metaEncode(ids any) error {
+	m := make(map[string]any)
 
 	if t.Create != nil {
 		m[TimeoutCreate] = t.Create.Nanoseconds()
@@ -199,12 +199,12 @@ func (t *ResourceTimeout) metaEncode(ids interface{}) error {
 		switch instance := ids.(type) {
 		case *terraform.InstanceDiff:
 			if instance.Meta == nil {
-				instance.Meta = make(map[string]interface{})
+				instance.Meta = make(map[string]any)
 			}
 			instance.Meta[TimeoutKey] = m
 		case *terraform.InstanceState:
 			if instance.Meta == nil {
-				instance.Meta = make(map[string]interface{})
+				instance.Meta = make(map[string]any)
 			}
 			instance.Meta[TimeoutKey] = m
 		default:
@@ -222,8 +222,8 @@ func (t *ResourceTimeout) DiffDecode(is *terraform.InstanceDiff) error {
 	return t.metaDecode(is)
 }
 
-func (t *ResourceTimeout) metaDecode(ids interface{}) error {
-	var rawMeta interface{}
+func (t *ResourceTimeout) metaDecode(ids any) error {
+	var rawMeta any
 	var ok bool
 	switch rawInstance := ids.(type) {
 	case *terraform.InstanceDiff:
@@ -240,7 +240,7 @@ func (t *ResourceTimeout) metaDecode(ids interface{}) error {
 		return fmt.Errorf("Unknown or unsupported type in metaDecode: %#v", ids)
 	}
 
-	times := rawMeta.(map[string]interface{})
+	times := rawMeta.(map[string]any)
 	if len(times) == 0 {
 		return nil
 	}

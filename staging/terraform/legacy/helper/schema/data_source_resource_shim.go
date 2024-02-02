@@ -27,7 +27,7 @@ func DataSourceResourceShim(name string, dataSource *Resource) *Resource {
 	dataSourceResourceShimAdjustSchema(dataSource.Schema)
 
 	dataSource.Create = CreateFunc(dataSource.Read)
-	dataSource.Delete = func(d *ResourceData, meta interface{}) error {
+	dataSource.Delete = func(d *ResourceData, meta any) error {
 		d.SetId("")
 		return nil
 	}

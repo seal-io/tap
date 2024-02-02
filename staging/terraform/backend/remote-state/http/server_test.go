@@ -194,7 +194,7 @@ func (h *httpServer) handleStateUNLOCK(writer http.ResponseWriter, req *http.Req
 		writer.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	var lockInfo map[string]interface{}
+	var lockInfo map[string]any
 	if err = json.Unmarshal(data, &lockInfo); err != nil {
 		writer.WriteHeader(http.StatusInternalServerError)
 		return
@@ -204,7 +204,7 @@ func (h *httpServer) handleStateUNLOCK(writer http.ResponseWriter, req *http.Req
 	defer h.lock.Unlock()
 
 	if existingLock, ok := h.locks[resource]; ok {
-		var existingLockInfo map[string]interface{}
+		var existingLockInfo map[string]any
 		if err = json.Unmarshal([]byte(existingLock), &existingLockInfo); err != nil {
 			writer.WriteHeader(http.StatusInternalServerError)
 			return

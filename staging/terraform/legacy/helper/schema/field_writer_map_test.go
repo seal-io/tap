@@ -42,7 +42,7 @@ func TestMapFieldWriter(t *testing.T) {
 		"set": &Schema{
 			Type: TypeSet,
 			Elem: &Schema{Type: TypeInt},
-			Set: func(a interface{}) int {
+			Set: func(a any) int {
 				return a.(int)
 			},
 		},
@@ -54,15 +54,15 @@ func TestMapFieldWriter(t *testing.T) {
 					"value": &Schema{Type: TypeString},
 				},
 			},
-			Set: func(a interface{}) int {
-				return a.(map[string]interface{})["index"].(int)
+			Set: func(a any) int {
+				return a.(map[string]any)["index"].(int)
 			},
 		},
 	}
 
 	cases := map[string]struct {
 		Addr  []string
-		Value interface{}
+		Value any
 		Err   bool
 		Out   map[string]string
 	}{
@@ -111,8 +111,8 @@ func TestMapFieldWriter(t *testing.T) {
 
 		"list of resources": {
 			[]string{"listResource"},
-			[]interface{}{
-				map[string]interface{}{
+			[]any{
+				map[string]any{
 					"value": 80,
 				},
 			},
@@ -125,7 +125,7 @@ func TestMapFieldWriter(t *testing.T) {
 
 		"list of resources empty": {
 			[]string{"listResource"},
-			[]interface{}{},
+			[]any{},
 			false,
 			map[string]string{
 				"listResource.#": "0",
@@ -143,7 +143,7 @@ func TestMapFieldWriter(t *testing.T) {
 
 		"list of strings": {
 			[]string{"list"},
-			[]interface{}{"foo", "bar"},
+			[]any{"foo", "bar"},
 			false,
 			map[string]string{
 				"list.#": "2",
@@ -161,7 +161,7 @@ func TestMapFieldWriter(t *testing.T) {
 
 		"map": {
 			[]string{"map"},
-			map[string]interface{}{"foo": "bar"},
+			map[string]any{"foo": "bar"},
 			false,
 			map[string]string{
 				"map.%":   "1",
@@ -187,7 +187,7 @@ func TestMapFieldWriter(t *testing.T) {
 
 		"set": {
 			[]string{"set"},
-			[]interface{}{1, 2, 5},
+			[]any{1, 2, 5},
 			false,
 			map[string]string{
 				"set.#": "3",
@@ -217,12 +217,12 @@ func TestMapFieldWriter(t *testing.T) {
 
 		"set resource": {
 			[]string{"setDeep"},
-			[]interface{}{
-				map[string]interface{}{
+			[]any{
+				map[string]any{
 					"index": 10,
 					"value": "foo",
 				},
-				map[string]interface{}{
+				map[string]any{
 					"index": 50,
 					"value": "bar",
 				},
@@ -246,9 +246,9 @@ func TestMapFieldWriter(t *testing.T) {
 
 		"full object": {
 			nil,
-			map[string]interface{}{
+			map[string]any{
 				"string": "foo",
-				"list":   []interface{}{"foo", "bar"},
+				"list":   []any{"foo", "bar"},
 			},
 			false,
 			map[string]string{
@@ -284,25 +284,25 @@ func TestMapFieldWriterCleanSet(t *testing.T) {
 					"value": &Schema{Type: TypeString},
 				},
 			},
-			Set: func(a interface{}) int {
-				return a.(map[string]interface{})["index"].(int)
+			Set: func(a any) int {
+				return a.(map[string]any)["index"].(int)
 			},
 		},
 	}
 
 	values := []struct {
 		Addr  []string
-		Value interface{}
+		Value any
 		Out   map[string]string
 	}{
 		{
 			[]string{"setDeep"},
-			[]interface{}{
-				map[string]interface{}{
+			[]any{
+				map[string]any{
 					"index": 10,
 					"value": "foo",
 				},
-				map[string]interface{}{
+				map[string]any{
 					"index": 50,
 					"value": "bar",
 				},
@@ -317,12 +317,12 @@ func TestMapFieldWriterCleanSet(t *testing.T) {
 		},
 		{
 			[]string{"setDeep"},
-			[]interface{}{
-				map[string]interface{}{
+			[]any{
+				map[string]any{
 					"index": 20,
 					"value": "baz",
 				},
-				map[string]interface{}{
+				map[string]any{
 					"index": 60,
 					"value": "qux",
 				},
@@ -337,12 +337,12 @@ func TestMapFieldWriterCleanSet(t *testing.T) {
 		},
 		{
 			[]string{"setDeep"},
-			[]interface{}{
-				map[string]interface{}{
+			[]any{
+				map[string]any{
 					"index": 30,
 					"value": "one",
 				},
-				map[string]interface{}{
+				map[string]any{
 					"index": 70,
 					"value": "two",
 				},
@@ -387,26 +387,26 @@ func TestMapFieldWriterCleanList(t *testing.T) {
 
 	values := []struct {
 		Addr  []string
-		Value interface{}
+		Value any
 		Out   map[string]string
 	}{
 		{
 			// Base list
 			[]string{"listDeep"},
-			[]interface{}{
-				map[string]interface{}{
+			[]any{
+				map[string]any{
 					"thing1": "a",
 					"thing2": "b",
 				},
-				map[string]interface{}{
+				map[string]any{
 					"thing1": "c",
 					"thing2": "d",
 				},
-				map[string]interface{}{
+				map[string]any{
 					"thing1": "e",
 					"thing2": "f",
 				},
-				map[string]interface{}{
+				map[string]any{
 					"thing1": "g",
 					"thing2": "h",
 				},
@@ -426,16 +426,16 @@ func TestMapFieldWriterCleanList(t *testing.T) {
 		{
 			// Remove an element
 			[]string{"listDeep"},
-			[]interface{}{
-				map[string]interface{}{
+			[]any{
+				map[string]any{
 					"thing1": "a",
 					"thing2": "b",
 				},
-				map[string]interface{}{
+				map[string]any{
 					"thing1": "c",
 					"thing2": "d",
 				},
-				map[string]interface{}{
+				map[string]any{
 					"thing1": "e",
 					"thing2": "f",
 				},
@@ -456,14 +456,14 @@ func TestMapFieldWriterCleanList(t *testing.T) {
 			// brevity we want to make sure that what exists in the writer is exactly
 			// what the last write looked like coming from the provider.
 			[]string{"listDeep"},
-			[]interface{}{
-				map[string]interface{}{
+			[]any{
+				map[string]any{
 					"thing1": "a",
 				},
-				map[string]interface{}{
+				map[string]any{
 					"thing1": "c",
 				},
-				map[string]interface{}{
+				map[string]any{
 					"thing1": "e",
 				},
 			},
@@ -499,12 +499,12 @@ func TestMapFieldWriterCleanMap(t *testing.T) {
 	}
 
 	values := []struct {
-		Value interface{}
+		Value any
 		Out   map[string]string
 	}{
 		{
 			// Base map
-			map[string]interface{}{
+			map[string]any{
 				"thing1": "a",
 				"thing2": "b",
 				"thing3": "c",
@@ -520,7 +520,7 @@ func TestMapFieldWriterCleanMap(t *testing.T) {
 		},
 		{
 			// Base map
-			map[string]interface{}{
+			map[string]any{
 				"thing1": "a",
 				"thing2": "b",
 				"thing4": "d",

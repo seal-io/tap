@@ -9,7 +9,7 @@ func TestPathMatcher_FollowsPath(t *testing.T) {
 	var matcher Matcher
 
 	matcher = &PathMatcher{
-		Paths: [][]interface{}{
+		Paths: [][]any{
 			{
 				float64(0),
 				"key",
@@ -56,7 +56,7 @@ func TestPathMatcher_Propagates(t *testing.T) {
 	var matcher Matcher
 
 	matcher = &PathMatcher{
-		Paths: [][]interface{}{
+		Paths: [][]any{
 			{
 				float64(0),
 				"key",
@@ -103,7 +103,7 @@ func TestPathMatcher_DoesNotPropagate(t *testing.T) {
 	var matcher Matcher
 
 	matcher = &PathMatcher{
-		Paths: [][]interface{}{
+		Paths: [][]any{
 			{
 				float64(0),
 				"key",
@@ -150,7 +150,7 @@ func TestPathMatcher_BreaksPath(t *testing.T) {
 	var matcher Matcher
 
 	matcher = &PathMatcher{
-		Paths: [][]interface{}{
+		Paths: [][]any{
 			{
 				float64(0),
 				"key",
@@ -190,7 +190,7 @@ func TestPathMatcher_MultiplePaths(t *testing.T) {
 	var matcher Matcher
 
 	matcher = &PathMatcher{
-		Paths: [][]interface{}{
+		Paths: [][]any{
 			{
 				float64(0),
 				"key",

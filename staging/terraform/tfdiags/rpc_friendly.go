@@ -57,7 +57,7 @@ func (d rpcFriendlyDiag) FromExpr() *FromExpr {
 	return nil
 }
 
-func (d rpcFriendlyDiag) ExtraInfo() interface{} {
+func (d rpcFriendlyDiag) ExtraInfo() any {
 	// RPC-friendly diagnostics always discard any "extra information".
 	return nil
 }

@@ -54,13 +54,13 @@ type Change struct {
 	//
 	// The type of the value should be informed by the schema and cast
 	// appropriately when needed.
-	Before interface{}
+	Before any
 
 	// After contains the value after the proposed change.
 	//
 	// The type of the value should be informed by the schema and cast
 	// appropriately when needed.
-	After interface{}
+	After any
 
 	// Unknown describes whether the After value is known or unknown at the time
 	// of the plan. In practice, this means the after value should be rendered
@@ -70,15 +70,15 @@ type Change struct {
 	// the After value is unknown, or it could be a list or a map depending on
 	// the schema describing whether specific elements or attributes within the
 	// value are unknown.
-	Unknown interface{}
+	Unknown any
 
 	// BeforeSensitive matches Unknown, but references whether the Before value
 	// is sensitive.
-	BeforeSensitive interface{}
+	BeforeSensitive any
 
 	// AfterSensitive matches Unknown, but references whether the After value is
 	// sensitive.
-	AfterSensitive interface{}
+	AfterSensitive any
 
 	// ReplacePaths contains a set of paths that point to attributes/elements
 	// that are causing the overall resource to be replaced rather than simply
@@ -259,20 +259,20 @@ func (change Change) AsCreate() Change {
 	}
 }
 
-func unmarshalGeneric(raw json.RawMessage) interface{} {
+func unmarshalGeneric(raw json.RawMessage) any {
 	if raw == nil {
 		return nil
 	}
 
-	var out interface{}
+	var out any
 	if err := json.Unmarshal(raw, &out); err != nil {
 		panic("unrecognized json type: " + err.Error())
 	}
 	return out
 }
 
-func unwrapAttributeValues(values jsonstate.AttributeValues) map[string]interface{} {
-	out := make(map[string]interface{})
+func unwrapAttributeValues(values jsonstate.AttributeValues) map[string]any {
+	out := make(map[string]any)
 	for key, value := range values {
 		out[key] = unmarshalGeneric(value)
 	}

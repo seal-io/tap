@@ -117,11 +117,11 @@ func TestRenderHuman_Imports(t *testing.T) {
 						ProviderName: "test",
 						Change: jsonplan.Change{
 							Actions: []string{"no-op"},
-							Before: marshalJson(t, map[string]interface{}{
+							Before: marshalJson(t, map[string]any{
 								"id":    "1D5F5E9E-F2E5-401B-9ED5-692A215AC67E",
 								"value": "Hello, World!",
 							}),
-							After: marshalJson(t, map[string]interface{}{
+							After: marshalJson(t, map[string]any{
 								"id":    "1D5F5E9E-F2E5-401B-9ED5-692A215AC67E",
 								"value": "Hello, World!",
 							}),
@@ -155,11 +155,11 @@ Plan: 1 to import, 0 to add, 0 to change, 0 to destroy.
 						ProviderName: "test",
 						Change: jsonplan.Change{
 							Actions: []string{"no-op"},
-							Before: marshalJson(t, map[string]interface{}{
+							Before: marshalJson(t, map[string]any{
 								"id":    "1D5F5E9E-F2E5-401B-9ED5-692A215AC67E",
 								"value": "Hello, World!",
 							}),
-							After: marshalJson(t, map[string]interface{}{
+							After: marshalJson(t, map[string]any{
 								"id":    "1D5F5E9E-F2E5-401B-9ED5-692A215AC67E",
 								"value": "Hello, World!",
 							}),
@@ -199,11 +199,11 @@ Plan: 1 to import, 0 to add, 0 to change, 0 to destroy.
 						ProviderName:    "test",
 						Change: jsonplan.Change{
 							Actions: []string{"no-op"},
-							Before: marshalJson(t, map[string]interface{}{
+							Before: marshalJson(t, map[string]any{
 								"id":    "1D5F5E9E-F2E5-401B-9ED5-692A215AC67E",
 								"value": "Hello, World!",
 							}),
-							After: marshalJson(t, map[string]interface{}{
+							After: marshalJson(t, map[string]any{
 								"id":    "1D5F5E9E-F2E5-401B-9ED5-692A215AC67E",
 								"value": "Hello, World!",
 							}),
@@ -239,11 +239,11 @@ Plan: 1 to import, 0 to add, 0 to change, 0 to destroy.
 						ProviderName:    "test",
 						Change: jsonplan.Change{
 							Actions: []string{"update"},
-							Before: marshalJson(t, map[string]interface{}{
+							Before: marshalJson(t, map[string]any{
 								"id":    "1D5F5E9E-F2E5-401B-9ED5-692A215AC67E",
 								"value": "Hello, World!",
 							}),
-							After: marshalJson(t, map[string]interface{}{
+							After: marshalJson(t, map[string]any{
 								"id":    "1D5F5E9E-F2E5-401B-9ED5-692A215AC67E",
 								"value": "Hello, Universe!",
 							}),
@@ -283,11 +283,11 @@ Plan: 1 to import, 0 to add, 1 to change, 0 to destroy.
 						ProviderName: "test",
 						Change: jsonplan.Change{
 							Actions: []string{"update"},
-							Before: marshalJson(t, map[string]interface{}{
+							Before: marshalJson(t, map[string]any{
 								"id":    "1D5F5E9E-F2E5-401B-9ED5-692A215AC67E",
 								"value": "Hello, World!",
 							}),
-							After: marshalJson(t, map[string]interface{}{
+							After: marshalJson(t, map[string]any{
 								"id":    "1D5F5E9E-F2E5-401B-9ED5-692A215AC67E",
 								"value": "Hello, Universe!",
 							}),
@@ -326,11 +326,11 @@ Plan: 1 to import, 0 to add, 1 to change, 0 to destroy.
 						ProviderName: "test",
 						Change: jsonplan.Change{
 							Actions: []string{"update"},
-							Before: marshalJson(t, map[string]interface{}{
+							Before: marshalJson(t, map[string]any{
 								"id":    "1D5F5E9E-F2E5-401B-9ED5-692A215AC67E",
 								"value": "Hello, World!",
 							}),
-							After: marshalJson(t, map[string]interface{}{
+							After: marshalJson(t, map[string]any{
 								"id":    "1D5F5E9E-F2E5-401B-9ED5-692A215AC67E",
 								"value": "Hello, Universe!",
 							}),
@@ -367,11 +367,11 @@ Plan: 1 to import, 0 to add, 1 to change, 0 to destroy.
 						ProviderName: "test",
 						Change: jsonplan.Change{
 							Actions: []string{"create", "delete"},
-							Before: marshalJson(t, map[string]interface{}{
+							Before: marshalJson(t, map[string]any{
 								"id":    "1D5F5E9E-F2E5-401B-9ED5-692A215AC67E",
 								"value": "Hello, World!",
 							}),
-							After: marshalJson(t, map[string]interface{}{
+							After: marshalJson(t, map[string]any{
 								"id":    "9794FB1F-7260-442F-830C-F2D450E90CE3",
 								"value": "Hello, World!",
 							}),
@@ -7305,7 +7305,7 @@ func testSchemaPlus(nesting configschema.NestingMode) *configschema.Block {
 	}
 }
 
-func marshalJson(t *testing.T, data interface{}) json.RawMessage {
+func marshalJson(t *testing.T, data any) json.RawMessage {
 	result, err := json.Marshal(data)
 	if err != nil {
 		t.Fatalf("failed to marshal json: %v", err)

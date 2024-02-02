@@ -152,7 +152,7 @@ func TestShowJSON(t *testing.T) {
 
 			// Make sure the result looks like JSON; we comprehensively test
 			// the structure of this output in the command package tests.
-			var result map[string]interface{}
+			var result map[string]any
 			got := done(t).All()
 			t.Logf("output: %s", got)
 			if err := json.Unmarshal([]byte(got), &result); err != nil {

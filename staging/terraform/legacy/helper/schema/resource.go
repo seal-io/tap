@@ -199,23 +199,23 @@ func (r *Resource) ShimInstanceStateFromValue(state cty.Value) (*terraform.Insta
 }
 
 // See Resource documentation.
-type CreateFunc func(*ResourceData, interface{}) error
+type CreateFunc func(*ResourceData, any) error
 
 // See Resource documentation.
-type ReadFunc func(*ResourceData, interface{}) error
+type ReadFunc func(*ResourceData, any) error
 
 // See Resource documentation.
-type UpdateFunc func(*ResourceData, interface{}) error
+type UpdateFunc func(*ResourceData, any) error
 
 // See Resource documentation.
-type DeleteFunc func(*ResourceData, interface{}) error
+type DeleteFunc func(*ResourceData, any) error
 
 // See Resource documentation.
-type ExistsFunc func(*ResourceData, interface{}) (bool, error)
+type ExistsFunc func(*ResourceData, any) (bool, error)
 
 // See Resource documentation.
 type StateMigrateFunc func(
-	int, *terraform.InstanceState, interface{}) (*terraform.InstanceState, error)
+	int, *terraform.InstanceState, any) (*terraform.InstanceState, error)
 
 type StateUpgrader struct {
 	// Version is the version schema that this Upgrader will handle, converting
@@ -236,16 +236,16 @@ type StateUpgrader struct {
 }
 
 // See StateUpgrader
-type StateUpgradeFunc func(rawState map[string]interface{}, meta interface{}) (map[string]interface{}, error)
+type StateUpgradeFunc func(rawState map[string]any, meta any) (map[string]any, error)
 
 // See Resource documentation.
-type CustomizeDiffFunc func(*ResourceDiff, interface{}) error
+type CustomizeDiffFunc func(*ResourceDiff, any) error
 
 // Apply creates, updates, and/or deletes a resource.
 func (r *Resource) Apply(
 	s *terraform.InstanceState,
 	d *terraform.InstanceDiff,
-	meta interface{}) (*terraform.InstanceState, error) {
+	meta any) (*terraform.InstanceState, error) {
 	data, err := schemaMap(r.Schema).Data(s, d)
 	if err != nil {
 		return s, err
@@ -324,7 +324,7 @@ func (r *Resource) Apply(
 func (r *Resource) Diff(
 	s *terraform.InstanceState,
 	c *terraform.ResourceConfig,
-	meta interface{}) (*terraform.InstanceDiff, error) {
+	meta any) (*terraform.InstanceDiff, error) {
 
 	t := &ResourceTimeout{}
 	err := t.ConfigDecode(r, c)
@@ -352,7 +352,7 @@ func (r *Resource) Diff(
 func (r *Resource) simpleDiff(
 	s *terraform.InstanceState,
 	c *terraform.ResourceConfig,
-	meta interface{}) (*terraform.InstanceDiff, error) {
+	meta any) (*terraform.InstanceDiff, error) {
 
 	instanceDiff, err := schemaMap(r.Schema).Diff(s, c, r.CustomizeDiff, meta, false)
 	if err != nil {
@@ -392,7 +392,7 @@ func (r *Resource) Validate(c *terraform.ResourceConfig) ([]string, []error) {
 // describes the configuration arguments and desired computed attributes.
 func (r *Resource) ReadDataApply(
 	d *terraform.InstanceDiff,
-	meta interface{},
+	meta any,
 ) (*terraform.InstanceState, error) {
 	// Data sources are always built completely from scratch
 	// on each read, so the source state is always nil.
@@ -420,7 +420,7 @@ func (r *Resource) ReadDataApply(
 // RefreshWithoutUpgrade is part of the new plugin shims.
 func (r *Resource) RefreshWithoutUpgrade(
 	s *terraform.InstanceState,
-	meta interface{}) (*terraform.InstanceState, error) {
+	meta any) (*terraform.InstanceState, error) {
 	// If the ID is already somehow blank, it doesn't exist
 	if s.ID == "" {
 		return nil, nil
@@ -478,7 +478,7 @@ func (r *Resource) RefreshWithoutUpgrade(
 // Refresh refreshes the state of the resource.
 func (r *Resource) Refresh(
 	s *terraform.InstanceState,
-	meta interface{}) (*terraform.InstanceState, error) {
+	meta any) (*terraform.InstanceState, error) {
 	// If the ID is already somehow blank, it doesn't exist
 	if s.ID == "" {
 		return nil, nil
@@ -531,7 +531,7 @@ func (r *Resource) Refresh(
 	return r.recordCurrentSchemaVersion(state), err
 }
 
-func (r *Resource) upgradeState(s *terraform.InstanceState, meta interface{}) (*terraform.InstanceState, error) {
+func (r *Resource) upgradeState(s *terraform.InstanceState, meta any) (*terraform.InstanceState, error) {
 	var err error
 
 	needsMigration, stateSchemaVersion := r.checkSchemaVersion(s)
@@ -760,7 +760,7 @@ func (r *Resource) Data(s *terraform.InstanceState) *ResourceData {
 	}
 
 	// Set the schema version to latest by default
-	result.meta = map[string]interface{}{
+	result.meta = map[string]any{
 		"schema_version": strconv.Itoa(r.SchemaVersion),
 	}
 
@@ -823,7 +823,7 @@ func (r *Resource) recordCurrentSchemaVersion(
 	state *terraform.InstanceState) *terraform.InstanceState {
 	if state != nil && r.SchemaVersion > 0 {
 		if state.Meta == nil {
-			state.Meta = make(map[string]interface{})
+			state.Meta = make(map[string]any)
 		}
 		state.Meta["schema_version"] = strconv.Itoa(r.SchemaVersion)
 	}
@@ -832,14 +832,14 @@ func (r *Resource) recordCurrentSchemaVersion(
 
 // Noop is a convenience implementation of resource function which takes
 // no action and returns no error.
-func Noop(*ResourceData, interface{}) error {
+func Noop(*ResourceData, any) error {
 	return nil
 }
 
 // RemoveFromState is a convenience implementation of a resource function
 // which sets the resource ID to empty string (to remove it from state)
 // and returns no error.
-func RemoveFromState(d *ResourceData, _ interface{}) error {
+func RemoveFromState(d *ResourceData, _ any) error {
 	d.SetId("")
 	return nil
 }

@@ -28,7 +28,7 @@ type stateValues struct {
 
 // attributeValues is the JSON representation of the attribute values of the
 // resource, whose structure depends on the resource type schema.
-type attributeValues map[string]interface{}
+type attributeValues map[string]any
 
 func marshalAttributeValues(value cty.Value, schema *configschema.Block) attributeValues {
 	if value == cty.NilVal || value.IsNull() {

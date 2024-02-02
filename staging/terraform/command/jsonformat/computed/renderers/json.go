@@ -19,7 +19,7 @@ import (
 // our JSON string rendering here.
 func RendererJsonOpts() jsondiff.JsonOpts {
 	return jsondiff.JsonOpts{
-		Primitive: func(before, after interface{}, ctype cty.Type, action plans.Action) computed.Diff {
+		Primitive: func(before, after any, ctype cty.Type, action plans.Action) computed.Diff {
 			return computed.NewDiff(Primitive(before, after, ctype), action, false)
 		},
 		Object: func(elements map[string]computed.Diff, action plans.Action) computed.Diff {

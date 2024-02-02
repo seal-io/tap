@@ -10,8 +10,8 @@ import (
 
 func TestSerializeForHash(t *testing.T) {
 	type testCase struct {
-		Schema   interface{}
-		Value    interface{}
+		Schema   any
+		Value    any
 		Expected string
 	}
 
@@ -95,7 +95,7 @@ func TestSerializeForHash(t *testing.T) {
 					Type: TypeString,
 				},
 			},
-			Value:    []interface{}{},
+			Value:    []any{},
 			Expected: "();",
 		},
 
@@ -106,7 +106,7 @@ func TestSerializeForHash(t *testing.T) {
 					Type: TypeString,
 				},
 			},
-			Value:    []interface{}{"hello", "world"},
+			Value:    []any{"hello", "world"},
 			Expected: "(hello;world;);",
 		},
 
@@ -126,11 +126,11 @@ func TestSerializeForHash(t *testing.T) {
 					},
 				},
 			},
-			Value: []interface{}{
-				map[string]interface{}{
+			Value: []any{
+				map[string]any{
 					"fo": "bar",
 				},
-				map[string]interface{}{
+				map[string]any{
 					"fo":  "baz",
 					"fum": "boz",
 				},
@@ -145,7 +145,7 @@ func TestSerializeForHash(t *testing.T) {
 					Type: TypeString,
 				},
 			},
-			Value: NewSet(func(i interface{}) int { return len(i.(string)) }, []interface{}{
+			Value: NewSet(func(i any) int { return len(i.(string)) }, []any{
 				"hello",
 				"woo",
 			}),
@@ -159,7 +159,7 @@ func TestSerializeForHash(t *testing.T) {
 					Type: TypeString,
 				},
 			},
-			Value: map[string]interface{}{
+			Value: map[string]any{
 				"foo": "bar",
 				"baz": "foo",
 			},
@@ -188,7 +188,7 @@ func TestSerializeForHash(t *testing.T) {
 					},
 				},
 			},
-			Value: map[string]interface{}{
+			Value: map[string]any{
 				"name":  "my-fun-database",
 				"size":  12,
 				"green": true,
@@ -210,9 +210,9 @@ func TestSerializeForHash(t *testing.T) {
 					},
 				},
 			},
-			Value: map[string]interface{}{
-				"outer": NewSet(func(i interface{}) int { return 42 }, []interface{}{
-					map[string]interface{}{
+			Value: map[string]any{
+				"outer": NewSet(func(i any) int { return 42 }, []any{
+					map[string]any{
 						"foo": "bar",
 						"baz": "foo",
 					},

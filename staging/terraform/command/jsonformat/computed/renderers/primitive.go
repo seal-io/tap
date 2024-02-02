@@ -19,7 +19,7 @@ import (
 
 var _ computed.DiffRenderer = (*primitiveRenderer)(nil)
 
-func Primitive(before, after interface{}, ctype cty.Type) computed.DiffRenderer {
+func Primitive(before, after any, ctype cty.Type) computed.DiffRenderer {
 	return &primitiveRenderer{
 		before: before,
 		after:  after,
@@ -30,8 +30,8 @@ func Primitive(before, after interface{}, ctype cty.Type) computed.DiffRenderer 
 type primitiveRenderer struct {
 	NoWarningsRenderer
 
-	before interface{}
-	after  interface{}
+	before any
+	after  any
 	ctype  cty.Type
 }
 
@@ -55,7 +55,7 @@ func (renderer primitiveRenderer) RenderHuman(diff computed.Diff, indent int, op
 	}
 }
 
-func renderPrimitiveValue(value interface{}, t cty.Type, opts computed.RenderHumanOpts) string {
+func renderPrimitiveValue(value any, t cty.Type, opts computed.RenderHumanOpts) string {
 	if value == nil {
 		return opts.Colorize.Color("[dark_gray]null[reset]")
 	}

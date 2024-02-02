@@ -129,7 +129,7 @@ func (wg *warningGroup) FromExpr() *FromExpr {
 	return wg.Warnings[0].FromExpr()
 }
 
-func (wg *warningGroup) ExtraInfo() interface{} {
+func (wg *warningGroup) ExtraInfo() any {
 	return wg.Warnings[0].ExtraInfo()
 }
 

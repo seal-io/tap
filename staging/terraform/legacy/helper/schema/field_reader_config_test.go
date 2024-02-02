@@ -23,43 +23,43 @@ func TestConfigFieldReader(t *testing.T) {
 		return &ConfigFieldReader{
 			Schema: s,
 
-			Config: testConfig(t, map[string]interface{}{
+			Config: testConfig(t, map[string]any{
 				"bool":   true,
 				"float":  3.1415,
 				"int":    42,
 				"string": "string",
 
-				"list": []interface{}{"foo", "bar"},
+				"list": []any{"foo", "bar"},
 
-				"listInt": []interface{}{21, 42},
+				"listInt": []any{21, 42},
 
-				"map": map[string]interface{}{
+				"map": map[string]any{
 					"foo": "bar",
 					"bar": "baz",
 				},
-				"mapInt": map[string]interface{}{
+				"mapInt": map[string]any{
 					"one": "1",
 					"two": "2",
 				},
-				"mapIntNestedSchema": map[string]interface{}{
+				"mapIntNestedSchema": map[string]any{
 					"one": "1",
 					"two": "2",
 				},
-				"mapFloat": map[string]interface{}{
+				"mapFloat": map[string]any{
 					"oneDotTwo": "1.2",
 				},
-				"mapBool": map[string]interface{}{
+				"mapBool": map[string]any{
 					"True":  "true",
 					"False": "false",
 				},
 
-				"set": []interface{}{10, 50},
-				"setDeep": []interface{}{
-					map[string]interface{}{
+				"set": []any{10, 50},
+				"setDeep": []any{
+					map[string]any{
 						"index": 10,
 						"value": "foo",
 					},
-					map[string]interface{}{
+					map[string]any{
 						"index": 50,
 						"value": "bar",
 					},
@@ -89,7 +89,7 @@ func TestConfigFieldReader_custom(t *testing.T) {
 				Value:  true,
 				Exists: true,
 			},
-			testConfig(t, map[string]interface{}{
+			testConfig(t, map[string]any{
 				"bool": true,
 			}),
 			false,
@@ -101,7 +101,7 @@ func TestConfigFieldReader_custom(t *testing.T) {
 				Exists:   true,
 				Computed: true,
 			},
-			testConfig(t, map[string]interface{}{
+			testConfig(t, map[string]any{
 				"bool": hcl2shim.UnknownVariableValue,
 			}),
 			false,
@@ -137,7 +137,7 @@ func TestConfigFieldReader_DefaultHandling(t *testing.T) {
 		},
 		"strWithDefaultFunc": &Schema{
 			Type: TypeString,
-			DefaultFunc: func() (interface{}, error) {
+			DefaultFunc: func() (any, error) {
 				return "FuncDefault", nil
 			},
 		},
@@ -156,7 +156,7 @@ func TestConfigFieldReader_DefaultHandling(t *testing.T) {
 				Exists:   true,
 				Computed: false,
 			},
-			testConfig(t, map[string]interface{}{}),
+			testConfig(t, map[string]any{}),
 			false,
 		},
 		"config overrides default value": {
@@ -166,7 +166,7 @@ func TestConfigFieldReader_DefaultHandling(t *testing.T) {
 				Exists:   true,
 				Computed: false,
 			},
-			testConfig(t, map[string]interface{}{
+			testConfig(t, map[string]any{
 				"strWithDefault": "fromConfig",
 			}),
 			false,
@@ -178,7 +178,7 @@ func TestConfigFieldReader_DefaultHandling(t *testing.T) {
 				Exists:   true,
 				Computed: false,
 			},
-			testConfig(t, map[string]interface{}{}),
+			testConfig(t, map[string]any{}),
 			false,
 		},
 		"config overrides default function": {
@@ -188,7 +188,7 @@ func TestConfigFieldReader_DefaultHandling(t *testing.T) {
 				Exists:   true,
 				Computed: false,
 			},
-			testConfig(t, map[string]interface{}{
+			testConfig(t, map[string]any{
 				"strWithDefaultFunc": "fromConfig",
 			}),
 			false,
@@ -243,14 +243,14 @@ func TestConfigFieldReader_ComputedMap(t *testing.T) {
 			"set, normal",
 			[]string{"map"},
 			FieldReadResult{
-				Value: map[string]interface{}{
+				Value: map[string]any{
 					"foo": "bar",
 				},
 				Exists:   true,
 				Computed: false,
 			},
-			testConfig(t, map[string]interface{}{
-				"map": map[string]interface{}{
+			testConfig(t, map[string]any{
+				"map": map[string]any{
 					"foo": "bar",
 				},
 			}),
@@ -264,8 +264,8 @@ func TestConfigFieldReader_ComputedMap(t *testing.T) {
 				Exists:   true,
 				Computed: true,
 			},
-			testConfig(t, map[string]interface{}{
-				"map": map[string]interface{}{
+			testConfig(t, map[string]any{
+				"map": map[string]any{
 					"foo": hcl2shim.UnknownVariableValue,
 				},
 			}),
@@ -276,15 +276,15 @@ func TestConfigFieldReader_ComputedMap(t *testing.T) {
 			"native map",
 			[]string{"map"},
 			FieldReadResult{
-				Value: map[string]interface{}{
+				Value: map[string]any{
 					"bar": "baz",
 					"baz": "bar",
 				},
 				Exists:   true,
 				Computed: false,
 			},
-			testConfig(t, map[string]interface{}{
-				"map": map[string]interface{}{
+			testConfig(t, map[string]any{
+				"map": map[string]any{
 					"bar": "baz",
 					"baz": "bar",
 				},
@@ -296,15 +296,15 @@ func TestConfigFieldReader_ComputedMap(t *testing.T) {
 			"map-from-list-of-maps",
 			[]string{"maplist", "0"},
 			FieldReadResult{
-				Value: map[string]interface{}{
+				Value: map[string]any{
 					"key": "bar",
 				},
 				Exists:   true,
 				Computed: false,
 			},
-			testConfig(t, map[string]interface{}{
-				"maplist": []interface{}{
-					map[string]interface{}{
+			testConfig(t, map[string]any{
+				"maplist": []any{
+					map[string]any{
 						"key": "bar",
 					},
 				},
@@ -320,9 +320,9 @@ func TestConfigFieldReader_ComputedMap(t *testing.T) {
 				Exists:   true,
 				Computed: false,
 			},
-			testConfig(t, map[string]interface{}{
-				"maplist": []interface{}{
-					map[string]interface{}{
+			testConfig(t, map[string]any{
+				"maplist": []any{
+					map[string]any{
 						"key": "bar",
 					},
 				},
@@ -334,13 +334,13 @@ func TestConfigFieldReader_ComputedMap(t *testing.T) {
 			"list-from-map-of-lists",
 			[]string{"listmap", "key"},
 			FieldReadResult{
-				Value:    []interface{}{"bar"},
+				Value:    []any{"bar"},
 				Exists:   true,
 				Computed: false,
 			},
-			testConfig(t, map[string]interface{}{
-				"listmap": map[string]interface{}{
-					"key": []interface{}{
+			testConfig(t, map[string]any{
+				"listmap": map[string]any{
+					"key": []any{
 						"bar",
 					},
 				},
@@ -356,9 +356,9 @@ func TestConfigFieldReader_ComputedMap(t *testing.T) {
 				Exists:   true,
 				Computed: false,
 			},
-			testConfig(t, map[string]interface{}{
-				"listmap": map[string]interface{}{
-					"key": []interface{}{
+			testConfig(t, map[string]any{
+				"listmap": map[string]any{
+					"key": []any{
 						"bar",
 					},
 				},
@@ -409,14 +409,14 @@ func TestConfigFieldReader_ComputedSet(t *testing.T) {
 		"set, normal": {
 			[]string{"strSet"},
 			FieldReadResult{
-				Value: map[string]interface{}{
+				Value: map[string]any{
 					"2356372769": "foo",
 				},
 				Exists:   true,
 				Computed: false,
 			},
-			testConfig(t, map[string]interface{}{
-				"strSet": []interface{}{"foo"},
+			testConfig(t, map[string]any{
+				"strSet": []any{"foo"},
 			}),
 			false,
 		},
@@ -428,8 +428,8 @@ func TestConfigFieldReader_ComputedSet(t *testing.T) {
 				Exists:   true,
 				Computed: true,
 			},
-			testConfig(t, map[string]interface{}{
-				"strSet": []interface{}{hcl2shim.UnknownVariableValue},
+			testConfig(t, map[string]any{
+				"strSet": []any{hcl2shim.UnknownVariableValue},
 			}),
 			false,
 		},
@@ -458,9 +458,9 @@ func TestConfigFieldReader_ComputedSet(t *testing.T) {
 }
 
 func TestConfigFieldReader_computedComplexSet(t *testing.T) {
-	hashfunc := func(v interface{}) int {
+	hashfunc := func(v any) int {
 		var buf bytes.Buffer
-		m := v.(map[string]interface{})
+		m := v.(map[string]any)
 		buf.WriteString(fmt.Sprintf("%s-", m["name"].(string)))
 		buf.WriteString(fmt.Sprintf("%s-", m["vhd_uri"].(string)))
 		return hashcode.String(buf.String())
@@ -495,8 +495,8 @@ func TestConfigFieldReader_computedComplexSet(t *testing.T) {
 		"set, normal": {
 			[]string{"set"},
 			FieldReadResult{
-				Value: map[string]interface{}{
-					"532860136": map[string]interface{}{
+				Value: map[string]any{
+					"532860136": map[string]any{
 						"name":    "myosdisk1",
 						"vhd_uri": "bar",
 					},
@@ -504,9 +504,9 @@ func TestConfigFieldReader_computedComplexSet(t *testing.T) {
 				Exists:   true,
 				Computed: false,
 			},
-			testConfig(t, map[string]interface{}{
-				"set": []interface{}{
-					map[string]interface{}{
+			testConfig(t, map[string]any{
+				"set": []any{
+					map[string]any{
 						"name":    "myosdisk1",
 						"vhd_uri": "bar",
 					},
@@ -538,6 +538,6 @@ func TestConfigFieldReader_computedComplexSet(t *testing.T) {
 	}
 }
 
-func testConfig(t *testing.T, raw map[string]interface{}) *terraform.ResourceConfig {
+func testConfig(t *testing.T, raw map[string]any) *terraform.ResourceConfig {
 	return terraform.NewResourceConfigRaw(raw)
 }

@@ -91,7 +91,7 @@ func New() backend.Backend {
 				Type:        schema.TypeString,
 				Optional:    true,
 				Description: "The directory for saving the state file in bucket",
-				ValidateFunc: func(v interface{}, s string) ([]string, []error) {
+				ValidateFunc: func(v any, s string) ([]string, []error) {
 					prefix := v.(string)
 					if strings.HasPrefix(prefix, "/") || strings.HasPrefix(prefix, "./") {
 						return nil, []error{fmt.Errorf("prefix must not start with '/' or './'")}
@@ -104,7 +104,7 @@ func New() backend.Backend {
 				Optional:    true,
 				Description: "The path for saving the state file in bucket",
 				Default:     "terraform.tfstate",
-				ValidateFunc: func(v interface{}, s string) ([]string, []error) {
+				ValidateFunc: func(v any, s string) ([]string, []error) {
 					if strings.HasPrefix(v.(string), "/") || strings.HasSuffix(v.(string), "/") {
 						return nil, []error{fmt.Errorf("key can not start and end with '/'")}
 					}
@@ -122,7 +122,7 @@ func New() backend.Backend {
 				Optional:    true,
 				Description: "Object ACL to be applied to the state file",
 				Default:     "private",
-				ValidateFunc: func(v interface{}, s string) ([]string, []error) {
+				ValidateFunc: func(v any, s string) ([]string, []error) {
 					value := v.(string)
 					if value != "private" && value != "public-read" {
 						return nil, []error{fmt.Errorf(
@@ -160,7 +160,7 @@ func New() backend.Backend {
 						"session_duration": {
 							Type:     schema.TypeInt,
 							Required: true,
-							DefaultFunc: func() (interface{}, error) {
+							DefaultFunc: func() (any, error) {
 								if v := os.Getenv(PROVIDER_ASSUME_ROLE_SESSION_DURATION); v != "" {
 									return strconv.Atoi(v)
 								}
@@ -187,7 +187,7 @@ func New() backend.Backend {
 }
 
 func validateIntegerInRange(min, max int64) schema.SchemaValidateFunc {
-	return func(v interface{}, k string) (ws []string, errors []error) {
+	return func(v any, k string) (ws []string, errors []error) {
 		value := int64(v.(int))
 		if value < min {
 			errors = append(errors, fmt.Errorf(
@@ -262,7 +262,7 @@ func (b *Backend) configure(ctx context.Context) error {
 func handleAssumeRole(data *schema.ResourceData, b *Backend) error {
 	assumeRoleList := data.Get("assume_role").(*schema.Set).List()
 	if len(assumeRoleList) == 1 {
-		assumeRole := assumeRoleList[0].(map[string]interface{})
+		assumeRole := assumeRoleList[0].(map[string]any)
 		assumeRoleArn := assumeRole["role_arn"].(string)
 		assumeRoleSessionName := assumeRole["session_name"].(string)
 		assumeRoleSessionDuration := assumeRole["session_duration"].(int)

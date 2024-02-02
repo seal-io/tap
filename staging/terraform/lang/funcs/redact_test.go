@@ -12,7 +12,7 @@ import (
 
 func TestRedactIfSensitive(t *testing.T) {
 	testCases := map[string]struct {
-		value interface{}
+		value any
 		marks []cty.ValueMarks
 		want  string
 	}{

@@ -56,7 +56,7 @@ func TestContext2Input_provider(t *testing.T) {
 		UIInput: inp,
 	})
 
-	var actual interface{}
+	var actual any
 	p.ConfigureProviderFn = func(req providers.ConfigureProviderRequest) (resp providers.ConfigureProviderResponse) {
 		actual = req.Config.GetAttr("foo").AsString()
 		return
@@ -137,7 +137,7 @@ func TestContext2Input_providerMulti(t *testing.T) {
 		UIInput: inp,
 	})
 
-	var actual []interface{}
+	var actual []any
 	var lock sync.Mutex
 
 	if diags := ctx.Input(m, InputModeStd); diags.HasErrors() {
@@ -163,7 +163,7 @@ func TestContext2Input_providerMulti(t *testing.T) {
 		t.Fatalf("apply errors: %s", diags.Err())
 	}
 
-	expected := []interface{}{"bar", "bar"}
+	expected := []any{"bar", "bar"}
 	if !reflect.DeepEqual(actual, expected) {
 		t.Fatalf("wrong result\ngot:  %#v\nwant: %#v", actual, expected)
 	}
@@ -218,7 +218,7 @@ func TestContext2Input_providerId(t *testing.T) {
 		UIInput: input,
 	})
 
-	var actual interface{}
+	var actual any
 	p.ConfigureProviderFn = func(req providers.ConfigureProviderRequest) (resp providers.ConfigureProviderResponse) {
 		actual = req.Config.GetAttr("foo").AsString()
 		return
@@ -280,7 +280,7 @@ func TestContext2Input_providerOnly(t *testing.T) {
 		"provider.aws.foo": "bar",
 	}
 
-	var actual interface{}
+	var actual any
 	p.ConfigureProviderFn = func(req providers.ConfigureProviderRequest) (resp providers.ConfigureProviderResponse) {
 		actual = req.Config.GetAttr("foo").AsString()
 		return
@@ -340,7 +340,7 @@ func TestContext2Input_providerVars(t *testing.T) {
 		"var.foo": "bar",
 	}
 
-	var actual interface{}
+	var actual any
 	p.ConfigureProviderFn = func(req providers.ConfigureProviderRequest) (resp providers.ConfigureProviderResponse) {
 		actual = req.Config.GetAttr("foo").AsString()
 		return

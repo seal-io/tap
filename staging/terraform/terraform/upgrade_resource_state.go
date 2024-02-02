@@ -128,7 +128,7 @@ func upgradeResourceState(addr addrs.AbsResourceInstance, provider providers.Int
 // stripRemovedStateAttributes deletes any attributes no longer present in the
 // schema, so that the json can be correctly decoded.
 func stripRemovedStateAttributes(state []byte, ty cty.Type) []byte {
-	jsonMap := map[string]interface{}{}
+	jsonMap := map[string]any{}
 	err := json.Unmarshal(state, &jsonMap)
 	if err != nil {
 		// we just log any errors here, and let the normal decode process catch
@@ -155,12 +155,12 @@ func stripRemovedStateAttributes(state []byte, ty cty.Type) []byte {
 
 // strip out the actual missing attributes, and return a bool indicating if any
 // changes were made.
-func removeRemovedAttrs(v interface{}, ty cty.Type) bool {
+func removeRemovedAttrs(v any, ty cty.Type) bool {
 	modified := false
 	// we're only concerned with finding maps that correspond to object
 	// attributes
 	switch v := v.(type) {
-	case []interface{}:
+	case []any:
 		switch {
 		// If these aren't blocks the next call will be a noop
 		case ty.IsListType() || ty.IsSetType():
@@ -170,7 +170,7 @@ func removeRemovedAttrs(v interface{}, ty cty.Type) bool {
 			}
 		}
 		return modified
-	case map[string]interface{}:
+	case map[string]any:
 		switch {
 		case ty.IsMapType():
 			// map blocks aren't yet supported, but handle this just in case

@@ -37,7 +37,7 @@ func TestRemoteClient(t *testing.T) {
 	for _, path := range testCases {
 		t.Run(path, func(*testing.T) {
 			// Get the backend
-			b := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]interface{}{
+			b := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]any{
 				"address": srv.HTTPAddr,
 				"path":    path,
 			}))
@@ -61,7 +61,7 @@ func TestRemoteClient_gzipUpgrade(t *testing.T) {
 	statePath := fmt.Sprintf("tf-unit/%s", time.Now().String())
 
 	// Get the backend
-	b := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]interface{}{
+	b := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]any{
 		"address": srv.HTTPAddr,
 		"path":    statePath,
 	}))
@@ -76,7 +76,7 @@ func TestRemoteClient_gzipUpgrade(t *testing.T) {
 	remote.TestClient(t, state.(*remote.State).Client)
 
 	// create a new backend with gzip
-	b = backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]interface{}{
+	b = backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]any{
 		"address": srv.HTTPAddr,
 		"path":    statePath,
 		"gzip":    true,
@@ -100,7 +100,7 @@ func TestConsul_largeState(t *testing.T) {
 
 	path := "tf-unit/test-large-state"
 
-	b := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]interface{}{
+	b := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]any{
 		"address": srv.HTTPAddr,
 		"path":    path,
 	}))
@@ -186,7 +186,7 @@ func TestConsul_largeState(t *testing.T) {
 	)
 
 	// Test with gzip and chunks
-	b = backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]interface{}{
+	b = backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]any{
 		"address": srv.HTTPAddr,
 		"path":    path,
 		"gzip":    true,
@@ -247,7 +247,7 @@ func TestConsul_stateLock(t *testing.T) {
 	for _, path := range testCases {
 		t.Run(path, func(*testing.T) {
 			// create 2 instances to get 2 remote.Clients
-			sA, err := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]interface{}{
+			sA, err := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]any{
 				"address": srv.HTTPAddr,
 				"path":    path,
 			})).StateMgr(backend.DefaultStateName)
@@ -255,7 +255,7 @@ func TestConsul_stateLock(t *testing.T) {
 				t.Fatal(err)
 			}
 
-			sB, err := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]interface{}{
+			sB, err := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]any{
 				"address": srv.HTTPAddr,
 				"path":    path,
 			})).StateMgr(backend.DefaultStateName)
@@ -290,7 +290,7 @@ func TestConsul_destroyLock(t *testing.T) {
 	for _, path := range testCases {
 		t.Run(path, func(*testing.T) {
 			// Get the backend
-			b := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]interface{}{
+			b := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]any{
 				"address": srv.HTTPAddr,
 				"path":    path,
 			}))
@@ -356,7 +356,7 @@ func TestConsul_lostLock(t *testing.T) {
 	path := fmt.Sprintf("tf-unit/%s", time.Now().String())
 
 	// create 2 instances to get 2 remote.Clients
-	sA, err := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]interface{}{
+	sA, err := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]any{
 		"address": srv.HTTPAddr,
 		"path":    path,
 	})).StateMgr(backend.DefaultStateName)
@@ -364,7 +364,7 @@ func TestConsul_lostLock(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	sB, err := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]interface{}{
+	sB, err := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]any{
 		"address": srv.HTTPAddr,
 		"path":    path + "-not-used",
 	})).StateMgr(backend.DefaultStateName)
@@ -413,7 +413,7 @@ func TestConsul_lostLockConnection(t *testing.T) {
 
 	path := fmt.Sprintf("tf-unit/%s", time.Now().String())
 
-	b := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]interface{}{
+	b := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]any{
 		"address": srv.HTTPAddr,
 		"path":    path,
 	}))

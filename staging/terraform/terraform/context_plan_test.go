@@ -4431,7 +4431,7 @@ func TestContext2Plan_provider(t *testing.T) {
 	m := testModule(t, "plan-provider")
 	p := testProvider("aws")
 
-	var value interface{}
+	var value any
 	p.ConfigureProviderFn = func(req providers.ConfigureProviderRequest) (resp providers.ConfigureProviderResponse) {
 		value = req.Config.GetAttr("foo").AsString()
 		return

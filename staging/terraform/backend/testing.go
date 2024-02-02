@@ -66,7 +66,7 @@ func TestBackendConfig(t *testing.T, b Backend, c hcl.Body) Backend {
 // The given structure should only include values that can be accepted by
 // hcl2shim.HCL2ValueFromConfigValue. If incompatible values are given,
 // this function will panic.
-func TestWrapConfig(raw map[string]interface{}) hcl.Body {
+func TestWrapConfig(raw map[string]any) hcl.Body {
 	obj := hcl2shim.HCL2ValueFromConfigValue(raw)
 	return configs.SynthBody("<TestWrapConfig>", obj.AsValueMap())
 }

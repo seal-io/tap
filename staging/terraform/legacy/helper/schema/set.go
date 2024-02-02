@@ -16,13 +16,13 @@ import (
 
 // HashString hashes strings. If you want a Set of strings, this is the
 // SchemaSetFunc you want.
-func HashString(v interface{}) int {
+func HashString(v any) int {
 	return hashcode.String(v.(string))
 }
 
 // HashInt hashes integers. If you want a Set of integers, this is the
 // SchemaSetFunc you want.
-func HashInt(v interface{}) int {
+func HashInt(v any) int {
 	return hashcode.String(strconv.Itoa(v.(int)))
 }
 
@@ -30,7 +30,7 @@ func HashInt(v interface{}) int {
 // a *Resource. This is the default set implementation used when a set's
 // element type is a full resource.
 func HashResource(resource *Resource) SchemaSetFunc {
-	return func(v interface{}) int {
+	return func(v any) int {
 		var buf bytes.Buffer
 		SerializeResourceForHash(&buf, v, resource)
 		return hashcode.String(buf.String())
@@ -41,7 +41,7 @@ func HashResource(resource *Resource) SchemaSetFunc {
 // default set implementation used when a set's element type is a single
 // schema.
 func HashSchema(schema *Schema) SchemaSetFunc {
-	return func(v interface{}) int {
+	return func(v any) int {
 		var buf bytes.Buffer
 		SerializeValueForHash(&buf, v, schema)
 		return hashcode.String(buf.String())
@@ -53,13 +53,13 @@ func HashSchema(schema *Schema) SchemaSetFunc {
 type Set struct {
 	F SchemaSetFunc
 
-	m    map[string]interface{}
+	m    map[string]any
 	once sync.Once
 }
 
 // NewSet is a convenience method for creating a new set with the given
 // items.
-func NewSet(f SchemaSetFunc, items []interface{}) *Set {
+func NewSet(f SchemaSetFunc, items []any) *Set {
 	s := &Set{F: f}
 	for _, i := range items {
 		s.Add(i)
@@ -74,17 +74,17 @@ func CopySet(otherSet *Set) *Set {
 }
 
 // Add adds an item to the set if it isn't already in the set.
-func (s *Set) Add(item interface{}) {
+func (s *Set) Add(item any) {
 	s.add(item, false)
 }
 
 // Remove removes an item if it's already in the set. Idempotent.
-func (s *Set) Remove(item interface{}) {
+func (s *Set) Remove(item any) {
 	s.remove(item)
 }
 
 // Contains checks if the set has the given item.
-func (s *Set) Contains(item interface{}) bool {
+func (s *Set) Contains(item any) bool {
 	_, ok := s.m[s.hash(item)]
 	return ok
 }
@@ -98,8 +98,8 @@ func (s *Set) Len() int {
 //
 // The order of the returned elements is deterministic. Given the same
 // set, the order of this will always be the same.
-func (s *Set) List() []interface{} {
-	result := make([]interface{}, len(s.m))
+func (s *Set) List() []any {
+	result := make([]any, len(s.m))
 	for i, k := range s.listCode() {
 		result[i] = s.m[k]
 	}
@@ -153,7 +153,7 @@ func (s *Set) Union(other *Set) *Set {
 	return result
 }
 
-func (s *Set) Equal(raw interface{}) bool {
+func (s *Set) Equal(raw any) bool {
 	other, ok := raw.(*Set)
 	if !ok {
 		return false
@@ -165,7 +165,7 @@ func (s *Set) Equal(raw interface{}) bool {
 // HashEqual simply checks to the keys the top-level map to the keys in the
 // other set's top-level map to see if they are equal. This obviously assumes
 // you have a properly working hash function - use HashResource if in doubt.
-func (s *Set) HashEqual(raw interface{}) bool {
+func (s *Set) HashEqual(raw any) bool {
 	other, ok := raw.(*Set)
 	if !ok {
 		return false
@@ -192,10 +192,10 @@ func (s *Set) GoString() string {
 }
 
 func (s *Set) init() {
-	s.m = make(map[string]interface{})
+	s.m = make(map[string]any)
 }
 
-func (s *Set) add(item interface{}, computed bool) string {
+func (s *Set) add(item any, computed bool) string {
 	s.once.Do(s.init)
 
 	code := s.hash(item)
@@ -220,7 +220,7 @@ func (s *Set) add(item interface{}, computed bool) string {
 	return code
 }
 
-func (s *Set) hash(item interface{}) string {
+func (s *Set) hash(item any) string {
 	code := s.F(item)
 	// Always return a nonnegative hashcode.
 	if code < 0 {
@@ -229,7 +229,7 @@ func (s *Set) hash(item interface{}) string {
 	return strconv.Itoa(code)
 }
 
-func (s *Set) remove(item interface{}) string {
+func (s *Set) remove(item any) string {
 	s.once.Do(s.init)
 
 	code := s.hash(item)
@@ -238,7 +238,7 @@ func (s *Set) remove(item interface{}) string {
 	return code
 }
 
-func (s *Set) index(item interface{}) int {
+func (s *Set) index(item any) int {
 	return sort.SearchStrings(s.listCode(), s.hash(item))
 }
 

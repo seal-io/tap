@@ -15,8 +15,8 @@ func TestDiffFieldReader_impl(t *testing.T) {
 }
 
 func TestDiffFieldReader_NestedSetUpdate(t *testing.T) {
-	hashFn := func(a interface{}) int {
-		m := a.(map[string]interface{})
+	hashFn := func(a any) int {
+		m := a.(map[string]any)
 		return m["val"].(int)
 	}
 
@@ -100,11 +100,11 @@ func TestDiffFieldReader_NestedSetUpdate(t *testing.T) {
 	}
 
 	s := &Set{F: hashFn}
-	s.Add(map[string]interface{}{"val": 1})
+	s.Add(map[string]any{"val": 1})
 	expected := s.List()
 
-	l := out.Value.([]interface{})
-	i := l[0].(map[string]interface{})
+	l := out.Value.([]any)
+	i := l[0].(map[string]any)
 	actual := i["nested_set"].(*Set).List()
 
 	if !reflect.DeepEqual(expected, actual) {
@@ -147,7 +147,7 @@ func TestDiffFieldReader_MapHandling(t *testing.T) {
 		t.Fatalf("ReadField failed: %#v", err)
 	}
 
-	expected := map[string]interface{}{
+	expected := map[string]any{
 		"foo": "bar",
 		"baz": "qux",
 	}
@@ -186,8 +186,8 @@ func TestDiffFieldReader_extra(t *testing.T) {
 					},
 				},
 			},
-			Set: func(a interface{}) int {
-				m := a.(map[string]interface{})
+			Set: func(a any) int {
+				m := a.(map[string]any)
 				return m["index"].(int)
 			},
 		},
@@ -208,8 +208,8 @@ func TestDiffFieldReader_extra(t *testing.T) {
 					},
 				},
 			},
-			Set: func(a interface{}) int {
-				m := a.(map[string]interface{})
+			Set: func(a any) int {
+				m := a.(map[string]any)
 				return m["index"].(int)
 			},
 		},
@@ -287,11 +287,11 @@ func TestDiffFieldReader_extra(t *testing.T) {
 		"listMapRemoval": {
 			[]string{"listMap"},
 			FieldReadResult{
-				Value: []interface{}{
-					map[string]interface{}{
+				Value: []any{
+					map[string]any{
 						"foo": "bar",
 					},
-					map[string]interface{}{
+					map[string]any{
 						"baz": "baz",
 					},
 				},
@@ -303,7 +303,7 @@ func TestDiffFieldReader_extra(t *testing.T) {
 		"mapRemove": {
 			[]string{"mapRemove"},
 			FieldReadResult{
-				Value: map[string]interface{}{
+				Value: map[string]any{
 					"foo": "bar",
 				},
 				Exists:   true,
@@ -315,8 +315,8 @@ func TestDiffFieldReader_extra(t *testing.T) {
 		"setChange": {
 			[]string{"setChange"},
 			FieldReadResult{
-				Value: []interface{}{
-					map[string]interface{}{
+				Value: []any{
+					map[string]any{
 						"index": 10,
 						"value": "80",
 					},
@@ -329,7 +329,7 @@ func TestDiffFieldReader_extra(t *testing.T) {
 		"setEmpty": {
 			[]string{"setEmpty"},
 			FieldReadResult{
-				Value:  []interface{}{},
+				Value:  []any{},
 				Exists: true,
 			},
 			false,

@@ -13,18 +13,18 @@ import (
 func TestStripRemovedStateAttributes(t *testing.T) {
 	cases := []struct {
 		name     string
-		state    map[string]interface{}
-		expect   map[string]interface{}
+		state    map[string]any
+		expect   map[string]any
 		ty       cty.Type
 		modified bool
 	}{
 		{
 			"removed string",
-			map[string]interface{}{
+			map[string]any{
 				"a": "ok",
 				"b": "gone",
 			},
-			map[string]interface{}{
+			map[string]any{
 				"a": "ok",
 			},
 			cty.Object(map[string]cty.Type{
@@ -34,11 +34,11 @@ func TestStripRemovedStateAttributes(t *testing.T) {
 		},
 		{
 			"removed null",
-			map[string]interface{}{
+			map[string]any{
 				"a": "ok",
 				"b": nil,
 			},
-			map[string]interface{}{
+			map[string]any{
 				"a": "ok",
 			},
 			cty.Object(map[string]cty.Type{
@@ -48,16 +48,16 @@ func TestStripRemovedStateAttributes(t *testing.T) {
 		},
 		{
 			"removed nested string",
-			map[string]interface{}{
+			map[string]any{
 				"a": "ok",
-				"b": map[string]interface{}{
+				"b": map[string]any{
 					"a": "ok",
 					"b": "removed",
 				},
 			},
-			map[string]interface{}{
+			map[string]any{
 				"a": "ok",
-				"b": map[string]interface{}{
+				"b": map[string]any{
 					"a": "ok",
 				},
 			},
@@ -71,16 +71,16 @@ func TestStripRemovedStateAttributes(t *testing.T) {
 		},
 		{
 			"removed nested list",
-			map[string]interface{}{
+			map[string]any{
 				"a": "ok",
-				"b": map[string]interface{}{
+				"b": map[string]any{
 					"a": "ok",
-					"b": []interface{}{"removed"},
+					"b": []any{"removed"},
 				},
 			},
-			map[string]interface{}{
+			map[string]any{
 				"a": "ok",
-				"b": map[string]interface{}{
+				"b": map[string]any{
 					"a": "ok",
 				},
 			},
@@ -94,31 +94,31 @@ func TestStripRemovedStateAttributes(t *testing.T) {
 		},
 		{
 			"removed keys in set of objs",
-			map[string]interface{}{
+			map[string]any{
 				"a": "ok",
-				"b": map[string]interface{}{
+				"b": map[string]any{
 					"a": "ok",
-					"set": []interface{}{
-						map[string]interface{}{
+					"set": []any{
+						map[string]any{
 							"x": "ok",
 							"y": "removed",
 						},
-						map[string]interface{}{
+						map[string]any{
 							"x": "ok",
 							"y": "removed",
 						},
 					},
 				},
 			},
-			map[string]interface{}{
+			map[string]any{
 				"a": "ok",
-				"b": map[string]interface{}{
+				"b": map[string]any{
 					"a": "ok",
-					"set": []interface{}{
-						map[string]interface{}{
+					"set": []any{
+						map[string]any{
 							"x": "ok",
 						},
-						map[string]interface{}{
+						map[string]any{
 							"x": "ok",
 						},
 					},

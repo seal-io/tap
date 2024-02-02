@@ -100,7 +100,7 @@ func (c *RemoteClient) Put(data []byte) error {
 		}
 
 		secret = &unstructured.Unstructured{
-			Object: map[string]interface{}{
+			Object: map[string]any{
 				"metadata": metav1.ObjectMeta{
 					Name:        secretName,
 					Namespace:   c.namespace,
@@ -376,11 +376,11 @@ func uncompressState(data string) ([]byte, error) {
 	return b.Bytes(), nil
 }
 
-func getSecretData(secret *unstructured.Unstructured) map[string]interface{} {
-	if m, ok := secret.Object["data"].(map[string]interface{}); ok {
+func getSecretData(secret *unstructured.Unstructured) map[string]any {
+	if m, ok := secret.Object["data"].(map[string]any); ok {
 		return m
 	}
-	return map[string]interface{}{}
+	return map[string]any{}
 }
 
 func getLockInfo(lease *coordinationv1.Lease) ([]byte, bool) {

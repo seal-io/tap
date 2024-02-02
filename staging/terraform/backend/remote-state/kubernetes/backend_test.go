@@ -50,7 +50,7 @@ func TestBackend(t *testing.T) {
 	testACC(t)
 	defer cleanupK8sResources(t)
 
-	b1 := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]interface{}{
+	b1 := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]any{
 		"secret_suffix": secretSuffix,
 	}))
 
@@ -63,11 +63,11 @@ func TestBackendLocks(t *testing.T) {
 	defer cleanupK8sResources(t)
 
 	// Get the backend. We need two to test locking.
-	b1 := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]interface{}{
+	b1 := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]any{
 		"secret_suffix": secretSuffix,
 	}))
 
-	b2 := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]interface{}{
+	b2 := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]any{
 		"secret_suffix": secretSuffix,
 	}))
 
@@ -85,7 +85,7 @@ func TestBackendLocksSoak(t *testing.T) {
 
 	lockers := []statemgr.Locker{}
 	for i := 0; i < clientCount; i++ {
-		b := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]interface{}{
+		b := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]any{
 			"secret_suffix": secretSuffix,
 		}))
 
@@ -130,7 +130,7 @@ func TestBackendLocksSoak(t *testing.T) {
 func cleanupK8sResources(t *testing.T) {
 	ctx := context.Background()
 	// Get a backend to use the k8s client
-	b1 := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]interface{}{
+	b1 := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]any{
 		"secret_suffix": secretSuffix,
 	}))
 

@@ -24,7 +24,7 @@ import (
 func TestDiagnostic(t *testing.T) {
 
 	tests := map[string]struct {
-		Diag interface{}
+		Diag any
 		Want string
 	}{
 		"sourceless error": {
@@ -292,7 +292,7 @@ func TestDiagnostic(t *testing.T) {
 func TestDiagnosticPlain(t *testing.T) {
 
 	tests := map[string]struct {
-		Diag interface{}
+		Diag any
 		Want string
 	}{
 		"sourceless error": {

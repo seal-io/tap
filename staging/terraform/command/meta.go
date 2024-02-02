@@ -641,7 +641,7 @@ func (m *Meta) confirm(opts *terraform.InputOpts) (bool, error) {
 //
 // Internally this function uses Diagnostics.Append, and so it will panic
 // if given unsupported value types, just as Append does.
-func (m *Meta) showDiagnostics(vals ...interface{}) {
+func (m *Meta) showDiagnostics(vals ...any) {
 	var diags tfdiags.Diagnostics
 	diags = diags.Append(vals...)
 	diags.Sort()

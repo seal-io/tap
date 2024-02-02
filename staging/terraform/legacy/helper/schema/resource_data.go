@@ -29,7 +29,7 @@ type ResourceData struct {
 	config       *terraform.ResourceConfig
 	state        *terraform.InstanceState
 	diff         *terraform.InstanceDiff
-	meta         map[string]interface{}
+	meta         map[string]any
 	timeouts     *ResourceTimeout
 	providerMeta cty.Value
 
@@ -48,8 +48,8 @@ type ResourceData struct {
 // getResult is the internal structure that is generated when a Get
 // is called that contains some extra data that might be used.
 type getResult struct {
-	Value          interface{}
-	ValueProcessed interface{}
+	Value          any
+	ValueProcessed any
 	Computed       bool
 	Exists         bool
 	Schema         *Schema
@@ -75,7 +75,7 @@ func (d *ResourceData) UnsafeSetFieldRaw(key string, value string) {
 //
 // If you want to test if something is set at all in the configuration,
 // use GetOk.
-func (d *ResourceData) Get(key string) interface{} {
+func (d *ResourceData) Get(key string) any {
 	v, _ := d.GetOk(key)
 	return v
 }
@@ -86,7 +86,7 @@ func (d *ResourceData) Get(key string) interface{} {
 // that both the old and new value are the same if the old value was not
 // set and the new value is. This is common, for example, for boolean
 // fields which have a zero value of false.
-func (d *ResourceData) GetChange(key string) (interface{}, interface{}) {
+func (d *ResourceData) GetChange(key string) (any, any) {
 	o, n := d.getChange(key, getSourceState, getSourceDiff)
 	return o.Value, n.Value
 }
@@ -96,7 +96,7 @@ func (d *ResourceData) GetChange(key string) (interface{}, interface{}) {
 //
 // The first result will not necessarilly be nil if the value doesn't exist.
 // The second result should be checked to determine this information.
-func (d *ResourceData) GetOk(key string) (interface{}, bool) {
+func (d *ResourceData) GetOk(key string) (any, bool) {
 	r := d.getRaw(key, getSourceSet)
 	exists := r.Exists && !r.Computed
 	if exists {
@@ -124,7 +124,7 @@ func (d *ResourceData) GetOk(key string) (interface{}, bool) {
 // without a default, to fully check for a literal assignment, regardless
 // of the zero-value for that type.
 // This should only be used if absolutely required/needed.
-func (d *ResourceData) GetOkExists(key string) (interface{}, bool) {
+func (d *ResourceData) GetOkExists(key string) (any, bool) {
 	r := d.getRaw(key, getSourceSet)
 	exists := r.Exists && !r.Computed
 	return r.Value, exists
@@ -173,7 +173,7 @@ func (d *ResourceData) Partial(on bool) {
 //
 // If the key is invalid or the value is not a correct type, an error
 // will be returned.
-func (d *ResourceData) Set(key string, value interface{}) error {
+func (d *ResourceData) Set(key string, value any) error {
 	d.once.Do(d.init)
 
 	// If the value is a pointer to a non-struct, get its value and
@@ -320,7 +320,7 @@ func (d *ResourceData) State() *terraform.InstanceState {
 	// In order to build the final state attributes, we read the full
 	// attribute set as a map[string]interface{}, write it to a MapFieldWriter,
 	// and then use that map.
-	rawMap := make(map[string]interface{})
+	rawMap := make(map[string]any)
 	for k := range d.schema {
 		source := getSourceSet
 		if d.partial {
@@ -478,7 +478,7 @@ func (d *ResourceData) init() {
 }
 
 func (d *ResourceData) diffChange(
-	k string) (interface{}, interface{}, bool, bool, bool) {
+	k string) (any, any, bool, bool, bool) {
 	// Get the change between the state and the config.
 	o, n := d.getChange(k, getSourceState, getSourceConfig|getSourceExact)
 	if !o.Exists {
@@ -556,7 +556,7 @@ func (d *ResourceData) get(addr []string, source getSource) getResult {
 	}
 }
 
-func (d *ResourceData) GetProviderMeta(dst interface{}) error {
+func (d *ResourceData) GetProviderMeta(dst any) error {
 	if d.providerMeta.IsNull() {
 		return nil
 	}

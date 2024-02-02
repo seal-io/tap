@@ -114,7 +114,7 @@ func TestShimResourcePlan_destroyCreate(t *testing.T) {
 			"id":  hcl2shim.UnknownVariableValue,
 			"foo": "42",
 		},
-		Meta: map[string]interface{}{
+		Meta: map[string]any{
 			"schema_version": "2",
 		},
 	}
@@ -134,7 +134,7 @@ func TestShimResourceApply_create(t *testing.T) {
 	}
 
 	called := false
-	r.Create = func(d *ResourceData, m interface{}) error {
+	r.Create = func(d *ResourceData, m any) error {
 		called = true
 		d.SetId("foo")
 		return nil
@@ -165,7 +165,7 @@ func TestShimResourceApply_create(t *testing.T) {
 			"id":  "foo",
 			"foo": "42",
 		},
-		Meta: map[string]interface{}{
+		Meta: map[string]any{
 			"schema_version": "2",
 		},
 	}
@@ -203,7 +203,7 @@ func TestShimResourceApply_Timeout_state(t *testing.T) {
 	}
 
 	called := false
-	r.Create = func(d *ResourceData, m interface{}) error {
+	r.Create = func(d *ResourceData, m any) error {
 		called = true
 		d.SetId("foo")
 		return nil
@@ -244,7 +244,7 @@ func TestShimResourceApply_Timeout_state(t *testing.T) {
 			"id":  "foo",
 			"foo": "42",
 		},
-		Meta: map[string]interface{}{
+		Meta: map[string]any{
 			"schema_version": "2",
 			TimeoutKey:       expectedForValues(40, 0, 80, 40, 0),
 		},
@@ -279,14 +279,14 @@ func TestShimResourceDiff_Timeout_diff(t *testing.T) {
 		},
 	}
 
-	r.Create = func(d *ResourceData, m interface{}) error {
+	r.Create = func(d *ResourceData, m any) error {
 		d.SetId("foo")
 		return nil
 	}
 
-	conf := terraform.NewResourceConfigRaw(map[string]interface{}{
+	conf := terraform.NewResourceConfigRaw(map[string]any{
 		"foo": 42,
-		TimeoutsConfigKey: map[string]interface{}{
+		TimeoutsConfigKey: map[string]any{
 			"create": "2h",
 		},
 	})
@@ -367,7 +367,7 @@ func TestShimResourceApply_destroy(t *testing.T) {
 	}
 
 	called := false
-	r.Delete = func(d *ResourceData, m interface{}) error {
+	r.Delete = func(d *ResourceData, m any) error {
 		called = true
 		return nil
 	}
@@ -417,12 +417,12 @@ func TestShimResourceApply_destroyCreate(t *testing.T) {
 	}
 
 	change := false
-	r.Create = func(d *ResourceData, m interface{}) error {
+	r.Create = func(d *ResourceData, m any) error {
 		change = d.HasChange("tags")
 		d.SetId("foo")
 		return nil
 	}
-	r.Delete = func(d *ResourceData, m interface{}) error {
+	r.Delete = func(d *ResourceData, m any) error {
 		return nil
 	}
 
@@ -497,7 +497,7 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 		Name          string
 		Schema        map[string]*Schema
 		State         *terraform.InstanceState
-		Config        map[string]interface{}
+		Config        map[string]any
 		CustomizeDiff CustomizeDiffFunc
 		Diff          *terraform.InstanceDiff
 		Err           bool
@@ -515,7 +515,7 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 
 			State: nil,
 
-			Config: map[string]interface{}{
+			Config: map[string]any{
 				"availability_zone": "foo",
 			},
 
@@ -545,7 +545,7 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 
 			State: nil,
 
-			Config: map[string]interface{}{},
+			Config: map[string]any{},
 
 			Diff: &terraform.InstanceDiff{
 				Attributes: map[string]*terraform.ResourceAttrDiff{
@@ -575,7 +575,7 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 				ID: "foo",
 			},
 
-			Config: map[string]interface{}{},
+			Config: map[string]any{},
 
 			Diff: nil,
 
@@ -599,7 +599,7 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 				},
 			},
 
-			Config: map[string]interface{}{
+			Config: map[string]any{
 				"availability_zone": "bar",
 			},
 
@@ -647,7 +647,7 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 				"availability_zone": &Schema{
 					Type:     TypeString,
 					Optional: true,
-					DefaultFunc: func() (interface{}, error) {
+					DefaultFunc: func() (any, error) {
 						return "foo", nil
 					},
 				},
@@ -675,7 +675,7 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 				"availability_zone": &Schema{
 					Type:     TypeString,
 					Optional: true,
-					DefaultFunc: func() (interface{}, error) {
+					DefaultFunc: func() (any, error) {
 						return "foo", nil
 					},
 				},
@@ -683,7 +683,7 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 
 			State: nil,
 
-			Config: map[string]interface{}{
+			Config: map[string]any{
 				"availability_zone": "bar",
 			},
 
@@ -706,7 +706,7 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 					Type:     TypeString,
 					Optional: true,
 					Computed: true,
-					StateFunc: func(a interface{}) string {
+					StateFunc: func(a any) string {
 						return a.(string) + "!"
 					},
 				},
@@ -714,7 +714,7 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 
 			State: nil,
 
-			Config: map[string]interface{}{
+			Config: map[string]any{
 				"availability_zone": "foo",
 			},
 
@@ -738,7 +738,7 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 					Type:     TypeString,
 					Optional: true,
 					Computed: true,
-					StateFunc: func(a interface{}) string {
+					StateFunc: func(a any) string {
 						t.Error("should not get here!")
 						return ""
 					},
@@ -747,7 +747,7 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 
 			State: nil,
 
-			Config: map[string]interface{}{},
+			Config: map[string]any{},
 
 			Diff: &terraform.InstanceDiff{
 				Attributes: map[string]*terraform.ResourceAttrDiff{
@@ -773,7 +773,7 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 
 			State: nil,
 
-			Config: map[string]interface{}{
+			Config: map[string]any{
 				"availability_zone": hcl2shim.UnknownVariableValue,
 			},
 
@@ -803,7 +803,7 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 
 			State: nil,
 
-			Config: map[string]interface{}{
+			Config: map[string]any{
 				"port": 27,
 			},
 
@@ -833,7 +833,7 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 
 			State: nil,
 
-			Config: map[string]interface{}{
+			Config: map[string]any{
 				"port": false,
 			},
 
@@ -886,8 +886,8 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 
 			State: nil,
 
-			Config: map[string]interface{}{
-				"ports": []interface{}{1, 2, 5},
+			Config: map[string]any{
+				"ports": []any{1, 2, 5},
 			},
 
 			Diff: &terraform.InstanceDiff{
@@ -927,8 +927,8 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 
 			State: nil,
 
-			Config: map[string]interface{}{
-				"ports": []interface{}{"5"},
+			Config: map[string]any{
+				"ports": []any{"5"},
 			},
 
 			Diff: &terraform.InstanceDiff{
@@ -958,8 +958,8 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 
 			State: nil,
 
-			Config: map[string]interface{}{
-				"ports": []interface{}{1, 2, 5},
+			Config: map[string]any{
+				"ports": []any{1, 2, 5},
 			},
 
 			Diff: &terraform.InstanceDiff{
@@ -997,8 +997,8 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 
 			State: nil,
 
-			Config: map[string]interface{}{
-				"ports": []interface{}{1, hcl2shim.UnknownVariableValue, "5"},
+			Config: map[string]any{
+				"ports": []any{1, hcl2shim.UnknownVariableValue, "5"},
 			},
 
 			Diff: &terraform.InstanceDiff{
@@ -1033,8 +1033,8 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 				},
 			},
 
-			Config: map[string]interface{}{
-				"ports": []interface{}{1, 2, 5},
+			Config: map[string]any{
+				"ports": []any{1, 2, 5},
 			},
 
 			Diff: nil,
@@ -1061,8 +1061,8 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 				},
 			},
 
-			Config: map[string]interface{}{
-				"ports": []interface{}{1, 2, 5},
+			Config: map[string]any{
+				"ports": []any{1, 2, 5},
 			},
 
 			Diff: &terraform.InstanceDiff{
@@ -1094,8 +1094,8 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 
 			State: nil,
 
-			Config: map[string]interface{}{
-				"ports": []interface{}{1, 2, 5},
+			Config: map[string]any{
+				"ports": []any{1, 2, 5},
 			},
 
 			Diff: &terraform.InstanceDiff{
@@ -1139,7 +1139,7 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 
 			State: nil,
 
-			Config: map[string]interface{}{},
+			Config: map[string]any{},
 
 			Diff: &terraform.InstanceDiff{
 				Attributes: map[string]*terraform.ResourceAttrDiff{
@@ -1181,9 +1181,9 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 
 			State: nil,
 
-			Config: map[string]interface{}{
-				"config": []interface{}{
-					map[string]interface{}{
+			Config: map[string]any{
+				"config": []any{
+					map[string]any{
 						"name": "hello",
 					},
 				},
@@ -1219,7 +1219,7 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 					Type:     TypeSet,
 					Required: true,
 					Elem:     &Schema{Type: TypeInt},
-					Set: func(a interface{}) int {
+					Set: func(a any) int {
 						return a.(int)
 					},
 				},
@@ -1227,8 +1227,8 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 
 			State: nil,
 
-			Config: map[string]interface{}{
-				"ports": []interface{}{5, 2, 1},
+			Config: map[string]any{
+				"ports": []any{5, 2, 1},
 			},
 
 			Diff: &terraform.InstanceDiff{
@@ -1263,7 +1263,7 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 					Computed: true,
 					Required: true,
 					Elem:     &Schema{Type: TypeInt},
-					Set: func(a interface{}) int {
+					Set: func(a any) int {
 						return a.(int)
 					},
 				},
@@ -1291,7 +1291,7 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 					Optional: true,
 					Computed: true,
 					Elem:     &Schema{Type: TypeInt},
-					Set: func(a interface{}) int {
+					Set: func(a any) int {
 						return a.(int)
 					},
 				},
@@ -1320,7 +1320,7 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 					Type:     TypeSet,
 					Required: true,
 					Elem:     &Schema{Type: TypeInt},
-					Set: func(a interface{}) int {
+					Set: func(a any) int {
 						return a.(int)
 					},
 				},
@@ -1328,8 +1328,8 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 
 			State: nil,
 
-			Config: map[string]interface{}{
-				"ports": []interface{}{"2", "5", 1},
+			Config: map[string]any{
+				"ports": []any{"2", "5", 1},
 			},
 
 			Diff: &terraform.InstanceDiff{
@@ -1363,7 +1363,7 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 					Type:     TypeSet,
 					Required: true,
 					Elem:     &Schema{Type: TypeInt},
-					Set: func(a interface{}) int {
+					Set: func(a any) int {
 						return a.(int)
 					},
 				},
@@ -1371,8 +1371,8 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 
 			State: nil,
 
-			Config: map[string]interface{}{
-				"ports": []interface{}{1, hcl2shim.UnknownVariableValue, 5},
+			Config: map[string]any{
+				"ports": []any{1, hcl2shim.UnknownVariableValue, 5},
 			},
 
 			Diff: &terraform.InstanceDiff{
@@ -1395,7 +1395,7 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 					Type:     TypeSet,
 					Required: true,
 					Elem:     &Schema{Type: TypeInt},
-					Set: func(a interface{}) int {
+					Set: func(a any) int {
 						return a.(int)
 					},
 				},
@@ -1410,8 +1410,8 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 				},
 			},
 
-			Config: map[string]interface{}{
-				"ports": []interface{}{5, 2, 1},
+			Config: map[string]any{
+				"ports": []any{5, 2, 1},
 			},
 
 			Diff: &terraform.InstanceDiff{
@@ -1446,7 +1446,7 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 					Optional: true,
 					Computed: true,
 					Elem:     &Schema{Type: TypeInt},
-					Set: func(a interface{}) int {
+					Set: func(a any) int {
 						return a.(int)
 					},
 				},
@@ -1461,7 +1461,7 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 				},
 			},
 
-			Config: map[string]interface{}{},
+			Config: map[string]any{},
 
 			Diff: nil,
 
@@ -1483,9 +1483,9 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 							},
 						},
 					},
-					Set: func(v interface{}) int {
-						m := v.(map[string]interface{})
-						ps := m["ports"].([]interface{})
+					Set: func(v any) int {
+						m := v.(map[string]any)
+						ps := m["ports"].([]any)
 						result := 0
 						for _, p := range ps {
 							result += p.(int)
@@ -1506,13 +1506,13 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 				},
 			},
 
-			Config: map[string]interface{}{
-				"ingress": []interface{}{
-					map[string]interface{}{
-						"ports": []interface{}{443},
+			Config: map[string]any{
+				"ingress": []any{
+					map[string]any{
+						"ports": []any{443},
 					},
-					map[string]interface{}{
-						"ports": []interface{}{80},
+					map[string]any{
+						"ports": []any{80},
 					},
 				},
 			},
@@ -1541,9 +1541,9 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 
 			State: nil,
 
-			Config: map[string]interface{}{
-				"ingress": []interface{}{
-					map[string]interface{}{
+			Config: map[string]any{
+				"ingress": []any{
+					map[string]any{
 						"from": 8080,
 					},
 				},
@@ -1588,7 +1588,7 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 				},
 			},
 
-			Config: map[string]interface{}{
+			Config: map[string]any{
 				"port": 80,
 			},
 
@@ -1614,7 +1614,7 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 
 			State: nil,
 
-			Config: map[string]interface{}{
+			Config: map[string]any{
 				"port": 80,
 			},
 
@@ -1654,7 +1654,7 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 				},
 			},
 
-			Config: map[string]interface{}{
+			Config: map[string]any{
 				"port": 80,
 			},
 
@@ -1674,8 +1674,8 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 
 			State: nil,
 
-			Config: map[string]interface{}{
-				"config_vars": map[string]interface{}{
+			Config: map[string]any{
+				"config_vars": map[string]any{
 					"bar": "baz",
 				},
 			},
@@ -1713,8 +1713,8 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 				},
 			},
 
-			Config: map[string]interface{}{
-				"config_vars": map[string]interface{}{
+			Config: map[string]any{
+				"config_vars": map[string]any{
 					"bar": "baz",
 				},
 			},
@@ -1753,8 +1753,8 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 				},
 			},
 
-			Config: map[string]interface{}{
-				"vars": map[string]interface{}{
+			Config: map[string]any{
+				"vars": map[string]any{
 					"bar": "baz",
 				},
 			},
@@ -1818,9 +1818,9 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 				},
 			},
 
-			Config: map[string]interface{}{
-				"config_vars": []interface{}{
-					map[string]interface{}{
+			Config: map[string]any{
+				"config_vars": []any{
+					map[string]any{
 						"bar": "baz",
 					},
 				},
@@ -1862,7 +1862,7 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 				},
 			},
 
-			Config: map[string]interface{}{},
+			Config: map[string]any{},
 
 			Diff: &terraform.InstanceDiff{
 				Attributes: map[string]*terraform.ResourceAttrDiff{
@@ -1912,7 +1912,7 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 				},
 			},
 
-			Config: map[string]interface{}{
+			Config: map[string]any{
 				"availability_zone": "foo",
 			},
 
@@ -1943,7 +1943,7 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 					Optional: true,
 					Computed: true,
 					Elem:     &Schema{Type: TypeInt},
-					Set: func(a interface{}) int {
+					Set: func(a any) int {
 						return a.(int)
 					},
 				},
@@ -1958,7 +1958,7 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 				},
 			},
 
-			Config: map[string]interface{}{
+			Config: map[string]any{
 				"availability_zone": "foo",
 			},
 
@@ -1983,7 +1983,7 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 					Elem:     &Schema{Type: TypeString},
 					Optional: true,
 					Computed: true,
-					Set: func(v interface{}) int {
+					Set: func(v any) int {
 						return len(v.(string))
 					},
 				},
@@ -1996,8 +1996,8 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 				},
 			},
 
-			Config: map[string]interface{}{
-				"instances": []interface{}{hcl2shim.UnknownVariableValue},
+			Config: map[string]any{
+				"instances": []any{hcl2shim.UnknownVariableValue},
 			},
 
 			Diff: &terraform.InstanceDiff{
@@ -2030,8 +2030,8 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 							},
 						},
 					},
-					Set: func(v interface{}) int {
-						m := v.(map[string]interface{})
+					Set: func(v any) int {
+						m := v.(map[string]any)
 						return m["index"].(int)
 					},
 				},
@@ -2039,9 +2039,9 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 
 			State: nil,
 
-			Config: map[string]interface{}{
-				"route": []interface{}{
-					map[string]interface{}{
+			Config: map[string]any{
+				"route": []any{
+					map[string]any{
 						"index":   "1",
 						"gateway": hcl2shim.UnknownVariableValue,
 					},
@@ -2086,14 +2086,14 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 								Type:     TypeSet,
 								Optional: true,
 								Elem:     &Schema{Type: TypeInt},
-								Set: func(a interface{}) int {
+								Set: func(a any) int {
 									return a.(int)
 								},
 							},
 						},
 					},
-					Set: func(v interface{}) int {
-						m := v.(map[string]interface{})
+					Set: func(v any) int {
+						m := v.(map[string]any)
 						return m["index"].(int)
 					},
 				},
@@ -2101,11 +2101,11 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 
 			State: nil,
 
-			Config: map[string]interface{}{
-				"route": []interface{}{
-					map[string]interface{}{
+			Config: map[string]any{
+				"route": []any{
+					map[string]any{
 						"index": "1",
-						"gateway": []interface{}{
+						"gateway": []any{
 							hcl2shim.UnknownVariableValue,
 						},
 					},
@@ -2172,8 +2172,8 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 				},
 			},
 
-			Config: map[string]interface{}{
-				"vars": map[string]interface{}{
+			Config: map[string]any{
+				"vars": map[string]any{
 					"bar": hcl2shim.UnknownVariableValue,
 				},
 			},
@@ -2196,7 +2196,7 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 
 			State: &terraform.InstanceState{},
 
-			Config: map[string]interface{}{},
+			Config: map[string]any{},
 
 			Diff: nil,
 
@@ -2218,7 +2218,7 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 				},
 			},
 
-			Config: map[string]interface{}{
+			Config: map[string]any{
 				"some_threshold": 12.34,
 			},
 
@@ -2254,9 +2254,9 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 							},
 						},
 					},
-					Set: func(v interface{}) int {
+					Set: func(v any) int {
 						var buf bytes.Buffer
-						m := v.(map[string]interface{})
+						m := v.(map[string]any)
 						buf.WriteString(fmt.Sprintf("%s-", m["device_name"].(string)))
 						buf.WriteString(fmt.Sprintf("%t-", m["delete_on_termination"].(bool)))
 						return hashcode.String(buf.String())
@@ -2275,12 +2275,12 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 				},
 			},
 
-			Config: map[string]interface{}{
-				"block_device": []interface{}{
-					map[string]interface{}{
+			Config: map[string]any{
+				"block_device": []any{
+					map[string]any{
 						"device_name": "/dev/sda1",
 					},
-					map[string]interface{}{
+					map[string]any{
 						"device_name": "/dev/sdx",
 					},
 				},
@@ -2306,7 +2306,7 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 				},
 			},
 
-			Config: map[string]interface{}{},
+			Config: map[string]any{},
 
 			Diff: nil,
 
@@ -2330,14 +2330,14 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 								Type:     TypeSet,
 								Optional: true,
 								Elem:     &Schema{Type: TypeInt},
-								Set: func(a interface{}) int {
+								Set: func(a any) int {
 									return a.(int)
 								},
 							},
 						},
 					},
-					Set: func(v interface{}) int {
-						m := v.(map[string]interface{})
+					Set: func(v any) int {
+						m := v.(map[string]any)
 						return m["index"].(int)
 					},
 				},
@@ -2350,7 +2350,7 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 				},
 			},
 
-			Config: map[string]interface{}{},
+			Config: map[string]any{},
 
 			Diff: nil,
 
@@ -2374,7 +2374,7 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 				},
 			},
 
-			Config: map[string]interface{}{},
+			Config: map[string]any{},
 
 			Diff: nil,
 
@@ -2389,7 +2389,7 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 					Elem:     &Schema{Type: TypeString},
 					Optional: true,
 					ForceNew: true,
-					Set: func(v interface{}) int {
+					Set: func(v any) int {
 						return len(v.(string))
 					},
 				},
@@ -2403,7 +2403,7 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 				},
 			},
 
-			Config: map[string]interface{}{},
+			Config: map[string]any{},
 
 			Diff: &terraform.InstanceDiff{
 				Attributes: map[string]*terraform.ResourceAttrDiff{
@@ -2434,8 +2434,8 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 
 			State: nil,
 
-			Config: map[string]interface{}{
-				"vars": map[string]interface{}{
+			Config: map[string]any{
+				"vars": map[string]any{
 					"foo": "",
 				},
 			},
@@ -2468,7 +2468,7 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 
 			State: nil,
 
-			Config: map[string]interface{}{},
+			Config: map[string]any{},
 
 			Diff: nil,
 
@@ -2483,13 +2483,13 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 					Optional: true,
 					ForceNew: true,
 					Elem:     &Schema{Type: TypeInt},
-					Set:      func(interface{}) int { return 0 },
+					Set:      func(any) int { return 0 },
 				},
 			},
 
 			State: nil,
 
-			Config: map[string]interface{}{},
+			Config: map[string]any{},
 
 			Diff: nil,
 
@@ -2515,7 +2515,7 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 				},
 			},
 
-			Config: map[string]interface{}{},
+			Config: map[string]any{},
 
 			Diff: nil,
 
@@ -2564,8 +2564,8 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 							},
 						},
 					},
-					Set: func(v interface{}) int {
-						m := v.(map[string]interface{})
+					Set: func(v any) int {
+						m := v.(map[string]any)
 						return m["index"].(int)
 					},
 				},
@@ -2573,9 +2573,9 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 
 			State: nil,
 
-			Config: map[string]interface{}{
-				"route": []interface{}{
-					map[string]interface{}{
+			Config: map[string]any{
+				"route": []any{
+					map[string]any{
 						"index":        "1",
 						"gateway-name": "hello",
 					},
@@ -2617,11 +2617,11 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 								ForceNew: true,
 								Elem: &Schema{
 									Type: TypeString,
-									StateFunc: func(v interface{}) string {
+									StateFunc: func(v any) string {
 										return v.(string) + "!"
 									},
 								},
-								Set: func(v interface{}) int {
+								Set: func(v any) int {
 									i, err := strconv.Atoi(v.(string))
 									if err != nil {
 										t.Fatalf("err: %s", err)
@@ -2636,10 +2636,10 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 
 			State: nil,
 
-			Config: map[string]interface{}{
-				"service_account": []interface{}{
-					map[string]interface{}{
-						"scopes": []interface{}{"123"},
+			Config: map[string]any{
+				"service_account": []any{
+					map[string]any{
+						"scopes": []any{"123"},
 					},
 				},
 			},
@@ -2676,7 +2676,7 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 					Elem:     &Schema{Type: TypeString},
 					Optional: true,
 					ForceNew: true,
-					Set: func(v interface{}) int {
+					Set: func(v any) int {
 						return len(v.(string))
 					},
 				},
@@ -2691,8 +2691,8 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 				},
 			},
 
-			Config: map[string]interface{}{
-				"instances": []interface{}{"333", "4444"},
+			Config: map[string]any{
+				"instances": []any{"333", "4444"},
 			},
 
 			Diff: &terraform.InstanceDiff{
@@ -2744,7 +2744,7 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 				},
 			},
 
-			Config: map[string]interface{}{
+			Config: map[string]any{
 				"one": "1",
 				"two": "0",
 			},
@@ -2782,7 +2782,7 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 				Tainted: true,
 			},
 
-			Config: map[string]interface{}{},
+			Config: map[string]any{},
 
 			Diff: &terraform.InstanceDiff{
 				Attributes:     map[string]*terraform.ResourceAttrDiff{},
@@ -2798,7 +2798,7 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 					Required: true,
 					ForceNew: true,
 					Elem:     &Schema{Type: TypeInt},
-					Set: func(a interface{}) int {
+					Set: func(a any) int {
 						return a.(int)
 					},
 				},
@@ -2814,8 +2814,8 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 				},
 			},
 
-			Config: map[string]interface{}{
-				"ports": []interface{}{5, 2, 1},
+			Config: map[string]any{
+				"ports": []any{5, 2, 1},
 			},
 
 			Diff: &terraform.InstanceDiff{
@@ -2860,7 +2860,7 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 				},
 			},
 
-			Config: map[string]interface{}{},
+			Config: map[string]any{},
 
 			Diff: &terraform.InstanceDiff{
 				Attributes: map[string]*terraform.ResourceAttrDiff{
@@ -2892,7 +2892,7 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 				ID: "id",
 			},
 
-			Config: map[string]interface{}{
+			Config: map[string]any{
 				"foo": hcl2shim.UnknownVariableValue,
 			},
 
@@ -2918,7 +2918,7 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 					Required: true,
 					ForceNew: true,
 					Elem:     &Schema{Type: TypeInt},
-					Set: func(a interface{}) int {
+					Set: func(a any) int {
 						return a.(int)
 					},
 				},
@@ -2934,8 +2934,8 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 				},
 			},
 
-			Config: map[string]interface{}{
-				"ports": []interface{}{hcl2shim.UnknownVariableValue, 2, 1},
+			Config: map[string]any{
+				"ports": []any{hcl2shim.UnknownVariableValue, 2, 1},
 			},
 
 			Diff: &terraform.InstanceDiff{
@@ -2970,8 +2970,8 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 				},
 			},
 
-			Config: map[string]interface{}{
-				"config": []interface{}{hcl2shim.UnknownVariableValue, hcl2shim.UnknownVariableValue},
+			Config: map[string]any{
+				"config": []any{hcl2shim.UnknownVariableValue, hcl2shim.UnknownVariableValue},
 			},
 
 			Diff: &terraform.InstanceDiff{
@@ -3000,11 +3000,11 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 
 			State: nil,
 
-			Config: map[string]interface{}{
+			Config: map[string]any{
 				"availability_zone": "foo",
 			},
 
-			CustomizeDiff: func(d *ResourceDiff, meta interface{}) error {
+			CustomizeDiff: func(d *ResourceDiff, meta any) error {
 				if err := d.SetNew("availability_zone", "bar"); err != nil {
 					return err
 				}
@@ -3043,9 +3043,9 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 
 			State: nil,
 
-			Config: map[string]interface{}{},
+			Config: map[string]any{},
 
-			CustomizeDiff: func(d *ResourceDiff, meta interface{}) error {
+			CustomizeDiff: func(d *ResourceDiff, meta any) error {
 				if err := d.SetNew("availability_zone", "bar"); err != nil {
 					return err
 				}
@@ -3082,11 +3082,11 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 
 			State: nil,
 
-			Config: map[string]interface{}{
+			Config: map[string]any{
 				"availability_zone": "foo",
 			},
 
-			CustomizeDiff: func(d *ResourceDiff, meta interface{}) error {
+			CustomizeDiff: func(d *ResourceDiff, meta any) error {
 				if err := d.SetNew("availability_zone", "bar"); err != nil {
 					return err
 				}
@@ -3121,11 +3121,11 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 
 			State: nil,
 
-			Config: map[string]interface{}{
+			Config: map[string]any{
 				"ami_id": "foo",
 			},
 
-			CustomizeDiff: func(d *ResourceDiff, meta interface{}) error {
+			CustomizeDiff: func(d *ResourceDiff, meta any) error {
 				if err := d.SetNew("instance_id", "bar"); err != nil {
 					return err
 				}
@@ -3156,7 +3156,7 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 					Optional: true,
 					Computed: true,
 					Elem:     &Schema{Type: TypeInt},
-					Set: func(a interface{}) int {
+					Set: func(a any) int {
 						return a.(int)
 					},
 				},
@@ -3172,12 +3172,12 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 				},
 			},
 
-			Config: map[string]interface{}{
-				"ports": []interface{}{5, 2, 6},
+			Config: map[string]any{
+				"ports": []any{5, 2, 6},
 			},
 
-			CustomizeDiff: func(d *ResourceDiff, meta interface{}) error {
-				if err := d.SetNew("ports", []interface{}{5, 2, 1}); err != nil {
+			CustomizeDiff: func(d *ResourceDiff, meta any) error {
+				if err := d.SetNew("ports", []any{5, 2, 1}); err != nil {
 					return err
 				}
 				if err := d.ForceNew("ports"); err != nil {
@@ -3223,9 +3223,9 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 				Tainted: true,
 			},
 
-			Config: map[string]interface{}{},
+			Config: map[string]any{},
 
-			CustomizeDiff: func(d *ResourceDiff, meta interface{}) error {
+			CustomizeDiff: func(d *ResourceDiff, meta any) error {
 				return errors.New("diff customization should not have run")
 			},
 
@@ -3259,11 +3259,11 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 				},
 			},
 
-			Config: map[string]interface{}{
+			Config: map[string]any{
 				"etag": "bar",
 			},
 
-			CustomizeDiff: func(d *ResourceDiff, meta interface{}) error {
+			CustomizeDiff: func(d *ResourceDiff, meta any) error {
 				if d.HasChange("etag") {
 					d.SetNewComputed("version_id")
 				}
@@ -3304,11 +3304,11 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 				},
 			},
 
-			Config: map[string]interface{}{
+			Config: map[string]any{
 				"foo": "baz",
 			},
 
-			CustomizeDiff: func(d *ResourceDiff, meta interface{}) error {
+			CustomizeDiff: func(d *ResourceDiff, meta any) error {
 				return fmt.Errorf("diff vetoed")
 			},
 
@@ -3334,7 +3334,7 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 				},
 			},
 
-			Config: map[string]interface{}{
+			Config: map[string]any{
 				"attr": "",
 			},
 		},
@@ -3366,11 +3366,11 @@ func TestShimSchemaMap_Diff(t *testing.T) {
 					"stream_view_type": "KEYS_ONLY",
 				},
 			},
-			Config: map[string]interface{}{
+			Config: map[string]any{
 				"stream_enabled":   false,
 				"stream_view_type": "",
 			},
-			CustomizeDiff: func(diff *ResourceDiff, v interface{}) error {
+			CustomizeDiff: func(diff *ResourceDiff, v any) error {
 				v, ok := diff.GetOk("unrelated_set")
 				if ok {
 					return fmt.Errorf("Didn't expect unrelated_set: %#v", v)
@@ -3477,21 +3477,21 @@ func resourceSchemaToBlock(s map[string]*Schema) *configschema.Block {
 }
 
 func TestRemoveConfigUnknowns(t *testing.T) {
-	cfg := map[string]interface{}{
+	cfg := map[string]any{
 		"id": "74D93920-ED26-11E3-AC10-0800200C9A66",
-		"route_rules": []interface{}{
-			map[string]interface{}{
+		"route_rules": []any{
+			map[string]any{
 				"cidr_block":        "74D93920-ED26-11E3-AC10-0800200C9A66",
 				"destination":       "0.0.0.0/0",
 				"destination_type":  "CIDR_BLOCK",
 				"network_entity_id": "1",
 			},
-			map[string]interface{}{
+			map[string]any{
 				"cidr_block":       "74D93920-ED26-11E3-AC10-0800200C9A66",
 				"destination":      "0.0.0.0/0",
 				"destination_type": "CIDR_BLOCK",
-				"sub_block": []interface{}{
-					map[string]interface{}{
+				"sub_block": []any{
+					map[string]any{
 						"computed": "74D93920-ED26-11E3-AC10-0800200C9A66",
 					},
 				},
@@ -3499,18 +3499,18 @@ func TestRemoveConfigUnknowns(t *testing.T) {
 		},
 	}
 
-	expect := map[string]interface{}{
-		"route_rules": []interface{}{
-			map[string]interface{}{
+	expect := map[string]any{
+		"route_rules": []any{
+			map[string]any{
 				"destination":       "0.0.0.0/0",
 				"destination_type":  "CIDR_BLOCK",
 				"network_entity_id": "1",
 			},
-			map[string]interface{}{
+			map[string]any{
 				"destination":      "0.0.0.0/0",
 				"destination_type": "CIDR_BLOCK",
-				"sub_block": []interface{}{
-					map[string]interface{}{},
+				"sub_block": []any{
+					map[string]any{},
 				},
 			},
 		},

@@ -20,7 +20,7 @@ func TestRemoteClient(t *testing.T) {
 	testACC(t)
 	defer cleanupK8sResources(t)
 
-	b := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]interface{}{
+	b := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]any{
 		"secret_suffix": secretSuffix,
 	}))
 
@@ -36,11 +36,11 @@ func TestRemoteClientLocks(t *testing.T) {
 	testACC(t)
 	defer cleanupK8sResources(t)
 
-	b1 := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]interface{}{
+	b1 := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]any{
 		"secret_suffix": secretSuffix,
 	}))
 
-	b2 := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]interface{}{
+	b2 := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]any{
 		"secret_suffix": secretSuffix,
 	}))
 
@@ -61,11 +61,11 @@ func TestForceUnlock(t *testing.T) {
 	testACC(t)
 	defer cleanupK8sResources(t)
 
-	b1 := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]interface{}{
+	b1 := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]any{
 		"secret_suffix": secretSuffix,
 	}))
 
-	b2 := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]interface{}{
+	b2 := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]any{
 		"secret_suffix": secretSuffix,
 	}))
 

@@ -3837,15 +3837,15 @@ func TestContext2Apply_multiVarComprehensive(t *testing.T) {
 			t.Fatalf("error during apply: %s", diags.Err())
 		}
 
-		want := map[string]interface{}{
-			"source_ids": []interface{}{"foo", "foo", "foo"},
-			"source_names": []interface{}{
+		want := map[string]any{
+			"source_ids": []any{"foo", "foo", "foo"},
+			"source_names": []any{
 				"source.0",
 				"source.1",
 				"source.2",
 			},
 		}
-		got := map[string]interface{}{}
+		got := map[string]any{}
 		for k, s := range state.RootModule().OutputValues {
 			got[k] = hcl2shim.ConfigValueFromHCL2(s.Value)
 		}
@@ -5519,7 +5519,7 @@ func TestContext2Apply_Provisioner_Diff(t *testing.T) {
 	// Change the state to force a diff
 	mod := state.RootModule()
 	obj := mod.Resources["aws_instance.bar"].Instances[addrs.NoKey].Current
-	var attrs map[string]interface{}
+	var attrs map[string]any
 	err := json.Unmarshal(obj.AttrsJSON, &attrs)
 	if err != nil {
 		t.Fatal(err)
@@ -6707,7 +6707,7 @@ func TestContext2Apply_idAttr(t *testing.T) {
 	if !ok {
 		t.Fatal("not in state")
 	}
-	var attrs map[string]interface{}
+	var attrs map[string]any
 	err := json.Unmarshal(rs.Instances[addrs.NoKey].Current.AttrsJSON, &attrs)
 	if err != nil {
 		t.Fatal(err)
@@ -8580,7 +8580,7 @@ resource "null_instance" "depends" {
 	if is == nil {
 		t.Fatal("data resource instance is not present in state; should be")
 	}
-	var attrs map[string]interface{}
+	var attrs map[string]any
 	err := json.Unmarshal(is.Current.AttrsJSON, &attrs)
 	if err != nil {
 		t.Fatal(err)

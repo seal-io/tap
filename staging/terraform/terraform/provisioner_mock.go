@@ -16,7 +16,7 @@ var _ provisioners.Interface = (*MockProvisioner)(nil)
 type MockProvisioner struct {
 	sync.Mutex
 	// Anything you want, in case you need to store extra data with the mock.
-	Meta interface{}
+	Meta any
 
 	GetSchemaCalled   bool
 	GetSchemaResponse provisioners.GetSchemaResponse

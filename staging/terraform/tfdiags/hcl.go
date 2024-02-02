@@ -53,7 +53,7 @@ func (d hclDiagnostic) FromExpr() *FromExpr {
 	}
 }
 
-func (d hclDiagnostic) ExtraInfo() interface{} {
+func (d hclDiagnostic) ExtraInfo() any {
 	return d.diag.Extra
 }
 

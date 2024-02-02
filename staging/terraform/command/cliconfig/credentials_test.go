@@ -31,7 +31,7 @@ func TestCredentialsForHost(t *testing.T) {
 		// a credentials helper program, since we're only testing the logic
 		// for choosing when to delegate to the helper here. The logic for
 		// interacting with a helper program is tested in the svcauth package.
-		helper: svcauth.StaticCredentialsSource(map[svchost.Hostname]map[string]interface{}{
+		helper: svcauth.StaticCredentialsSource(map[svchost.Hostname]map[string]any{
 			"from-helper.example.com": {
 				"token": "from-helper",
 			},
@@ -219,7 +219,7 @@ func TestCredentialsStoreForget(t *testing.T) {
 	cfg := &Config{
 		// This simulates there being a credentials block manually configured
 		// in some file _other than_ credentials.tfrc.json.
-		Credentials: map[string]map[string]interface{}{
+		Credentials: map[string]map[string]any{
 			"manually-configured.example.com": {
 				"token": "manually-configured",
 			},
@@ -307,7 +307,7 @@ func TestCredentialsStoreForget(t *testing.T) {
 	// If we were loading the real CLI config from disk here then this
 	// entry would already be in cfg.Credentials, but we need to fake that
 	// in the test because we're constructing this *Config value directly.
-	cfg.Credentials["stored-locally.example.com"] = map[string]interface{}{
+	cfg.Credentials["stored-locally.example.com"] = map[string]any{
 		"token": "stored-locally",
 	}
 	mockHelper := &mockCredentialsHelper{current: make(map[svchost.Hostname]cty.Value)}

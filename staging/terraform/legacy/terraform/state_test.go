@@ -177,7 +177,7 @@ func TestStateDeepCopy(t *testing.T) {
 						Resources: map[string]*ResourceState{
 							"test_instance.foo": &ResourceState{
 								Primary: &InstanceState{
-									Meta: map[string]interface{}{},
+									Meta: map[string]any{},
 								},
 							},
 						},
@@ -197,7 +197,7 @@ func TestStateDeepCopy(t *testing.T) {
 						Resources: map[string]*ResourceState{
 							"test_instance.foo": &ResourceState{
 								Primary: &InstanceState{
-									Meta: map[string]interface{}{},
+									Meta: map[string]any{},
 								},
 								Deposed: []*InstanceState{
 									{ID: "test"},
@@ -295,7 +295,7 @@ func TestStateEqual(t *testing.T) {
 						Resources: map[string]*ResourceState{
 							"test_instance.foo": &ResourceState{
 								Primary: &InstanceState{
-									Meta: map[string]interface{}{
+									Meta: map[string]any{
 										"schema_version": "1",
 									},
 								},
@@ -311,7 +311,7 @@ func TestStateEqual(t *testing.T) {
 						Resources: map[string]*ResourceState{
 							"test_instance.foo": &ResourceState{
 								Primary: &InstanceState{
-									Meta: map[string]interface{}{
+									Meta: map[string]any{
 										"schema_version": "2",
 									},
 								},
@@ -333,8 +333,8 @@ func TestStateEqual(t *testing.T) {
 						Resources: map[string]*ResourceState{
 							"test_instance.foo": &ResourceState{
 								Primary: &InstanceState{
-									Meta: map[string]interface{}{
-										"timeouts": map[string]interface{}{
+									Meta: map[string]any{
+										"timeouts": map[string]any{
 											"create": 42,
 											"read":   "27",
 										},
@@ -352,8 +352,8 @@ func TestStateEqual(t *testing.T) {
 						Resources: map[string]*ResourceState{
 							"test_instance.foo": &ResourceState{
 								Primary: &InstanceState{
-									Meta: map[string]interface{}{
-										"timeouts": map[string]interface{}{
+									Meta: map[string]any{
+										"timeouts": map[string]any{
 											"create": 42,
 											"read":   "27",
 										},
@@ -377,8 +377,8 @@ func TestStateEqual(t *testing.T) {
 						Resources: map[string]*ResourceState{
 							"test_instance.foo": &ResourceState{
 								Primary: &InstanceState{
-									Meta: map[string]interface{}{
-										"timeouts": map[string]interface{}{
+									Meta: map[string]any{
+										"timeouts": map[string]any{
 											"create": int(42),
 											"read":   "27",
 										},
@@ -396,8 +396,8 @@ func TestStateEqual(t *testing.T) {
 						Resources: map[string]*ResourceState{
 							"test_instance.foo": &ResourceState{
 								Primary: &InstanceState{
-									Meta: map[string]interface{}{
-										"timeouts": map[string]interface{}{
+									Meta: map[string]any{
+										"timeouts": map[string]any{
 											"create": float64(42),
 											"read":   "27",
 										},

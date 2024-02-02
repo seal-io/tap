@@ -32,7 +32,7 @@ func (e simpleWarning) FromExpr() *FromExpr {
 	return nil
 }
 
-func (e simpleWarning) ExtraInfo() interface{} {
+func (e simpleWarning) ExtraInfo() any {
 	// Simple warnings cannot carry extra information.
 	return nil
 }

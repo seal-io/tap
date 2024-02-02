@@ -840,10 +840,10 @@ func TestShow_json_output_state(t *testing.T) {
 
 			// compare ui output to wanted output
 			type state struct {
-				FormatVersion    string                 `json:"format_version,omitempty"`
-				TerraformVersion string                 `json:"terraform_version"`
-				Values           map[string]interface{} `json:"values,omitempty"`
-				SensitiveValues  map[string]bool        `json:"sensitive_values,omitempty"`
+				FormatVersion    string          `json:"format_version,omitempty"`
+				TerraformVersion string          `json:"terraform_version"`
+				Values           map[string]any  `json:"values,omitempty"`
+				SensitiveValues  map[string]bool `json:"sensitive_values,omitempty"`
 			}
 			var got, want state
 
@@ -1142,18 +1142,18 @@ func showFixturePlanFile(t *testing.T, action plans.Action) string {
 // to avoid needing to constantly update the expected output; as a potential
 // TODO we could write a jsonplan compare function.
 type plan struct {
-	FormatVersion   string                 `json:"format_version,omitempty"`
-	Variables       map[string]interface{} `json:"variables,omitempty"`
-	PlannedValues   map[string]interface{} `json:"planned_values,omitempty"`
-	ResourceDrift   []interface{}          `json:"resource_drift,omitempty"`
-	ResourceChanges []interface{}          `json:"resource_changes,omitempty"`
-	OutputChanges   map[string]interface{} `json:"output_changes,omitempty"`
-	PriorState      priorState             `json:"prior_state,omitempty"`
-	Config          map[string]interface{} `json:"configuration,omitempty"`
+	FormatVersion   string         `json:"format_version,omitempty"`
+	Variables       map[string]any `json:"variables,omitempty"`
+	PlannedValues   map[string]any `json:"planned_values,omitempty"`
+	ResourceDrift   []any          `json:"resource_drift,omitempty"`
+	ResourceChanges []any          `json:"resource_changes,omitempty"`
+	OutputChanges   map[string]any `json:"output_changes,omitempty"`
+	PriorState      priorState     `json:"prior_state,omitempty"`
+	Config          map[string]any `json:"configuration,omitempty"`
 }
 
 type priorState struct {
-	FormatVersion   string                 `json:"format_version,omitempty"`
-	Values          map[string]interface{} `json:"values,omitempty"`
-	SensitiveValues map[string]bool        `json:"sensitive_values,omitempty"`
+	FormatVersion   string          `json:"format_version,omitempty"`
+	Values          map[string]any  `json:"values,omitempty"`
+	SensitiveValues map[string]bool `json:"sensitive_values,omitempty"`
 }

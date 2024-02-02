@@ -25,7 +25,7 @@ func TestProvisionerValidate(t *testing.T) {
 	cases := []struct {
 		Name   string
 		P      *Provisioner
-		Config map[string]interface{}
+		Config map[string]any
 		Err    bool
 		Warns  []string
 	}{
@@ -73,7 +73,7 @@ func TestProvisionerValidate(t *testing.T) {
 				},
 				ApplyFunc: noopApply,
 			},
-			map[string]interface{}{
+			map[string]any{
 				"foo": "bar",
 			},
 			false,
@@ -86,7 +86,7 @@ func TestProvisionerValidate(t *testing.T) {
 					"foo": {
 						Type:     TypeString,
 						Optional: true,
-						ValidateFunc: func(v interface{}, k string) (ws []string, errors []error) {
+						ValidateFunc: func(v any, k string) (ws []string, errors []error) {
 							ws = append(ws, "Simple warning from property validation")
 							return
 						},
@@ -94,7 +94,7 @@ func TestProvisionerValidate(t *testing.T) {
 				},
 				ApplyFunc: noopApply,
 			},
-			Config: map[string]interface{}{
+			Config: map[string]any{
 				"foo": "",
 			},
 			Err:   false,
@@ -144,7 +144,7 @@ func TestProvisionerApply(t *testing.T) {
 		Name   string
 		P      *Provisioner
 		Conn   map[string]string
-		Config map[string]interface{}
+		Config map[string]any
 		Err    bool
 	}{
 		{
@@ -180,7 +180,7 @@ func TestProvisionerApply(t *testing.T) {
 			map[string]string{
 				"foo": "bar",
 			},
-			map[string]interface{}{
+			map[string]any{
 				"foo": 42,
 			},
 			false,
@@ -226,7 +226,7 @@ func TestProvisionerApply_nilState(t *testing.T) {
 		},
 	}
 
-	conf := map[string]interface{}{
+	conf := map[string]any{
 		"foo": 42,
 	}
 
@@ -286,7 +286,7 @@ func TestProvisionerStop_apply(t *testing.T) {
 		"foo": "bar",
 	}
 
-	conf := map[string]interface{}{
+	conf := map[string]any{
 		"foo": 42,
 	}
 

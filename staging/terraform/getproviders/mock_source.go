@@ -22,7 +22,7 @@ import (
 type MockSource struct {
 	packages []PackageMeta
 	warnings map[addrs.Provider]Warnings
-	calls    [][]interface{}
+	calls    [][]any
 }
 
 var _ Source = (*MockSource)(nil)
@@ -44,7 +44,7 @@ func NewMockSource(packages []PackageMeta, warns map[addrs.Provider]Warnings) *M
 // are available in the fixed set of packages that were passed to
 // NewMockSource when creating the receiving source.
 func (s *MockSource) AvailableVersions(ctx context.Context, provider addrs.Provider) (VersionList, Warnings, error) {
-	s.calls = append(s.calls, []interface{}{"AvailableVersions", provider})
+	s.calls = append(s.calls, []any{"AvailableVersions", provider})
 	var ret VersionList
 	for _, pkg := range s.packages {
 		if pkg.Provider == provider {
@@ -80,7 +80,7 @@ func (s *MockSource) AvailableVersions(ctx context.Context, provider addrs.Provi
 // of other sources in an equivalent situation because it's a degenerate case
 // with undefined results.
 func (s *MockSource) PackageMeta(ctx context.Context, provider addrs.Provider, version Version, target Platform) (PackageMeta, error) {
-	s.calls = append(s.calls, []interface{}{"PackageMeta", provider, version, target})
+	s.calls = append(s.calls, []any{"PackageMeta", provider, version, target})
 
 	for _, pkg := range s.packages {
 		if pkg.Provider != provider {
@@ -119,7 +119,7 @@ func (s *MockSource) PackageMeta(ctx context.Context, provider addrs.Provider, v
 //
 // Callers are forbidden from modifying any objects accessible via the returned
 // value.
-func (s *MockSource) CallLog() [][]interface{} {
+func (s *MockSource) CallLog() [][]any {
 	return s.calls
 }
 

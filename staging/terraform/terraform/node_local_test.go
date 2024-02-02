@@ -21,7 +21,7 @@ import (
 func TestNodeLocalExecute(t *testing.T) {
 	tests := []struct {
 		Value string
-		Want  interface{}
+		Want  any
 		Err   bool
 	}{
 		{

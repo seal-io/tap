@@ -473,7 +473,7 @@ func appendInstanceObjectStateV4(rs *states.Resource, is *states.ResourceInstanc
 		deps[i] = depAddr.String()
 	}
 
-	var rawKey interface{}
+	var rawKey any
 	switch tk := key.(type) {
 	case addrs.IntKey:
 		rawKey = int(tk)
@@ -705,9 +705,9 @@ type resourceStateV4 struct {
 }
 
 type instanceObjectStateV4 struct {
-	IndexKey interface{} `json:"index_key,omitempty"`
-	Status   string      `json:"status,omitempty"`
-	Deposed  string      `json:"deposed,omitempty"`
+	IndexKey any    `json:"index_key,omitempty"`
+	Status   string `json:"status,omitempty"`
+	Deposed  string `json:"deposed,omitempty"`
 
 	SchemaVersion           uint64            `json:"schema_version"`
 	AttributesRaw           json.RawMessage   `json:"attributes,omitempty"`

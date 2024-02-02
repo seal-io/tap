@@ -89,7 +89,7 @@ func (r *DiffFieldReader) ReadField(address []string) (FieldReadResult, error) {
 
 func (r *DiffFieldReader) readMap(
 	address []string, schema *Schema) (FieldReadResult, error) {
-	result := make(map[string]interface{})
+	result := make(map[string]any)
 	resultSet := false
 
 	// First read the map from the underlying source
@@ -100,7 +100,7 @@ func (r *DiffFieldReader) readMap(
 	if source.Exists {
 		// readMap may return a nil value, or an unknown value placeholder in
 		// some cases, causing the type assertion to panic if we don't assign the ok value
-		result, _ = source.Value.(map[string]interface{})
+		result, _ = source.Value.(map[string]any)
 		resultSet = true
 	}
 
@@ -133,7 +133,7 @@ func (r *DiffFieldReader) readMap(
 		return FieldReadResult{}, nil
 	}
 
-	var resultVal interface{}
+	var resultVal any
 	if resultSet {
 		resultVal = result
 	}

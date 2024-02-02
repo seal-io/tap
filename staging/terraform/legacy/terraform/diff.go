@@ -406,7 +406,7 @@ type InstanceDiff struct {
 	// plans but otherwise is completely ignored by Terraform core. It is
 	// meant to be used for additional data a resource may want to pass through.
 	// The value here must only contain Go primitives and collections.
-	Meta map[string]interface{}
+	Meta map[string]any
 }
 
 func (d *InstanceDiff) Lock()   { d.mu.Lock() }
@@ -961,13 +961,13 @@ func countFlatmapContainerValues(key string, attrs map[string]string) string {
 
 // ResourceAttrDiff is the diff of a single attribute of a resource.
 type ResourceAttrDiff struct {
-	Old         string      // Old Value
-	New         string      // New Value
-	NewComputed bool        // True if new value is computed (unknown currently)
-	NewRemoved  bool        // True if this attribute is being removed
-	NewExtra    interface{} // Extra information for the provider
-	RequiresNew bool        // True if change requires new resource
-	Sensitive   bool        // True if the data should not be displayed in UI output
+	Old         string // Old Value
+	New         string // New Value
+	NewComputed bool   // True if new value is computed (unknown currently)
+	NewRemoved  bool   // True if this attribute is being removed
+	NewExtra    any    // Extra information for the provider
+	RequiresNew bool   // True if change requires new resource
+	Sensitive   bool   // True if the data should not be displayed in UI output
 	Type        DiffAttrType
 }
 

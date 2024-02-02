@@ -19,8 +19,8 @@ import (
 //
 // This is not foolproof as since it performs sums, you can run into
 // collisions. Spec tests accordingly. :P
-func testSetFunc(v interface{}) int {
-	m := v.(map[string]interface{})
+func testSetFunc(v any) int {
+	m := v.(map[string]any)
 	return m["foo"].(int) + m["bar"].(int)
 }
 
@@ -32,8 +32,8 @@ type resourceDiffTestCase struct {
 	Config        *terraform.ResourceConfig
 	Diff          *terraform.InstanceDiff
 	Key           string
-	OldValue      interface{}
-	NewValue      interface{}
+	OldValue      any
+	NewValue      any
 	Expected      *terraform.InstanceDiff
 	ExpectedKeys  []string
 	ExpectedError bool
@@ -56,7 +56,7 @@ func testDiffCases(t *testing.T, oldPrefix string, oldOffset int, computed bool)
 					"foo": "bar",
 				},
 			},
-			Config: testConfig(t, map[string]interface{}{
+			Config: testConfig(t, map[string]any{
 				"foo": "baz",
 			}),
 			Diff: &terraform.InstanceDiff{
@@ -101,8 +101,8 @@ func testDiffCases(t *testing.T, oldPrefix string, oldOffset int, computed bool)
 					"foo.1996459178": "bar",
 				},
 			},
-			Config: testConfig(t, map[string]interface{}{
-				"foo": []interface{}{"baz"},
+			Config: testConfig(t, map[string]any{
+				"foo": []any{"baz"},
 			}),
 			Diff: &terraform.InstanceDiff{
 				Attributes: map[string]*terraform.ResourceAttrDiff{
@@ -118,7 +118,7 @@ func testDiffCases(t *testing.T, oldPrefix string, oldOffset int, computed bool)
 				},
 			},
 			Key:      "foo",
-			NewValue: []interface{}{"qux"},
+			NewValue: []any{"qux"},
 			Expected: &terraform.InstanceDiff{
 				Attributes: func() map[string]*terraform.ResourceAttrDiff {
 					result := map[string]*terraform.ResourceAttrDiff{}
@@ -159,8 +159,8 @@ func testDiffCases(t *testing.T, oldPrefix string, oldOffset int, computed bool)
 					"foo.0": "bar",
 				},
 			},
-			Config: testConfig(t, map[string]interface{}{
-				"foo": []interface{}{"baz"},
+			Config: testConfig(t, map[string]any{
+				"foo": []any{"baz"},
 			}),
 			Diff: &terraform.InstanceDiff{
 				Attributes: map[string]*terraform.ResourceAttrDiff{
@@ -171,7 +171,7 @@ func testDiffCases(t *testing.T, oldPrefix string, oldOffset int, computed bool)
 				},
 			},
 			Key:      "foo",
-			NewValue: []interface{}{"qux"},
+			NewValue: []any{"qux"},
 			Expected: &terraform.InstanceDiff{
 				Attributes: func() map[string]*terraform.ResourceAttrDiff {
 					result := make(map[string]*terraform.ResourceAttrDiff)
@@ -206,8 +206,8 @@ func testDiffCases(t *testing.T, oldPrefix string, oldOffset int, computed bool)
 					"foo.bar": "baz",
 				},
 			},
-			Config: testConfig(t, map[string]interface{}{
-				"foo": map[string]interface{}{"bar": "qux"},
+			Config: testConfig(t, map[string]any{
+				"foo": map[string]any{"bar": "qux"},
 			}),
 			Diff: &terraform.InstanceDiff{
 				Attributes: map[string]*terraform.ResourceAttrDiff{
@@ -218,7 +218,7 @@ func testDiffCases(t *testing.T, oldPrefix string, oldOffset int, computed bool)
 				},
 			},
 			Key:      "foo",
-			NewValue: map[string]interface{}{"bar": "quux"},
+			NewValue: map[string]any{"bar": "quux"},
 			Expected: &terraform.InstanceDiff{
 				Attributes: func() map[string]*terraform.ResourceAttrDiff {
 					result := make(map[string]*terraform.ResourceAttrDiff)
@@ -262,7 +262,7 @@ func testDiffCases(t *testing.T, oldPrefix string, oldOffset int, computed bool)
 					"one": "two",
 				},
 			},
-			Config: testConfig(t, map[string]interface{}{
+			Config: testConfig(t, map[string]any{
 				"foo": "baz",
 			}),
 			Diff: &terraform.InstanceDiff{
@@ -312,7 +312,7 @@ func testDiffCases(t *testing.T, oldPrefix string, oldOffset int, computed bool)
 					"one": "two",
 				},
 			},
-			Config: testConfig(t, map[string]interface{}{
+			Config: testConfig(t, map[string]any{
 				"foo": "baz",
 			}),
 			Diff: &terraform.InstanceDiff{
@@ -377,13 +377,13 @@ func testDiffCases(t *testing.T, oldPrefix string, oldOffset int, computed bool)
 					"top.23.bar": "12",
 				},
 			},
-			Config: testConfig(t, map[string]interface{}{
-				"top": []interface{}{
-					map[string]interface{}{
+			Config: testConfig(t, map[string]any{
+				"top": []any{
+					map[string]any{
 						"foo": 1,
 						"bar": 3,
 					},
-					map[string]interface{}{
+					map[string]any{
 						"foo": 12,
 						"bar": 12,
 					},
@@ -410,16 +410,16 @@ func testDiffCases(t *testing.T, oldPrefix string, oldOffset int, computed bool)
 				},
 			},
 			Key: "top",
-			NewValue: NewSet(testSetFunc, []interface{}{
-				map[string]interface{}{
+			NewValue: NewSet(testSetFunc, []any{
+				map[string]any{
 					"foo": 1,
 					"bar": 4,
 				},
-				map[string]interface{}{
+				map[string]any{
 					"foo": 13,
 					"bar": 12,
 				},
-				map[string]interface{}{
+				map[string]any{
 					"foo": 21,
 					"bar": 22,
 				},
@@ -480,7 +480,7 @@ func testDiffCases(t *testing.T, oldPrefix string, oldOffset int, computed bool)
 					"foo": "bar",
 				},
 			},
-			Config:   testConfig(t, map[string]interface{}{}),
+			Config:   testConfig(t, map[string]any{}),
 			Diff:     &terraform.InstanceDiff{Attributes: map[string]*terraform.ResourceAttrDiff{}},
 			Key:      "foo",
 			NewValue: "baz",
@@ -512,7 +512,7 @@ func testDiffCases(t *testing.T, oldPrefix string, oldOffset int, computed bool)
 					"foo": "bar",
 				},
 			},
-			Config: testConfig(t, map[string]interface{}{
+			Config: testConfig(t, map[string]any{
 				"foo": "baz",
 			}),
 			Diff: &terraform.InstanceDiff{
@@ -540,7 +540,7 @@ func testDiffCases(t *testing.T, oldPrefix string, oldOffset int, computed bool)
 					"foo": "bar",
 				},
 			},
-			Config: testConfig(t, map[string]interface{}{
+			Config: testConfig(t, map[string]any{
 				"foo": "baz",
 			}),
 			Diff: &terraform.InstanceDiff{
@@ -574,7 +574,7 @@ func testDiffCases(t *testing.T, oldPrefix string, oldOffset int, computed bool)
 					"foo": "bar",
 				},
 			},
-			Config: testConfig(t, map[string]interface{}{}),
+			Config: testConfig(t, map[string]any{}),
 			Diff: &terraform.InstanceDiff{
 				Attributes: map[string]*terraform.ResourceAttrDiff{
 					"foo": &terraform.ResourceAttrDiff{
@@ -615,7 +615,7 @@ func testDiffCases(t *testing.T, oldPrefix string, oldOffset int, computed bool)
 				},
 				ID: "pre-existing",
 			},
-			Config:   testConfig(t, map[string]interface{}{}),
+			Config:   testConfig(t, map[string]any{}),
 			Diff:     &terraform.InstanceDiff{Attributes: map[string]*terraform.ResourceAttrDiff{}},
 			Key:      "foo",
 			NewValue: "",
@@ -705,7 +705,7 @@ func TestForceNew(t *testing.T) {
 					"foo": "bar",
 				},
 			},
-			Config: testConfig(t, map[string]interface{}{
+			Config: testConfig(t, map[string]any{
 				"foo": "baz",
 			}),
 			Diff: &terraform.InstanceDiff{
@@ -741,7 +741,7 @@ func TestForceNew(t *testing.T) {
 					"foo": "bar",
 				},
 			},
-			Config: testConfig(t, map[string]interface{}{
+			Config: testConfig(t, map[string]any{
 				"foo": "bar",
 			}),
 			ExpectedError: true,
@@ -759,7 +759,7 @@ func TestForceNew(t *testing.T) {
 					"foo": "bar",
 				},
 			},
-			Config: testConfig(t, map[string]interface{}{
+			Config: testConfig(t, map[string]any{
 				"foo": "baz",
 			}),
 			Diff: &terraform.InstanceDiff{
@@ -809,9 +809,9 @@ func TestForceNew(t *testing.T) {
 					"foo.0.baz": "xyz",
 				},
 			},
-			Config: testConfig(t, map[string]interface{}{
-				"foo": []interface{}{
-					map[string]interface{}{
+			Config: testConfig(t, map[string]any{
+				"foo": []any{
+					map[string]any{
 						"bar": "abcdefg",
 						"baz": "changed",
 					},
@@ -857,7 +857,7 @@ func TestForceNew(t *testing.T) {
 					"foo": "bar",
 				},
 			},
-			Config: testConfig(t, map[string]interface{}{}),
+			Config: testConfig(t, map[string]any{}),
 			Diff: &terraform.InstanceDiff{
 				Attributes: map[string]*terraform.ResourceAttrDiff{
 					"foo": &terraform.ResourceAttrDiff{
@@ -906,9 +906,9 @@ func TestForceNew(t *testing.T) {
 					"foo.0.bar": "abc",
 				},
 			},
-			Config: testConfig(t, map[string]interface{}{
-				"foo": []interface{}{
-					map[string]interface{}{
+			Config: testConfig(t, map[string]any{
+				"foo": []any{
+					map[string]any{
 						"bar": "abcdefg",
 					},
 				},
@@ -974,7 +974,7 @@ func TestClear(t *testing.T) {
 					"foo": "bar",
 				},
 			},
-			Config: testConfig(t, map[string]interface{}{
+			Config: testConfig(t, map[string]any{
 				"foo": "baz",
 			}),
 			Diff: &terraform.InstanceDiff{
@@ -1001,7 +1001,7 @@ func TestClear(t *testing.T) {
 					"foo": "bar",
 				},
 			},
-			Config: testConfig(t, map[string]interface{}{
+			Config: testConfig(t, map[string]any{
 				"foo": "baz",
 			}),
 			Diff: &terraform.InstanceDiff{
@@ -1035,7 +1035,7 @@ func TestClear(t *testing.T) {
 					"one": "two",
 				},
 			},
-			Config: testConfig(t, map[string]interface{}{
+			Config: testConfig(t, map[string]any{
 				"foo": "baz",
 				"one": "three",
 			}),
@@ -1090,9 +1090,9 @@ func TestClear(t *testing.T) {
 					"foo.0.baz": "baz1",
 				},
 			},
-			Config: testConfig(t, map[string]interface{}{
-				"foo": []interface{}{
-					map[string]interface{}{
+			Config: testConfig(t, map[string]any{
+				"foo": []any{
+					map[string]any{
 						"bar": "bar2",
 						"baz": "baz1",
 					},
@@ -1138,9 +1138,9 @@ func TestClear(t *testing.T) {
 					"foo.0.baz": "baz1",
 				},
 			},
-			Config: testConfig(t, map[string]interface{}{
-				"foo": []interface{}{
-					map[string]interface{}{
+			Config: testConfig(t, map[string]any{
+				"foo": []any{
+					map[string]any{
 						"bar": "bar2",
 						"baz": "baz2",
 					},
@@ -1208,7 +1208,7 @@ func TestGetChangedKeysPrefix(t *testing.T) {
 					"foo": "bar",
 				},
 			},
-			Config: testConfig(t, map[string]interface{}{
+			Config: testConfig(t, map[string]any{
 				"foo": "baz",
 			}),
 			Diff: &terraform.InstanceDiff{
@@ -1257,10 +1257,10 @@ func TestGetChangedKeysPrefix(t *testing.T) {
 					"foo.0.baz": "xyz",
 				},
 			},
-			Config: testConfig(t, map[string]interface{}{
+			Config: testConfig(t, map[string]any{
 				"testfield": "modified",
-				"foo": []interface{}{
-					map[string]interface{}{
+				"foo": []any{
+					map[string]any{
 						"bar": "abcdefg",
 						"baz": "changed",
 					},
@@ -1318,7 +1318,7 @@ func TestResourceDiffGetOkExists(t *testing.T) {
 		Config *terraform.ResourceConfig
 		Diff   *terraform.InstanceDiff
 		Key    string
-		Value  interface{}
+		Value  any
 		Ok     bool
 	}{
 		/*
@@ -1422,7 +1422,7 @@ func TestResourceDiffGetOkExists(t *testing.T) {
 			Diff: nil,
 
 			Key:   "ports",
-			Value: []interface{}{},
+			Value: []any{},
 			Ok:    false,
 		},
 
@@ -1445,7 +1445,7 @@ func TestResourceDiffGetOkExists(t *testing.T) {
 			Diff: nil,
 
 			Key:   "ports",
-			Value: map[string]interface{}{},
+			Value: map[string]any{},
 			Ok:    false,
 		},
 
@@ -1460,7 +1460,7 @@ func TestResourceDiffGetOkExists(t *testing.T) {
 					Type:     TypeSet,
 					Optional: true,
 					Elem:     &Schema{Type: TypeInt},
-					Set:      func(a interface{}) int { return a.(int) },
+					Set:      func(a any) int { return a.(int) },
 				},
 			},
 
@@ -1470,7 +1470,7 @@ func TestResourceDiffGetOkExists(t *testing.T) {
 			Diff: nil,
 
 			Key:   "ports",
-			Value: []interface{}{},
+			Value: []any{},
 			Ok:    false,
 		},
 
@@ -1481,7 +1481,7 @@ func TestResourceDiffGetOkExists(t *testing.T) {
 					Type:     TypeSet,
 					Optional: true,
 					Elem:     &Schema{Type: TypeInt},
-					Set:      func(a interface{}) int { return a.(int) },
+					Set:      func(a any) int { return a.(int) },
 				},
 			},
 
@@ -1562,7 +1562,7 @@ func TestResourceDiffGetOkExists(t *testing.T) {
 					"availability_zone": "foo",
 				},
 			},
-			Config: testConfig(t, map[string]interface{}{
+			Config: testConfig(t, map[string]any{
 				"availability_zone": "foo",
 			}),
 
@@ -1584,7 +1584,7 @@ func TestResourceDiffGetOkExists(t *testing.T) {
 			},
 
 			State: nil,
-			Config: testConfig(t, map[string]interface{}{
+			Config: testConfig(t, map[string]any{
 				"availability_zone": "foo",
 			}),
 
@@ -1616,7 +1616,7 @@ func TestResourceDiffGetOkExists(t *testing.T) {
 					"availability_zone": "foo",
 				},
 			},
-			Config: testConfig(t, map[string]interface{}{
+			Config: testConfig(t, map[string]any{
 				"availability_zone": "bar",
 			}),
 
@@ -1647,7 +1647,7 @@ func TestResourceDiffGetOkExists(t *testing.T) {
 					"availability_zone": "foo",
 				},
 			},
-			Config: testConfig(t, map[string]interface{}{}),
+			Config: testConfig(t, map[string]any{}),
 
 			Diff: &terraform.InstanceDiff{
 				Attributes: map[string]*terraform.ResourceAttrDiff{
@@ -1690,7 +1690,7 @@ func TestResourceDiffGetOkExistsSetNew(t *testing.T) {
 		State  *terraform.InstanceState
 		Diff   *terraform.InstanceDiff
 		Key    string
-		Value  interface{}
+		Value  any
 		Ok     bool
 	}{
 		Schema: map[string]*Schema{
@@ -1712,7 +1712,7 @@ func TestResourceDiffGetOkExistsSetNew(t *testing.T) {
 		Ok:    true,
 	}
 
-	d := newResourceDiff(tc.Schema, testConfig(t, map[string]interface{}{}), tc.State, tc.Diff)
+	d := newResourceDiff(tc.Schema, testConfig(t, map[string]any{}), tc.State, tc.Diff)
 	d.SetNew(tc.Key, tc.Value)
 
 	v, ok := d.GetOkExists(tc.Key)
@@ -1734,7 +1734,7 @@ func TestResourceDiffGetOkExistsSetNewComputed(t *testing.T) {
 		State  *terraform.InstanceState
 		Diff   *terraform.InstanceDiff
 		Key    string
-		Value  interface{}
+		Value  any
 		Ok     bool
 	}{
 		Schema: map[string]*Schema{
@@ -1760,7 +1760,7 @@ func TestResourceDiffGetOkExistsSetNewComputed(t *testing.T) {
 		Ok:    false,
 	}
 
-	d := newResourceDiff(tc.Schema, testConfig(t, map[string]interface{}{}), tc.State, tc.Diff)
+	d := newResourceDiff(tc.Schema, testConfig(t, map[string]any{}), tc.State, tc.Diff)
 	d.SetNewComputed(tc.Key)
 
 	_, ok := d.GetOkExists(tc.Key)
@@ -1789,7 +1789,7 @@ func TestResourceDiffNewValueKnown(t *testing.T) {
 				},
 			},
 			State: nil,
-			Config: testConfig(t, map[string]interface{}{
+			Config: testConfig(t, map[string]any{
 				"availability_zone": "foo",
 			}),
 			Diff: &terraform.InstanceDiff{
@@ -1816,7 +1816,7 @@ func TestResourceDiffNewValueKnown(t *testing.T) {
 					"availability_zone": "foo",
 				},
 			},
-			Config: testConfig(t, map[string]interface{}{
+			Config: testConfig(t, map[string]any{
 				"availability_zone": "foo",
 			}),
 			Diff: &terraform.InstanceDiff{
@@ -1838,7 +1838,7 @@ func TestResourceDiffNewValueKnown(t *testing.T) {
 					"availability_zone": "foo",
 				},
 			},
-			Config: testConfig(t, map[string]interface{}{}),
+			Config: testConfig(t, map[string]any{}),
 			Diff: &terraform.InstanceDiff{
 				Attributes: map[string]*terraform.ResourceAttrDiff{},
 			},
@@ -1859,7 +1859,7 @@ func TestResourceDiffNewValueKnown(t *testing.T) {
 					"availability_zone": "foo",
 				},
 			},
-			Config: testConfig(t, map[string]interface{}{}),
+			Config: testConfig(t, map[string]any{}),
 			Diff: &terraform.InstanceDiff{
 				Attributes: map[string]*terraform.ResourceAttrDiff{},
 			},
@@ -1880,7 +1880,7 @@ func TestResourceDiffNewValueKnown(t *testing.T) {
 					"availability_zone": "foo",
 				},
 			},
-			Config: testConfig(t, map[string]interface{}{
+			Config: testConfig(t, map[string]any{
 				"availability_zone": "foo",
 			}),
 			Diff: &terraform.InstanceDiff{
@@ -1904,7 +1904,7 @@ func TestResourceDiffNewValueKnown(t *testing.T) {
 			},
 			Config: testConfig(
 				t,
-				map[string]interface{}{
+				map[string]any{
 					"availability_zone": hcl2shim.UnknownVariableValue,
 				},
 			),
@@ -1929,7 +1929,7 @@ func TestResourceDiffNewValueKnown(t *testing.T) {
 			},
 			Config: testConfig(
 				t,
-				map[string]interface{}{
+				map[string]any{
 					"availability_zone": hcl2shim.UnknownVariableValue,
 				},
 			),
@@ -1966,7 +1966,7 @@ func TestResourceDiffNewValueKnownSetNew(t *testing.T) {
 		Config   *terraform.ResourceConfig
 		Diff     *terraform.InstanceDiff
 		Key      string
-		Value    interface{}
+		Value    any
 		Expected bool
 	}{
 		Schema: map[string]*Schema{
@@ -1983,7 +1983,7 @@ func TestResourceDiffNewValueKnownSetNew(t *testing.T) {
 		},
 		Config: testConfig(
 			t,
-			map[string]interface{}{
+			map[string]any{
 				"availability_zone": hcl2shim.UnknownVariableValue,
 			},
 		),
@@ -2030,7 +2030,7 @@ func TestResourceDiffNewValueKnownSetNewComputed(t *testing.T) {
 				"availability_zone": "foo",
 			},
 		},
-		Config: testConfig(t, map[string]interface{}{}),
+		Config: testConfig(t, map[string]any{}),
 		Diff: &terraform.InstanceDiff{
 			Attributes: map[string]*terraform.ResourceAttrDiff{},
 		},

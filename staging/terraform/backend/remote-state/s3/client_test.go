@@ -27,7 +27,7 @@ func TestRemoteClient(t *testing.T) {
 	bucketName := fmt.Sprintf("terraform-remote-s3-test-%x", time.Now().Unix())
 	keyName := "testState"
 
-	b := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]interface{}{
+	b := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]any{
 		"bucket":  bucketName,
 		"key":     keyName,
 		"encrypt": true,
@@ -49,14 +49,14 @@ func TestRemoteClientLocks(t *testing.T) {
 	bucketName := fmt.Sprintf("terraform-remote-s3-test-%x", time.Now().Unix())
 	keyName := "testState"
 
-	b1 := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]interface{}{
+	b1 := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]any{
 		"bucket":         bucketName,
 		"key":            keyName,
 		"encrypt":        true,
 		"dynamodb_table": bucketName,
 	})).(*Backend)
 
-	b2 := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]interface{}{
+	b2 := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]any{
 		"bucket":         bucketName,
 		"key":            keyName,
 		"encrypt":        true,
@@ -87,14 +87,14 @@ func TestForceUnlock(t *testing.T) {
 	bucketName := fmt.Sprintf("terraform-remote-s3-test-force-%x", time.Now().Unix())
 	keyName := "testState"
 
-	b1 := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]interface{}{
+	b1 := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]any{
 		"bucket":         bucketName,
 		"key":            keyName,
 		"encrypt":        true,
 		"dynamodb_table": bucketName,
 	})).(*Backend)
 
-	b2 := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]interface{}{
+	b2 := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]any{
 		"bucket":         bucketName,
 		"key":            keyName,
 		"encrypt":        true,
@@ -164,7 +164,7 @@ func TestRemoteClient_clientMD5(t *testing.T) {
 	bucketName := fmt.Sprintf("terraform-remote-s3-test-%x", time.Now().Unix())
 	keyName := "testState"
 
-	b := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]interface{}{
+	b := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]any{
 		"bucket":         bucketName,
 		"key":            keyName,
 		"dynamodb_table": bucketName,
@@ -212,7 +212,7 @@ func TestRemoteClient_stateChecksum(t *testing.T) {
 	bucketName := fmt.Sprintf("terraform-remote-s3-test-%x", time.Now().Unix())
 	keyName := "testState"
 
-	b1 := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]interface{}{
+	b1 := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]any{
 		"bucket":         bucketName,
 		"key":            keyName,
 		"dynamodb_table": bucketName,
@@ -244,7 +244,7 @@ func TestRemoteClient_stateChecksum(t *testing.T) {
 
 	// Use b2 without a dynamodb_table to bypass the lock table to write the state directly.
 	// client2 will write the "incorrect" state, simulating s3 eventually consistency delays
-	b2 := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]interface{}{
+	b2 := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]any{
 		"bucket": bucketName,
 		"key":    keyName,
 	})).(*Backend)

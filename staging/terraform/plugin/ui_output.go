@@ -16,7 +16,7 @@ type UIOutput struct {
 }
 
 func (o *UIOutput) Output(v string) {
-	o.Client.Call("Plugin.Output", v, new(interface{}))
+	o.Client.Call("Plugin.Output", v, new(any))
 }
 
 // UIOutputServer is the RPC server for serving UIOutput.
@@ -26,7 +26,7 @@ type UIOutputServer struct {
 
 func (s *UIOutputServer) Output(
 	v string,
-	reply *interface{}) error {
+	reply *any) error {
 	s.UIOutput.Output(v)
 	return nil
 }

@@ -283,7 +283,7 @@ func (c *RemoteClient) Put(data []byte) error {
 	}
 
 	// Then we update the link to point to the new chunks
-	payload, err = json.Marshal(map[string]interface{}{
+	payload, err = json.Marshal(map[string]any{
 		"current-hash": fmt.Sprintf("%x", md5),
 		"chunks":       chunkPaths,
 	})
@@ -669,7 +669,7 @@ func (c *RemoteClient) chunkedMode() (bool, string, []string, *consulapi.KVPair,
 		return false, "", nil, pair, err
 	}
 	if pair != nil {
-		var d map[string]interface{}
+		var d map[string]any
 		err = json.Unmarshal(pair.Value, &d)
 		// If there is an error when unmarshaling the payload, the state has
 		// probably been gziped in single entry mode.
@@ -678,7 +678,7 @@ func (c *RemoteClient) chunkedMode() (bool, string, []string, *consulapi.KVPair,
 			hash, ok := d["current-hash"]
 			if ok {
 				chunks := make([]string, 0)
-				for _, c := range d["chunks"].([]interface{}) {
+				for _, c := range d["chunks"].([]any) {
 					chunks = append(chunks, c.(string))
 				}
 				return true, hash.(string), chunks, pair, nil

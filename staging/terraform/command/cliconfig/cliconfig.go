@@ -58,7 +58,7 @@ type Config struct {
 
 	Hosts map[string]*ConfigHost `hcl:"host"`
 
-	Credentials        map[string]map[string]interface{}   `hcl:"credentials"`
+	Credentials        map[string]map[string]any           `hcl:"credentials"`
 	CredentialsHelpers map[string]*ConfigCredentialsHelper `hcl:"credentials_helper"`
 
 	// ProviderInstallation represents any provider_installation blocks
@@ -72,7 +72,7 @@ type Config struct {
 // configuration, which can be used to override the default service host
 // discovery behavior for a particular hostname.
 type ConfigHost struct {
-	Services map[string]interface{} `hcl:"services"`
+	Services map[string]any `hcl:"services"`
 }
 
 // ConfigCredentialsHelper is the structure of the "credentials_helper"
@@ -384,7 +384,7 @@ func (c *Config) Merge(c2 *Config) *Config {
 	}
 
 	if (len(c.Credentials) + len(c2.Credentials)) > 0 {
-		result.Credentials = make(map[string]map[string]interface{})
+		result.Credentials = make(map[string]map[string]any)
 		for host, creds := range c.Credentials {
 			result.Credentials[host] = creds
 		}

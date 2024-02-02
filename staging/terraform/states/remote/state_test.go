@@ -115,21 +115,21 @@ func TestStatePersist(t *testing.T) {
 				// Expect an initial push with values and a serial of 1
 				{
 					Method: "Put",
-					Content: map[string]interface{}{
+					Content: map[string]any{
 						"version":           4.0, // encoding/json decodes this as float64 by default
 						"lineage":           "some meaningless value",
 						"serial":            1.0, // encoding/json decodes this as float64 by default
 						"terraform_version": version.Version,
-						"outputs":           map[string]interface{}{},
-						"resources": []interface{}{
-							map[string]interface{}{
-								"instances": []interface{}{
-									map[string]interface{}{
-										"attributes_flat": map[string]interface{}{
+						"outputs":           map[string]any{},
+						"resources": []any{
+							map[string]any{
+								"instances": []any{
+									map[string]any{
+										"attributes_flat": map[string]any{
 											"filename": "file.txt",
 										},
 										"schema_version":       0.0,
-										"sensitive_attributes": []interface{}{},
+										"sensitive_attributes": []any{},
 									},
 								},
 								"mode":     "managed",
@@ -153,21 +153,21 @@ func TestStatePersist(t *testing.T) {
 			expectedRequests: []mockClientRequest{
 				{
 					Method: "Put",
-					Content: map[string]interface{}{
+					Content: map[string]any{
 						"version":           4.0, // encoding/json decodes this as float64 by default
 						"lineage":           "mock-lineage",
 						"serial":            2.0, // encoding/json decodes this as float64 by default
 						"terraform_version": version.Version,
-						"outputs":           map[string]interface{}{},
-						"resources": []interface{}{
-							map[string]interface{}{
-								"instances": []interface{}{
-									map[string]interface{}{
-										"attributes_flat": map[string]interface{}{
+						"outputs":           map[string]any{},
+						"resources": []any{
+							map[string]any{
+								"instances": []any{
+									map[string]any{
+										"attributes_flat": map[string]any{
 											"filename": "file.txt",
 										},
 										"schema_version":       0.0,
-										"sensitive_attributes": []interface{}{},
+										"sensitive_attributes": []any{},
 									},
 								},
 								"mode":     "managed",
@@ -191,13 +191,13 @@ func TestStatePersist(t *testing.T) {
 			expectedRequests: []mockClientRequest{
 				{
 					Method: "Put",
-					Content: map[string]interface{}{
+					Content: map[string]any{
 						"version":           4.0, // encoding/json decodes this as float64 by default
 						"lineage":           "mock-lineage",
 						"serial":            3.0, // encoding/json decodes this as float64 by default
 						"terraform_version": version.Version,
-						"outputs":           map[string]interface{}{},
-						"resources":         []interface{}{},
+						"outputs":           map[string]any{},
+						"resources":         []any{},
 						"check_results":     nil,
 					},
 				},
@@ -216,13 +216,13 @@ func TestStatePersist(t *testing.T) {
 			expectedRequests: []mockClientRequest{
 				{
 					Method: "Put",
-					Content: map[string]interface{}{
+					Content: map[string]any{
 						"version":           4.0, // encoding/json decodes this as float64 by default
 						"lineage":           "mock-lineage",
 						"serial":            5.0, // encoding/json decodes this as float64 by default
 						"terraform_version": version.Version,
-						"outputs":           map[string]interface{}{},
-						"resources":         []interface{}{},
+						"outputs":           map[string]any{},
+						"resources":         []any{},
 						"check_results":     nil,
 					},
 				},
@@ -239,18 +239,18 @@ func TestStatePersist(t *testing.T) {
 			expectedRequests: []mockClientRequest{
 				{
 					Method: "Put",
-					Content: map[string]interface{}{
+					Content: map[string]any{
 						"version":           4.0, // encoding/json decodes this as float64 by default
 						"lineage":           "mock-lineage",
 						"serial":            4.0, // encoding/json decodes this as float64 by default
 						"terraform_version": version.Version,
-						"outputs": map[string]interface{}{
-							"foo": map[string]interface{}{
+						"outputs": map[string]any{
+							"foo": map[string]any{
 								"type":  "string",
 								"value": "bar",
 							},
 						},
-						"resources":     []interface{}{},
+						"resources":     []any{},
 						"check_results": nil,
 					},
 				},
@@ -267,18 +267,18 @@ func TestStatePersist(t *testing.T) {
 			expectedRequests: []mockClientRequest{
 				{
 					Method: "Put",
-					Content: map[string]interface{}{
+					Content: map[string]any{
 						"version":           4.0, // encoding/json decodes this as float64 by default
 						"lineage":           "mock-lineage",
 						"serial":            5.0, // encoding/json decodes this as float64 by default
 						"terraform_version": version.Version,
-						"outputs": map[string]interface{}{
-							"foo": map[string]interface{}{
+						"outputs": map[string]any{
+							"foo": map[string]any{
 								"type":  "string",
 								"value": "baz",
 							},
 						},
-						"resources":     []interface{}{},
+						"resources":     []any{},
 						"check_results": nil,
 					},
 				},
@@ -303,18 +303,18 @@ func TestStatePersist(t *testing.T) {
 			expectedRequests: []mockClientRequest{
 				{
 					Method: "Put",
-					Content: map[string]interface{}{
+					Content: map[string]any{
 						"version":           4.0, // encoding/json decodes this as float64 by default
 						"lineage":           "mock-lineage",
 						"serial":            3.0, // encoding/json decodes this as float64 by default
 						"terraform_version": version.Version,
-						"outputs": map[string]interface{}{
-							"foo": map[string]interface{}{
+						"outputs": map[string]any{
+							"foo": map[string]any{
 								"type":  "string",
 								"value": "baz",
 							},
 						},
-						"resources":     []interface{}{},
+						"resources":     []any{},
 						"check_results": nil,
 					},
 				},
@@ -367,7 +367,7 @@ func TestStatePersist(t *testing.T) {
 				for expectedRequestIdx := 0; expectedRequestIdx < len(tc.expectedRequests); expectedRequestIdx++ {
 					loggedRequest := mockClient.log[logIdx]
 					logIdx++
-					if diff := cmp.Diff(tc.expectedRequests[expectedRequestIdx], loggedRequest, cmpopts.IgnoreMapEntries(func(key string, value interface{}) bool {
+					if diff := cmp.Diff(tc.expectedRequests[expectedRequestIdx], loggedRequest, cmpopts.IgnoreMapEntries(func(key string, value any) bool {
 						// This is required since the initial state creation causes the lineage to be a UUID that is not known at test time.
 						return tc.name == "first state persistence" && key == "lineage"
 					})); len(diff) > 0 {
@@ -449,13 +449,13 @@ func TestWriteStateForMigration(t *testing.T) {
 			},
 			expectedRequest: mockClientRequest{
 				Method: "Get",
-				Content: map[string]interface{}{
+				Content: map[string]any{
 					"version":           4.0,
 					"lineage":           "mock-lineage",
 					"serial":            3.0,
 					"terraform_version": "0.0.0",
-					"outputs":           map[string]interface{}{"foo": map[string]interface{}{"type": string("string"), "value": string("bar")}},
-					"resources":         []interface{}{},
+					"outputs":           map[string]any{"foo": map[string]any{"type": string("string"), "value": string("bar")}},
+					"resources":         []any{},
 				},
 			},
 		},
@@ -480,13 +480,13 @@ func TestWriteStateForMigration(t *testing.T) {
 			},
 			expectedRequest: mockClientRequest{
 				Method: "Put",
-				Content: map[string]interface{}{
+				Content: map[string]any{
 					"version":           4.0,
 					"lineage":           "mock-lineage",
 					"serial":            2.0,
 					"terraform_version": version.Version,
-					"outputs":           map[string]interface{}{"foo": map[string]interface{}{"type": string("string"), "value": string("bar")}},
-					"resources":         []interface{}{},
+					"outputs":           map[string]any{"foo": map[string]any{"type": string("string"), "value": string("bar")}},
+					"resources":         []any{},
 					"check_results":     nil,
 				},
 			},
@@ -499,13 +499,13 @@ func TestWriteStateForMigration(t *testing.T) {
 			},
 			expectedRequest: mockClientRequest{
 				Method: "Put",
-				Content: map[string]interface{}{
+				Content: map[string]any{
 					"version":           4.0,
 					"lineage":           "different-lineage",
 					"serial":            3.0,
 					"terraform_version": version.Version,
-					"outputs":           map[string]interface{}{"foo": map[string]interface{}{"type": string("string"), "value": string("bar")}},
-					"resources":         []interface{}{},
+					"outputs":           map[string]any{"foo": map[string]any{"type": string("string"), "value": string("bar")}},
+					"resources":         []any{},
 					"check_results":     nil,
 				},
 			},
@@ -605,13 +605,13 @@ func TestWriteStateForMigrationWithForcePushClient(t *testing.T) {
 			},
 			expectedRequest: mockClientRequest{
 				Method: "Get",
-				Content: map[string]interface{}{
+				Content: map[string]any{
 					"version":           4.0,
 					"lineage":           "mock-lineage",
 					"serial":            3.0,
 					"terraform_version": "0.0.0",
-					"outputs":           map[string]interface{}{"foo": map[string]interface{}{"type": string("string"), "value": string("bar")}},
-					"resources":         []interface{}{},
+					"outputs":           map[string]any{"foo": map[string]any{"type": string("string"), "value": string("bar")}},
+					"resources":         []any{},
 				},
 			},
 		},
@@ -636,13 +636,13 @@ func TestWriteStateForMigrationWithForcePushClient(t *testing.T) {
 			},
 			expectedRequest: mockClientRequest{
 				Method: "Force Put",
-				Content: map[string]interface{}{
+				Content: map[string]any{
 					"version":           4.0,
 					"lineage":           "mock-lineage",
 					"serial":            2.0,
 					"terraform_version": version.Version,
-					"outputs":           map[string]interface{}{"foo": map[string]interface{}{"type": string("string"), "value": string("bar")}},
-					"resources":         []interface{}{},
+					"outputs":           map[string]any{"foo": map[string]any{"type": string("string"), "value": string("bar")}},
+					"resources":         []any{},
 					"check_results":     nil,
 				},
 			},
@@ -655,13 +655,13 @@ func TestWriteStateForMigrationWithForcePushClient(t *testing.T) {
 			},
 			expectedRequest: mockClientRequest{
 				Method: "Force Put",
-				Content: map[string]interface{}{
+				Content: map[string]any{
 					"version":           4.0,
 					"lineage":           "different-lineage",
 					"serial":            3.0,
 					"terraform_version": version.Version,
-					"outputs":           map[string]interface{}{"foo": map[string]interface{}{"type": string("string"), "value": string("bar")}},
-					"resources":         []interface{}{},
+					"outputs":           map[string]any{"foo": map[string]any{"type": string("string"), "value": string("bar")}},
+					"resources":         []any{},
 					"check_results":     nil,
 				},
 			},

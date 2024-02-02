@@ -1555,7 +1555,7 @@ func file_planfile_proto_rawDescGZIP() []byte {
 
 var file_planfile_proto_enumTypes = make([]protoimpl.EnumInfo, 5)
 var file_planfile_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
-var file_planfile_proto_goTypes = []interface{}{
+var file_planfile_proto_goTypes = []any{
 	(Mode)(0),                         // 0: tfplan.Mode
 	(Action)(0),                       // 1: tfplan.Action
 	(ResourceInstanceActionReason)(0), // 2: tfplan.ResourceInstanceActionReason
@@ -1615,7 +1615,7 @@ func file_planfile_proto_init() {
 		return
 	}
 	if !protoimpl.UnsafeEnabled {
-		file_planfile_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
+		file_planfile_proto_msgTypes[0].Exporter = func(v any, i int) any {
 			switch v := v.(*Plan); i {
 			case 0:
 				return &v.state
@@ -1627,7 +1627,7 @@ func file_planfile_proto_init() {
 				return nil
 			}
 		}
-		file_planfile_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
+		file_planfile_proto_msgTypes[1].Exporter = func(v any, i int) any {
 			switch v := v.(*Backend); i {
 			case 0:
 				return &v.state
@@ -1639,7 +1639,7 @@ func file_planfile_proto_init() {
 				return nil
 			}
 		}
-		file_planfile_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
+		file_planfile_proto_msgTypes[2].Exporter = func(v any, i int) any {
 			switch v := v.(*Change); i {
 			case 0:
 				return &v.state
@@ -1651,7 +1651,7 @@ func file_planfile_proto_init() {
 				return nil
 			}
 		}
-		file_planfile_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
+		file_planfile_proto_msgTypes[3].Exporter = func(v any, i int) any {
 			switch v := v.(*ResourceInstanceChange); i {
 			case 0:
 				return &v.state
@@ -1663,7 +1663,7 @@ func file_planfile_proto_init() {
 				return nil
 			}
 		}
-		file_planfile_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
+		file_planfile_proto_msgTypes[4].Exporter = func(v any, i int) any {
 			switch v := v.(*OutputChange); i {
 			case 0:
 				return &v.state
@@ -1675,7 +1675,7 @@ func file_planfile_proto_init() {
 				return nil
 			}
 		}
-		file_planfile_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
+		file_planfile_proto_msgTypes[5].Exporter = func(v any, i int) any {
 			switch v := v.(*CheckResults); i {
 			case 0:
 				return &v.state
@@ -1687,7 +1687,7 @@ func file_planfile_proto_init() {
 				return nil
 			}
 		}
-		file_planfile_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
+		file_planfile_proto_msgTypes[6].Exporter = func(v any, i int) any {
 			switch v := v.(*DynamicValue); i {
 			case 0:
 				return &v.state
@@ -1699,7 +1699,7 @@ func file_planfile_proto_init() {
 				return nil
 			}
 		}
-		file_planfile_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
+		file_planfile_proto_msgTypes[7].Exporter = func(v any, i int) any {
 			switch v := v.(*Path); i {
 			case 0:
 				return &v.state
@@ -1711,7 +1711,7 @@ func file_planfile_proto_init() {
 				return nil
 			}
 		}
-		file_planfile_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
+		file_planfile_proto_msgTypes[8].Exporter = func(v any, i int) any {
 			switch v := v.(*Importing); i {
 			case 0:
 				return &v.state
@@ -1723,7 +1723,7 @@ func file_planfile_proto_init() {
 				return nil
 			}
 		}
-		file_planfile_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
+		file_planfile_proto_msgTypes[10].Exporter = func(v any, i int) any {
 			switch v := v.(*PlanResourceAttr); i {
 			case 0:
 				return &v.state
@@ -1735,7 +1735,7 @@ func file_planfile_proto_init() {
 				return nil
 			}
 		}
-		file_planfile_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
+		file_planfile_proto_msgTypes[11].Exporter = func(v any, i int) any {
 			switch v := v.(*CheckResults_ObjectResult); i {
 			case 0:
 				return &v.state
@@ -1747,7 +1747,7 @@ func file_planfile_proto_init() {
 				return nil
 			}
 		}
-		file_planfile_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
+		file_planfile_proto_msgTypes[12].Exporter = func(v any, i int) any {
 			switch v := v.(*Path_Step); i {
 			case 0:
 				return &v.state
@@ -1760,7 +1760,7 @@ func file_planfile_proto_init() {
 			}
 		}
 	}
-	file_planfile_proto_msgTypes[12].OneofWrappers = []interface{}{
+	file_planfile_proto_msgTypes[12].OneofWrappers = []any{
 		(*Path_Step_AttributeName)(nil),
 		(*Path_Step_ElementKey)(nil),
 	}

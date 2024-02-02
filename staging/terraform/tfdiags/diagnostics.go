@@ -47,7 +47,7 @@ type Diagnostics []Diagnostic
 // a multierror.Error into separate error diagnostics. It can be passed
 // another Diagnostics to concatenate the two lists. If given something
 // it cannot handle, this function will panic.
-func (diags Diagnostics) Append(new ...interface{}) Diagnostics {
+func (diags Diagnostics) Append(new ...any) Diagnostics {
 	for _, item := range new {
 		if item == nil {
 			continue

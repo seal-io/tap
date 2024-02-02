@@ -29,7 +29,7 @@ type GRPCProviderPlugin struct {
 	GRPCProvider func() proto6.ProviderServer
 }
 
-func (p *GRPCProviderPlugin) GRPCClient(ctx context.Context, broker *plugin.GRPCBroker, c *grpc.ClientConn) (interface{}, error) {
+func (p *GRPCProviderPlugin) GRPCClient(ctx context.Context, broker *plugin.GRPCBroker, c *grpc.ClientConn) (any, error) {
 	return &GRPCProvider{
 		client: proto6.NewProviderClient(c),
 		ctx:    ctx,

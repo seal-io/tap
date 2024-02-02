@@ -238,7 +238,7 @@ func TestValidate_json(t *testing.T) {
 
 	for _, tc := range tests {
 		t.Run(tc.path, func(t *testing.T) {
-			var want, got map[string]interface{}
+			var want, got map[string]any
 
 			wantFile, err := os.Open(path.Join(testFixturePath(tc.path), "output.json"))
 			if err != nil {

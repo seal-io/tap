@@ -39,7 +39,7 @@ func TestBackend_impl(t *testing.T) {
 
 func TestBackendConfig(t *testing.T) {
 	testACC(t)
-	config := map[string]interface{}{
+	config := map[string]any{
 		"region":              "cn-beijing",
 		"bucket":              "terraform-backend-oss-test",
 		"prefix":              "mystate",
@@ -74,7 +74,7 @@ func TestBackendConfig(t *testing.T) {
 func TestBackendConfigWorkSpace(t *testing.T) {
 	testACC(t)
 	bucketName := fmt.Sprintf("terraform-backend-oss-test-%d", rand.Intn(1000))
-	config := map[string]interface{}{
+	config := map[string]any{
 		"region":              "cn-beijing",
 		"bucket":              bucketName,
 		"prefix":              "mystate",
@@ -112,7 +112,7 @@ func TestBackendConfigWorkSpace(t *testing.T) {
 
 func TestBackendConfigProfile(t *testing.T) {
 	testACC(t)
-	config := map[string]interface{}{
+	config := map[string]any{
 		"region":              "cn-beijing",
 		"bucket":              "terraform-backend-oss-test",
 		"prefix":              "mystate",
@@ -147,7 +147,7 @@ func TestBackendConfigProfile(t *testing.T) {
 
 func TestBackendConfig_invalidKey(t *testing.T) {
 	testACC(t)
-	cfg := hcl2shim.HCL2ValueFromConfigValue(map[string]interface{}{
+	cfg := hcl2shim.HCL2ValueFromConfigValue(map[string]any{
 		"region":              "cn-beijing",
 		"bucket":              "terraform-backend-oss-test",
 		"prefix":              "/leading-slash",
@@ -168,12 +168,12 @@ func TestBackend(t *testing.T) {
 	bucketName := fmt.Sprintf("terraform-remote-oss-test-%x", time.Now().Unix())
 	statePrefix := "multi/level/path/"
 
-	b1 := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]interface{}{
+	b1 := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]any{
 		"bucket": bucketName,
 		"prefix": statePrefix,
 	})).(*Backend)
 
-	b2 := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]interface{}{
+	b2 := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]any{
 		"bucket": bucketName,
 		"prefix": statePrefix,
 	})).(*Backend)

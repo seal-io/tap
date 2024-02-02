@@ -35,7 +35,7 @@ func AsCheckBlockDiagnostics(diags Diagnostics) Diagnostics {
 
 // AsCheckBlockDiagnostic will wrap a Diagnostic or a hcl.Diagnostic in a
 // CheckBlockDiagnostic.
-func AsCheckBlockDiagnostic(diag interface{}) Diagnostic {
+func AsCheckBlockDiagnostic(diag any) Diagnostic {
 	switch d := diag.(type) {
 	case Diagnostic:
 		return CheckBlockDiagnostic{d}
@@ -71,6 +71,6 @@ func (c CheckBlockDiagnostic) FromExpr() *FromExpr {
 	return c.diag.FromExpr()
 }
 
-func (c CheckBlockDiagnostic) ExtraInfo() interface{} {
+func (c CheckBlockDiagnostic) ExtraInfo() any {
 	return c.diag.ExtraInfo()
 }

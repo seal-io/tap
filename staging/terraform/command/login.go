@@ -230,8 +230,8 @@ func (c *LoginCommand) Run(args []string) int {
 	c.Ui.Output("\n---------------------------------------------------------------------------------\n")
 	if hostname == "app.terraform.io" { // Terraform Cloud
 		var motd struct {
-			Message string        `json:"msg"`
-			Errors  []interface{} `json:"errors"`
+			Message string `json:"msg"`
+			Errors  []any  `json:"errors"`
 		}
 
 		// Throughout the entire process of fetching a MOTD from TFC, use a default

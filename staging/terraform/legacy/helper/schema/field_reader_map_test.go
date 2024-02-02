@@ -80,14 +80,14 @@ func TestMapFieldReader_extra(t *testing.T) {
 
 	cases := map[string]struct {
 		Addr        []string
-		Out         interface{}
+		Out         any
 		OutOk       bool
 		OutComputed bool
 		OutErr      bool
 	}{
 		"mapDel": {
 			[]string{"mapDel"},
-			map[string]interface{}{},
+			map[string]any{},
 			true,
 			false,
 			false,
@@ -95,7 +95,7 @@ func TestMapFieldReader_extra(t *testing.T) {
 
 		"mapEmpty": {
 			[]string{"mapEmpty"},
-			map[string]interface{}{},
+			map[string]any{},
 			true,
 			false,
 			false,

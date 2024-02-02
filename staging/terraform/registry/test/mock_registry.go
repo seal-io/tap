@@ -22,7 +22,7 @@ import (
 // Disco return a *disco.Disco mapping registry.terraform.io, localhost,
 // localhost.localdomain, and example.com to the test server.
 func Disco(s *httptest.Server) *disco.Disco {
-	services := map[string]interface{}{
+	services := map[string]any{
 		// Note that both with and without trailing slashes are supported behaviours
 		// TODO: add specific tests to enumerate both possibilities.
 		"modules.v1":   fmt.Sprintf("%s/v1/modules", s.URL),
@@ -58,7 +58,7 @@ const (
 
 var (
 	regHost  = svchost.Hostname(regsrc.PublicRegistryHost.Normalized())
-	credsSrc = auth.StaticCredentialsSource(map[svchost.Hostname]map[string]interface{}{
+	credsSrc = auth.StaticCredentialsSource(map[svchost.Hostname]map[string]any{
 		regHost: {"token": testCred},
 	})
 )

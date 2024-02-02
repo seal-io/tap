@@ -157,7 +157,7 @@ func (l *logPanicWrapper) Named(name string) hclog.Logger {
 
 // we only need to implement Debug, since that is the default output level used
 // by go-plugin when encountering unstructured output on stderr.
-func (l *logPanicWrapper) Debug(msg string, args ...interface{}) {
+func (l *logPanicWrapper) Debug(msg string, args ...any) {
 	// We don't have access to the binary itself, so guess based on the stderr
 	// output if this is the start of the traceback. An occasional false
 	// positive shouldn't be a big deal, since this is only retrieved after an

@@ -34,7 +34,7 @@ func New() backend.Backend {
 				Type:        schema.TypeString,
 				Required:    true,
 				Description: "The path to the state file inside the bucket",
-				ValidateFunc: func(v interface{}, s string) ([]string, []error) {
+				ValidateFunc: func(v any, s string) ([]string, []error) {
 					// s3 will strip leading slashes from an object, so while this will
 					// technically be accepted by s3, it will break our workspace hierarchy.
 					if strings.HasPrefix(v.(string), "/") {
@@ -177,7 +177,7 @@ func New() backend.Backend {
 				Description: "The base64-encoded encryption key to use for server-side encryption with customer-provided keys (SSE-C).",
 				DefaultFunc: schema.EnvDefaultFunc("AWS_SSE_CUSTOMER_KEY", ""),
 				Sensitive:   true,
-				ValidateFunc: func(v interface{}, s string) ([]string, []error) {
+				ValidateFunc: func(v any, s string) ([]string, []error) {
 					key := v.(string)
 					if key != "" && len(key) != 44 {
 						return nil, []error{errors.New("sse_customer_key must be 44 characters in length (256 bits, base64 encoded)")}
@@ -246,7 +246,7 @@ func New() backend.Backend {
 				Optional:    true,
 				Description: "The prefix applied to the non-default state path inside the bucket.",
 				Default:     "env:",
-				ValidateFunc: func(v interface{}, s string) ([]string, []error) {
+				ValidateFunc: func(v any, s string) ([]string, []error) {
 					prefix := v.(string)
 					if strings.HasPrefix(prefix, "/") || strings.HasSuffix(prefix, "/") {
 						return nil, []error{errors.New("workspace_key_prefix must not start or end with '/'")}
@@ -367,7 +367,7 @@ func (b *Backend) configure(ctx context.Context) error {
 		}
 	}
 
-	if tagMap := data.Get("assume_role_tags").(map[string]interface{}); len(tagMap) > 0 {
+	if tagMap := data.Get("assume_role_tags").(map[string]any); len(tagMap) > 0 {
 		cfg.AssumeRoleTags = make(map[string]string)
 
 		for k, vRaw := range tagMap {

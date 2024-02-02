@@ -20,7 +20,7 @@ func TestResourceDataGet(t *testing.T) {
 		State  *terraform.InstanceState
 		Diff   *terraform.InstanceDiff
 		Key    string
-		Value  interface{}
+		Value  any
 	}{
 		// #0
 		{
@@ -269,7 +269,7 @@ func TestResourceDataGet(t *testing.T) {
 
 			Key: "ports",
 
-			Value: []interface{}{1, 2, 5},
+			Value: []any{1, 2, 5},
 		},
 
 		// #10
@@ -306,7 +306,7 @@ func TestResourceDataGet(t *testing.T) {
 
 			Key: "ingress.0",
 
-			Value: map[string]interface{}{
+			Value: map[string]any{
 				"from": 8080,
 			},
 		},
@@ -345,8 +345,8 @@ func TestResourceDataGet(t *testing.T) {
 
 			Key: "ingress",
 
-			Value: []interface{}{
-				map[string]interface{}{
+			Value: []any{
+				map[string]any{
 					"from": 8080,
 				},
 			},
@@ -397,7 +397,7 @@ func TestResourceDataGet(t *testing.T) {
 
 			Key: "",
 
-			Value: map[string]interface{}{
+			Value: map[string]any{
 				"availability_zone": "foo",
 			},
 		},
@@ -436,11 +436,11 @@ func TestResourceDataGet(t *testing.T) {
 
 			Key: "config_vars",
 
-			Value: []interface{}{
-				map[string]interface{}{
+			Value: []any{
+				map[string]any{
 					"foo": "bar",
 				},
-				map[string]interface{}{
+				map[string]any{
 					"bar": "baz",
 				},
 			},
@@ -471,11 +471,11 @@ func TestResourceDataGet(t *testing.T) {
 
 			Key: "config_vars",
 
-			Value: []interface{}{
-				map[string]interface{}{
+			Value: []any{
+				map[string]any{
 					"foo": "baz",
 				},
-				map[string]interface{}{
+				map[string]any{
 					"bar": "bar",
 				},
 			},
@@ -516,7 +516,7 @@ func TestResourceDataGet(t *testing.T) {
 
 			Key: "config_vars",
 
-			Value: []interface{}{},
+			Value: []any{},
 		},
 
 		// #17 Sets
@@ -527,7 +527,7 @@ func TestResourceDataGet(t *testing.T) {
 					Optional: true,
 					Computed: true,
 					Elem:     &Schema{Type: TypeInt},
-					Set: func(a interface{}) int {
+					Set: func(a any) int {
 						return a.(int)
 					},
 				},
@@ -544,7 +544,7 @@ func TestResourceDataGet(t *testing.T) {
 
 			Key: "ports",
 
-			Value: []interface{}{80},
+			Value: []any{80},
 		},
 
 		// #18
@@ -566,8 +566,8 @@ func TestResourceDataGet(t *testing.T) {
 							},
 						},
 					},
-					Set: func(a interface{}) int {
-						m := a.(map[string]interface{})
+					Set: func(a any) int {
+						m := a.(map[string]any)
 						return m["index"].(int)
 					},
 				},
@@ -592,8 +592,8 @@ func TestResourceDataGet(t *testing.T) {
 
 			Key: "data",
 
-			Value: []interface{}{
-				map[string]interface{}{
+			Value: []any{
+				map[string]any{
 					"index": 10,
 					"value": "80",
 				},
@@ -608,7 +608,7 @@ func TestResourceDataGet(t *testing.T) {
 					Optional: true,
 					Computed: true,
 					Elem:     &Schema{Type: TypeInt},
-					Set: func(a interface{}) int {
+					Set: func(a any) int {
 						return a.(int)
 					},
 				},
@@ -620,7 +620,7 @@ func TestResourceDataGet(t *testing.T) {
 
 			Key: "ports",
 
-			Value: []interface{}{},
+			Value: []any{},
 		},
 
 		// #20 Float zero
@@ -703,7 +703,7 @@ func TestResourceDataGet(t *testing.T) {
 					Optional: true,
 					Computed: true,
 					Elem:     &Schema{Type: TypeInt},
-					Set: func(a interface{}) int {
+					Set: func(a any) int {
 						return a.(int)
 					},
 				},
@@ -736,7 +736,7 @@ func TestResourceDataGet(t *testing.T) {
 
 			Key: "ports",
 
-			Value: []interface{}{80},
+			Value: []any{80},
 		},
 	}
 
@@ -763,8 +763,8 @@ func TestResourceDataGetChange(t *testing.T) {
 		State    *terraform.InstanceState
 		Diff     *terraform.InstanceDiff
 		Key      string
-		OldValue interface{}
-		NewValue interface{}
+		OldValue any
+		NewValue any
 	}{
 		{
 			Schema: map[string]*Schema{
@@ -849,7 +849,7 @@ func TestResourceDataGetOk(t *testing.T) {
 		State  *terraform.InstanceState
 		Diff   *terraform.InstanceDiff
 		Key    string
-		Value  interface{}
+		Value  any
 		Ok     bool
 	}{
 		/*
@@ -945,7 +945,7 @@ func TestResourceDataGetOk(t *testing.T) {
 			Diff: nil,
 
 			Key:   "ports",
-			Value: []interface{}{},
+			Value: []any{},
 			Ok:    false,
 		},
 
@@ -966,7 +966,7 @@ func TestResourceDataGetOk(t *testing.T) {
 			Diff: nil,
 
 			Key:   "ports",
-			Value: map[string]interface{}{},
+			Value: map[string]any{},
 			Ok:    false,
 		},
 
@@ -980,7 +980,7 @@ func TestResourceDataGetOk(t *testing.T) {
 					Type:     TypeSet,
 					Optional: true,
 					Elem:     &Schema{Type: TypeInt},
-					Set:      func(a interface{}) int { return a.(int) },
+					Set:      func(a any) int { return a.(int) },
 				},
 			},
 
@@ -989,7 +989,7 @@ func TestResourceDataGetOk(t *testing.T) {
 			Diff: nil,
 
 			Key:   "ports",
-			Value: []interface{}{},
+			Value: []any{},
 			Ok:    false,
 		},
 
@@ -999,7 +999,7 @@ func TestResourceDataGetOk(t *testing.T) {
 					Type:     TypeSet,
 					Optional: true,
 					Elem:     &Schema{Type: TypeInt},
-					Set:      func(a interface{}) int { return a.(int) },
+					Set:      func(a any) int { return a.(int) },
 				},
 			},
 
@@ -1018,7 +1018,7 @@ func TestResourceDataGetOk(t *testing.T) {
 					Type:     TypeSet,
 					Optional: true,
 					Elem:     &Schema{Type: TypeInt},
-					Set:      func(a interface{}) int { return a.(int) },
+					Set:      func(a any) int { return a.(int) },
 				},
 			},
 
@@ -1034,7 +1034,7 @@ func TestResourceDataGetOk(t *testing.T) {
 			},
 
 			Key:   "ports",
-			Value: []interface{}{},
+			Value: []any{},
 			Ok:    false,
 		},
 
@@ -1093,7 +1093,7 @@ func TestResourceDataGetOkExists(t *testing.T) {
 		State  *terraform.InstanceState
 		Diff   *terraform.InstanceDiff
 		Key    string
-		Value  interface{}
+		Value  any
 		Ok     bool
 	}{
 		/*
@@ -1193,7 +1193,7 @@ func TestResourceDataGetOkExists(t *testing.T) {
 			Diff: nil,
 
 			Key:   "ports",
-			Value: []interface{}{},
+			Value: []any{},
 			Ok:    false,
 		},
 
@@ -1215,7 +1215,7 @@ func TestResourceDataGetOkExists(t *testing.T) {
 			Diff: nil,
 
 			Key:   "ports",
-			Value: map[string]interface{}{},
+			Value: map[string]any{},
 			Ok:    false,
 		},
 
@@ -1230,7 +1230,7 @@ func TestResourceDataGetOkExists(t *testing.T) {
 					Type:     TypeSet,
 					Optional: true,
 					Elem:     &Schema{Type: TypeInt},
-					Set:      func(a interface{}) int { return a.(int) },
+					Set:      func(a any) int { return a.(int) },
 				},
 			},
 
@@ -1239,7 +1239,7 @@ func TestResourceDataGetOkExists(t *testing.T) {
 			Diff: nil,
 
 			Key:   "ports",
-			Value: []interface{}{},
+			Value: []any{},
 			Ok:    false,
 		},
 
@@ -1250,7 +1250,7 @@ func TestResourceDataGetOkExists(t *testing.T) {
 					Type:     TypeSet,
 					Optional: true,
 					Elem:     &Schema{Type: TypeInt},
-					Set:      func(a interface{}) int { return a.(int) },
+					Set:      func(a any) int { return a.(int) },
 				},
 			},
 
@@ -1512,7 +1512,7 @@ func TestResourceDataHasChange(t *testing.T) {
 					Type:     TypeSet,
 					Optional: true,
 					Elem:     &Schema{Type: TypeInt},
-					Set:      func(a interface{}) int { return a.(int) },
+					Set:      func(a any) int { return a.(int) },
 				},
 			},
 
@@ -1544,7 +1544,7 @@ func TestResourceDataHasChange(t *testing.T) {
 					Type:     TypeSet,
 					Optional: true,
 					Elem:     &Schema{Type: TypeInt},
-					Set:      func(a interface{}) int { return a.(int) },
+					Set:      func(a any) int { return a.(int) },
 				},
 			},
 
@@ -1591,14 +1591,14 @@ func TestResourceDataSet(t *testing.T) {
 		State    *terraform.InstanceState
 		Diff     *terraform.InstanceDiff
 		Key      string
-		Value    interface{}
+		Value    any
 		Err      bool
 		GetKey   string
-		GetValue interface{}
+		GetValue any
 
 		// GetPreProcess can be set to munge the return value before being
 		// compared to GetValue
-		GetPreProcess func(interface{}) interface{}
+		GetPreProcess func(any) any
 	}{
 		// #0: Basic good
 		{
@@ -1725,7 +1725,7 @@ func TestResourceDataSet(t *testing.T) {
 			Value: []int{1, 2, 5},
 
 			GetKey:   "ports",
-			GetValue: []interface{}{1, 2, 5},
+			GetValue: []any{1, 2, 5},
 		},
 
 		// #6: List of primitives, set list with error
@@ -1743,11 +1743,11 @@ func TestResourceDataSet(t *testing.T) {
 			Diff: nil,
 
 			Key:   "ports",
-			Value: []interface{}{1, "NOPE", 5},
+			Value: []any{1, "NOPE", 5},
 			Err:   true,
 
 			GetKey:   "ports",
-			GetValue: []interface{}{},
+			GetValue: []any{},
 		},
 
 		// #7: Set a list of maps
@@ -1768,22 +1768,22 @@ func TestResourceDataSet(t *testing.T) {
 			Diff: nil,
 
 			Key: "config_vars",
-			Value: []interface{}{
-				map[string]interface{}{
+			Value: []any{
+				map[string]any{
 					"foo": "bar",
 				},
-				map[string]interface{}{
+				map[string]any{
 					"bar": "baz",
 				},
 			},
 			Err: false,
 
 			GetKey: "config_vars",
-			GetValue: []interface{}{
-				map[string]interface{}{
+			GetValue: []any{
+				map[string]any{
 					"foo": "bar",
 				},
-				map[string]interface{}{
+				map[string]any{
 					"bar": "baz",
 				},
 			},
@@ -1797,7 +1797,7 @@ func TestResourceDataSet(t *testing.T) {
 					Optional: true,
 					Computed: true,
 					Elem:     &Schema{Type: TypeInt},
-					Set: func(a interface{}) int {
+					Set: func(a any) int {
 						return a.(int)
 					},
 				},
@@ -1813,10 +1813,10 @@ func TestResourceDataSet(t *testing.T) {
 			},
 
 			Key:   "ports",
-			Value: []interface{}{100, 125, 125},
+			Value: []any{100, 125, 125},
 
 			GetKey:   "ports",
-			GetValue: []interface{}{100, 125},
+			GetValue: []any{100, 125},
 		},
 
 		// #9: Set, with Set
@@ -1827,7 +1827,7 @@ func TestResourceDataSet(t *testing.T) {
 					Optional: true,
 					Computed: true,
 					Elem:     &Schema{Type: TypeInt},
-					Set: func(a interface{}) int {
+					Set: func(a any) int {
 						return a.(int)
 					},
 				},
@@ -1844,14 +1844,14 @@ func TestResourceDataSet(t *testing.T) {
 
 			Key: "ports",
 			Value: &Set{
-				m: map[string]interface{}{
+				m: map[string]any{
 					"1": 1,
 					"2": 2,
 				},
 			},
 
 			GetKey:   "ports",
-			GetValue: []interface{}{1, 2},
+			GetValue: []any{1, 2},
 		},
 
 		// #10: Set single item
@@ -1862,7 +1862,7 @@ func TestResourceDataSet(t *testing.T) {
 					Optional: true,
 					Computed: true,
 					Elem:     &Schema{Type: TypeInt},
-					Set: func(a interface{}) int {
+					Set: func(a any) int {
 						return a.(int)
 					},
 				},
@@ -1881,7 +1881,7 @@ func TestResourceDataSet(t *testing.T) {
 			Err:   true,
 
 			GetKey:   "ports",
-			GetValue: []interface{}{100, 80},
+			GetValue: []any{100, 80},
 		},
 
 		// #11: Set with nested set
@@ -1898,14 +1898,14 @@ func TestResourceDataSet(t *testing.T) {
 							"set": &Schema{
 								Type: TypeSet,
 								Elem: &Schema{Type: TypeInt},
-								Set: func(a interface{}) int {
+								Set: func(a any) int {
 									return a.(int)
 								},
 							},
 						},
 					},
-					Set: func(a interface{}) int {
-						return a.(map[string]interface{})["port"].(int)
+					Set: func(a any) int {
+						return a.(map[string]any)["port"].(int)
 					},
 				},
 			},
@@ -1913,30 +1913,30 @@ func TestResourceDataSet(t *testing.T) {
 			State: nil,
 
 			Key: "ports",
-			Value: []interface{}{
-				map[string]interface{}{
+			Value: []any{
+				map[string]any{
 					"port": 80,
 				},
 			},
 
 			GetKey: "ports",
-			GetValue: []interface{}{
-				map[string]interface{}{
+			GetValue: []any{
+				map[string]any{
 					"port": 80,
-					"set":  []interface{}{},
+					"set":  []any{},
 				},
 			},
 
-			GetPreProcess: func(v interface{}) interface{} {
+			GetPreProcess: func(v any) any {
 				if v == nil {
 					return v
 				}
-				s, ok := v.([]interface{})
+				s, ok := v.([]any)
 				if !ok {
 					return v
 				}
 				for _, v := range s {
-					m, ok := v.(map[string]interface{})
+					m, ok := v.(map[string]any)
 					if !ok {
 						continue
 					}
@@ -1970,7 +1970,7 @@ func TestResourceDataSet(t *testing.T) {
 			Value: []float64{1.0, 2.2, 5.5},
 
 			GetKey:   "ratios",
-			GetValue: []interface{}{1.0, 2.2, 5.5},
+			GetValue: []any{1.0, 2.2, 5.5},
 		},
 
 		// #12: Set of floats, set list
@@ -1980,7 +1980,7 @@ func TestResourceDataSet(t *testing.T) {
 					Type:     TypeSet,
 					Computed: true,
 					Elem:     &Schema{Type: TypeFloat},
-					Set: func(a interface{}) int {
+					Set: func(a any) int {
 						return int(math.Float64bits(a.(float64)))
 					},
 				},
@@ -1994,7 +1994,7 @@ func TestResourceDataSet(t *testing.T) {
 			Value: []float64{1.0, 2.2, 5.5},
 
 			GetKey:   "ratios",
-			GetValue: []interface{}{1.0, 2.2, 5.5},
+			GetValue: []any{1.0, 2.2, 5.5},
 		},
 
 		// #13: Basic pointer
@@ -2073,7 +2073,7 @@ func TestResourceDataSet(t *testing.T) {
 							"set": &Schema{
 								Type: TypeSet,
 								Elem: &Schema{Type: TypeInt},
-								Set: func(a interface{}) int {
+								Set: func(a any) int {
 									return a.(int)
 								},
 							},
@@ -2085,32 +2085,32 @@ func TestResourceDataSet(t *testing.T) {
 			State: nil,
 
 			Key: "ports",
-			Value: []interface{}{
-				map[string]interface{}{
-					"set": []interface{}{
+			Value: []any{
+				map[string]any{
+					"set": []any{
 						1,
 					},
 				},
 			},
 
 			GetKey: "ports",
-			GetValue: []interface{}{
-				map[string]interface{}{
-					"set": []interface{}{
+			GetValue: []any{
+				map[string]any{
+					"set": []any{
 						1,
 					},
 				},
 			},
-			GetPreProcess: func(v interface{}) interface{} {
+			GetPreProcess: func(v any) any {
 				if v == nil {
 					return v
 				}
-				s, ok := v.([]interface{})
+				s, ok := v.([]any)
 				if !ok {
 					return v
 				}
 				for _, v := range s {
-					m, ok := v.(map[string]interface{})
+					m, ok := v.(map[string]any)
 					if !ok {
 						continue
 					}
@@ -2162,7 +2162,7 @@ func TestResourceDataState_dynamicAttributes(t *testing.T) {
 		Schema    map[string]*Schema
 		State     *terraform.InstanceState
 		Diff      *terraform.InstanceDiff
-		Set       map[string]interface{}
+		Set       map[string]any
 		UnsafeSet map[string]string
 		Result    *terraform.InstanceState
 	}{
@@ -2183,7 +2183,7 @@ func TestResourceDataState_dynamicAttributes(t *testing.T) {
 
 			Diff: nil,
 
-			Set: map[string]interface{}{
+			Set: map[string]any{
 				"schema_field": "present",
 			},
 
@@ -2242,7 +2242,7 @@ func TestResourceDataState_schema(t *testing.T) {
 		Schema  map[string]*Schema
 		State   *terraform.InstanceState
 		Diff    *terraform.InstanceDiff
-		Set     map[string]interface{}
+		Set     map[string]any
 		Result  *terraform.InstanceState
 		Partial []string
 	}{
@@ -2299,7 +2299,7 @@ func TestResourceDataState_schema(t *testing.T) {
 				},
 			},
 
-			Set: map[string]interface{}{
+			Set: map[string]any{
 				"availability_zone": "bar",
 			},
 
@@ -2323,7 +2323,7 @@ func TestResourceDataState_schema(t *testing.T) {
 
 			Diff: nil,
 
-			Set: map[string]interface{}{
+			Set: map[string]any{
 				"vpc": true,
 			},
 
@@ -2341,7 +2341,7 @@ func TestResourceDataState_schema(t *testing.T) {
 					Type:      TypeString,
 					Optional:  true,
 					Computed:  true,
-					StateFunc: func(interface{}) string { return "" },
+					StateFunc: func(any) string { return "" },
 				},
 			},
 
@@ -2485,12 +2485,12 @@ func TestResourceDataState_schema(t *testing.T) {
 				},
 			},
 
-			Set: map[string]interface{}{
-				"config_vars": []map[string]interface{}{
-					map[string]interface{}{
+			Set: map[string]any{
+				"config_vars": []map[string]any{
+					map[string]any{
 						"foo": "bar",
 					},
-					map[string]interface{}{
+					map[string]any{
 						"baz": "bang",
 					},
 				},
@@ -2592,7 +2592,7 @@ func TestResourceDataState_schema(t *testing.T) {
 					Optional: true,
 					Computed: true,
 					Elem:     &Schema{Type: TypeInt},
-					Set: func(a interface{}) int {
+					Set: func(a any) int {
 						return a.(int)
 					},
 				},
@@ -2627,7 +2627,7 @@ func TestResourceDataState_schema(t *testing.T) {
 					Optional: true,
 					Computed: true,
 					Elem:     &Schema{Type: TypeInt},
-					Set: func(a interface{}) int {
+					Set: func(a any) int {
 						return a.(int)
 					},
 				},
@@ -2637,8 +2637,8 @@ func TestResourceDataState_schema(t *testing.T) {
 
 			Diff: nil,
 
-			Set: map[string]interface{}{
-				"ports": []interface{}{100, 80},
+			Set: map[string]any{
+				"ports": []any{100, 80},
 			},
 
 			Result: &terraform.InstanceState{
@@ -2674,8 +2674,8 @@ func TestResourceDataState_schema(t *testing.T) {
 							},
 						},
 					},
-					Set: func(a interface{}) int {
-						m := a.(map[string]interface{})
+					Set: func(a any) int {
+						m := a.(map[string]any)
 						return m["order"].(int)
 					},
 				},
@@ -2693,15 +2693,15 @@ func TestResourceDataState_schema(t *testing.T) {
 				},
 			},
 
-			Set: map[string]interface{}{
-				"ports": []interface{}{
-					map[string]interface{}{
+			Set: map[string]any{
+				"ports": []any{
+					map[string]any{
 						"order": 20,
-						"b":     []interface{}{100},
+						"b":     []any{100},
 					},
-					map[string]interface{}{
+					map[string]any{
 						"order": 10,
-						"a":     []interface{}{80},
+						"a":     []any{80},
 					},
 				},
 			},
@@ -2819,8 +2819,8 @@ func TestResourceDataState_schema(t *testing.T) {
 
 			Partial: []string{},
 
-			Set: map[string]interface{}{
-				"ports": []interface{}{},
+			Set: map[string]any{
+				"ports": []any{},
 			},
 
 			Result: &terraform.InstanceState{
@@ -2909,12 +2909,12 @@ func TestResourceDataState_schema(t *testing.T) {
 				},
 			},
 
-			Set: map[string]interface{}{
-				"config_vars": []map[string]interface{}{
-					map[string]interface{}{
+			Set: map[string]any{
+				"config_vars": []map[string]any{
+					map[string]any{
 						"foo": "bar",
 					},
-					map[string]interface{}{
+					map[string]any{
 						"baz": "bang",
 					},
 				},
@@ -2943,7 +2943,7 @@ func TestResourceDataState_schema(t *testing.T) {
 					Optional: true,
 					Computed: true,
 					Elem:     &Schema{Type: TypeInt},
-					Set: func(a interface{}) int {
+					Set: func(a any) int {
 						return a.(int)
 					},
 				},
@@ -2986,7 +2986,7 @@ func TestResourceDataState_schema(t *testing.T) {
 					Optional: true,
 					Computed: true,
 					Elem:     &Schema{Type: TypeInt},
-					Set: func(a interface{}) int {
+					Set: func(a any) int {
 						return a.(int)
 					},
 				},
@@ -3060,7 +3060,7 @@ func TestResourceDataState_schema(t *testing.T) {
 				},
 			},
 
-			Set: map[string]interface{}{
+			Set: map[string]any{
 				"tags": map[string]string{},
 			},
 
@@ -3116,7 +3116,7 @@ func TestResourceDataState_schema(t *testing.T) {
 				},
 			},
 
-			Set: map[string]interface{}{
+			Set: map[string]any{
 				"foo": "bar",
 			},
 
@@ -3140,8 +3140,8 @@ func TestResourceDataState_schema(t *testing.T) {
 							"uuids": &Schema{Type: TypeMap},
 						},
 					},
-					Set: func(a interface{}) int {
-						m := a.(map[string]interface{})
+					Set: func(a any) int {
+						m := a.(map[string]any)
 						return m["index"].(int)
 					},
 				},
@@ -3157,11 +3157,11 @@ func TestResourceDataState_schema(t *testing.T) {
 				},
 			},
 
-			Set: map[string]interface{}{
-				"ports": []interface{}{
-					map[string]interface{}{
+			Set: map[string]any{
+				"ports": []any{
+					map[string]any{
 						"index": 10,
-						"uuids": map[string]interface{}{
+						"uuids": map[string]any{
 							"80": "value",
 						},
 					},
@@ -3186,7 +3186,7 @@ func TestResourceDataState_schema(t *testing.T) {
 					Optional: true,
 					Computed: true,
 					Elem:     &Schema{Type: TypeInt},
-					Set: func(a interface{}) int {
+					Set: func(a any) int {
 						return a.(int)
 					},
 				},
@@ -3225,7 +3225,7 @@ func TestResourceDataState_schema(t *testing.T) {
 					Optional: true,
 					Computed: true,
 					Elem:     &Schema{Type: TypeInt},
-					Set: func(a interface{}) int {
+					Set: func(a any) int {
 						return a.(int)
 					},
 				},
@@ -3235,8 +3235,8 @@ func TestResourceDataState_schema(t *testing.T) {
 
 			Diff: nil,
 
-			Set: map[string]interface{}{
-				"ports": []interface{}{},
+			Set: map[string]any{
+				"ports": []any{},
 			},
 
 			Result: &terraform.InstanceState{
@@ -3261,8 +3261,8 @@ func TestResourceDataState_schema(t *testing.T) {
 
 			Diff: nil,
 
-			Set: map[string]interface{}{
-				"ports": []interface{}{},
+			Set: map[string]any{
+				"ports": []any{},
 			},
 
 			Result: &terraform.InstanceState{
@@ -3298,11 +3298,11 @@ func TestResourceDataState_schema(t *testing.T) {
 				},
 			},
 
-			Set: map[string]interface{}{
-				"ports": []interface{}{
-					map[string]interface{}{
+			Set: map[string]any{
+				"ports": []any{
+					map[string]any{
 						"index": 10,
-						"uuids": map[string]interface{}{
+						"uuids": map[string]any{
 							"80": "value",
 						},
 					},
@@ -3449,7 +3449,7 @@ func TestResourceData_nonStringValuesInMap(t *testing.T) {
 			t.Fatalf("err: %s", err)
 		}
 
-		m, ok := d.Get(c.MapFieldName).(map[string]interface{})
+		m, ok := d.Get(c.MapFieldName).(map[string]any)
 		if !ok {
 			t.Fatalf("expected %q to be castable to a map", c.MapFieldName)
 		}
@@ -3562,6 +3562,6 @@ func TestResourceDataSetType(t *testing.T) {
 	}
 }
 
-func testPtrTo(raw interface{}) interface{} {
+func testPtrTo(raw any) any {
 	return &raw
 }

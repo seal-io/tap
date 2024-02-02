@@ -7,5 +7,5 @@ package schema
 // a proper typed representation. ResourceData uses this to write new data
 // into existing sources.
 type FieldWriter interface {
-	WriteField([]string, interface{}) error
+	WriteField([]string, any) error
 }

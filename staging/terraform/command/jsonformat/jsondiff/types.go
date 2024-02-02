@@ -16,9 +16,9 @@ const (
 	Null   Type = "null"
 )
 
-func GetType(json interface{}) Type {
+func GetType(json any) Type {
 	switch json.(type) {
-	case []interface{}:
+	case []any:
 		return Array
 	case float64:
 		return Number
@@ -28,7 +28,7 @@ func GetType(json interface{}) Type {
 		return Bool
 	case nil:
 		return Null
-	case map[string]interface{}:
+	case map[string]any:
 		return Object
 	default:
 		panic(fmt.Sprintf("unrecognized json type %T", json))

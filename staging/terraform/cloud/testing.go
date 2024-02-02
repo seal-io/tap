@@ -42,7 +42,7 @@ const (
 
 var (
 	tfeHost  = svchost.Hostname(defaultHostname)
-	credsSrc = auth.StaticCredentialsSource(map[svchost.Hostname]map[string]interface{}{
+	credsSrc = auth.StaticCredentialsSource(map[svchost.Hostname]map[string]any{
 		tfeHost: {"token": testCred},
 	})
 	testBackendSingleWorkspaceName = "app-prod"
@@ -170,8 +170,8 @@ func testBackendWithOutputs(t *testing.T) (*Cloud, func()) {
 		DetailedType: "string",
 	})
 
-	var dt interface{}
-	var val interface{}
+	var dt any
+	var val any
 	err := json.Unmarshal([]byte(`["object", {"foo":"string"}]`), &dt)
 	if err != nil {
 		t.Fatalf("could not unmarshal detailed type: %s", err)
@@ -488,7 +488,7 @@ func mockSROWorkspace(t *testing.T, b *Cloud, workspaceName string) {
 // testDisco returns a *disco.Disco mapping app.terraform.io and
 // localhost to a local test server.
 func testDisco(s *httptest.Server) *disco.Disco {
-	services := map[string]interface{}{
+	services := map[string]any{
 		"tfe.v2": fmt.Sprintf("%s/api/v2/", s.URL),
 	}
 	d := disco.NewWithCredentialsSource(credsSrc)

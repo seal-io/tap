@@ -96,7 +96,7 @@ type outputStateV2 struct {
 	Type string `json:"type"`
 	// Value contains the value of the output, in the structure described
 	// by the Type field.
-	Value interface{} `json:"value"`
+	Value any `json:"value"`
 }
 
 type moduleStateV2 struct {
@@ -106,7 +106,7 @@ type moduleStateV2 struct {
 
 	// Locals are kept only transiently in-memory, because we can always
 	// re-compute them.
-	Locals map[string]interface{} `json:"-"`
+	Locals map[string]any `json:"-"`
 
 	// Outputs declared by the module and maintained for each module
 	// even though only the root module technically needs to be kept.
@@ -194,7 +194,7 @@ type instanceStateV2 struct {
 	// ignored by Terraform core. It's meant to be used for accounting by
 	// external client code. The value here must only contain Go primitives
 	// and collections.
-	Meta map[string]interface{} `json:"meta"`
+	Meta map[string]any `json:"meta"`
 
 	// Tainted is used to mark a resource for recreation.
 	Tainted bool `json:"tainted"`

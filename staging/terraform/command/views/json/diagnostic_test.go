@@ -50,7 +50,7 @@ func TestNewDiagnostic(t *testing.T) {
 `),
 	}
 	testCases := map[string]struct {
-		diag interface{} // allow various kinds of diags
+		diag any // allow various kinds of diags
 		want *Diagnostic
 	}{
 		"sourceless warning": {

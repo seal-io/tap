@@ -168,7 +168,7 @@ func (old *instanceStateV1) upgradeToV2() (*InstanceState, error) {
 		return nil, fmt.Errorf("Error upgrading InstanceState V1: %v", err)
 	}
 
-	newMeta := make(map[string]interface{})
+	newMeta := make(map[string]any)
 	for k, v := range meta.(map[string]string) {
 		newMeta[k] = v
 	}

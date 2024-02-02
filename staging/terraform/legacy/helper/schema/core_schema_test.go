@@ -389,7 +389,7 @@ func TestSchemaMapCoreConfigSchema(t *testing.T) {
 				"string": {
 					Type:     TypeString,
 					Required: true,
-					DefaultFunc: func() (interface{}, error) {
+					DefaultFunc: func() (any, error) {
 						return nil, nil
 					},
 				},
@@ -409,7 +409,7 @@ func TestSchemaMapCoreConfigSchema(t *testing.T) {
 				"string": {
 					Type:     TypeString,
 					Required: true,
-					DefaultFunc: func() (interface{}, error) {
+					DefaultFunc: func() (any, error) {
 						// If we return a non-nil default then this overrides
 						// the "Required: true" for the purpose of building
 						// the core schema, so that core will ignore it not
@@ -433,7 +433,7 @@ func TestSchemaMapCoreConfigSchema(t *testing.T) {
 				"string": {
 					Type:     TypeString,
 					Required: true,
-					DefaultFunc: func() (interface{}, error) {
+					DefaultFunc: func() (any, error) {
 						return nil, fmt.Errorf("placeholder error")
 					},
 				},

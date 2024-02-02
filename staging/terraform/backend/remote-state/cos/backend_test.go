@@ -216,7 +216,7 @@ func setupBackend(t *testing.T, bucket, prefix, key string, encrypt bool) backen
 	appId := os.Getenv("TF_COS_APPID")
 	region := os.Getenv(PROVIDER_REGION)
 
-	config := map[string]interface{}{
+	config := map[string]any{
 		"region": region,
 		"bucket": bucket + appId,
 		"prefix": prefix,

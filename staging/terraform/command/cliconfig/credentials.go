@@ -333,7 +333,7 @@ func (s *CredentialsSource) updateLocalHostCredentials(host svchost.Hostname, ne
 		return fmt.Errorf("cannot read %s: %s", filename, err)
 	}
 
-	var raw map[string]interface{}
+	var raw map[string]any
 
 	if len(oldSrc) > 0 {
 		// When decoding we use a custom decoder so we can decode any numbers as
@@ -345,15 +345,15 @@ func (s *CredentialsSource) updateLocalHostCredentials(host svchost.Hostname, ne
 			return fmt.Errorf("cannot read %s: %s", filename, err)
 		}
 	} else {
-		raw = make(map[string]interface{})
+		raw = make(map[string]any)
 	}
 
 	rawCredsI, ok := raw["credentials"]
 	if !ok {
-		rawCredsI = make(map[string]interface{})
+		rawCredsI = make(map[string]any)
 		raw["credentials"] = rawCredsI
 	}
-	rawCredsMap, ok := rawCredsI.(map[string]interface{})
+	rawCredsMap, ok := rawCredsI.(map[string]any)
 	if !ok {
 		return fmt.Errorf("credentials file %s has invalid value for \"credentials\" property: must be a JSON object", filename)
 	}
@@ -458,7 +458,7 @@ func readHostsInCredentialsFile(filename string) map[svchost.Hostname]struct{} {
 		return nil
 	}
 
-	var raw map[string]interface{}
+	var raw map[string]any
 	err = json.Unmarshal(src, &raw)
 	if err != nil {
 		return nil
@@ -468,7 +468,7 @@ func readHostsInCredentialsFile(filename string) map[svchost.Hostname]struct{} {
 	if !ok {
 		return nil
 	}
-	rawCredsMap, ok := rawCredsI.(map[string]interface{})
+	rawCredsMap, ok := rawCredsI.(map[string]any)
 	if !ok {
 		return nil
 	}

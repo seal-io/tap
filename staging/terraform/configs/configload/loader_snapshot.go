@@ -447,7 +447,7 @@ func (fi snapshotFileInfo) IsDir() bool {
 	return fi.isDir
 }
 
-func (fi snapshotFileInfo) Sys() interface{} {
+func (fi snapshotFileInfo) Sys() any {
 	return nil
 }
 

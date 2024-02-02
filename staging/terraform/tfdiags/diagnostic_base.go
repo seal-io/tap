@@ -35,6 +35,6 @@ func (d diagnosticBase) FromExpr() *FromExpr {
 	return nil
 }
 
-func (d diagnosticBase) ExtraInfo() interface{} {
+func (d diagnosticBase) ExtraInfo() any {
 	return nil
 }

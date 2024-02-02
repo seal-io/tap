@@ -9,10 +9,10 @@ import (
 	"github.com/hashicorp/terraform/addrs"
 )
 
-type staticObjectAddr map[string]interface{}
+type staticObjectAddr map[string]any
 
 func makeStaticObjectAddr(addr addrs.ConfigCheckable) staticObjectAddr {
-	ret := map[string]interface{}{
+	ret := map[string]any{
 		"to_display": addr.String(),
 	}
 
@@ -66,10 +66,10 @@ func makeStaticObjectAddr(addr addrs.ConfigCheckable) staticObjectAddr {
 	return ret
 }
 
-type dynamicObjectAddr map[string]interface{}
+type dynamicObjectAddr map[string]any
 
 func makeDynamicObjectAddr(addr addrs.Checkable) dynamicObjectAddr {
-	ret := map[string]interface{}{
+	ret := map[string]any{
 		"to_display": addr.String(),
 	}
 

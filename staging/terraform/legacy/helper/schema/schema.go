@@ -138,7 +138,7 @@ type Schema struct {
 	//
 	// If either of these is set, then the user won't be asked for input
 	// for this key if the default is not nil.
-	Default     interface{}
+	Default     any
 	DefaultFunc SchemaDefaultFunc
 
 	// Description is used as the description for docs or asking for user
@@ -175,7 +175,7 @@ type Schema struct {
 	// *Resource. If it is *Schema, the element type is just a simple value.
 	// If it is *Resource, the element type is a complex structure,
 	// potentially managed via its own CRUD actions on the API.
-	Elem interface{}
+	Elem any
 
 	// The following fields are only set for a TypeList or TypeSet.
 	//
@@ -272,13 +272,13 @@ type SchemaDiffSuppressFunc func(k, old, new string, d *ResourceData) bool
 
 // SchemaDefaultFunc is a function called to return a default value for
 // a field.
-type SchemaDefaultFunc func() (interface{}, error)
+type SchemaDefaultFunc func() (any, error)
 
 // EnvDefaultFunc is a helper function that returns the value of the
 // given environment variable, if one exists, or the default value
 // otherwise.
-func EnvDefaultFunc(k string, dv interface{}) SchemaDefaultFunc {
-	return func() (interface{}, error) {
+func EnvDefaultFunc(k string, dv any) SchemaDefaultFunc {
+	return func() (any, error) {
 		if v := os.Getenv(k); v != "" {
 			return v, nil
 		}
@@ -291,8 +291,8 @@ func EnvDefaultFunc(k string, dv interface{}) SchemaDefaultFunc {
 // environment variable in the given list that returns a non-empty value. If
 // none of the environment variables return a value, the default value is
 // returned.
-func MultiEnvDefaultFunc(ks []string, dv interface{}) SchemaDefaultFunc {
-	return func() (interface{}, error) {
+func MultiEnvDefaultFunc(ks []string, dv any) SchemaDefaultFunc {
+	return func() (any, error) {
 		for _, k := range ks {
 			if v := os.Getenv(k); v != "" {
 				return v, nil
@@ -304,15 +304,15 @@ func MultiEnvDefaultFunc(ks []string, dv interface{}) SchemaDefaultFunc {
 
 // SchemaSetFunc is a function that must return a unique ID for the given
 // element. This unique ID is used to store the element in a hash.
-type SchemaSetFunc func(interface{}) int
+type SchemaSetFunc func(any) int
 
 // SchemaStateFunc is a function used to convert some type to a string
 // to be stored in the state.
-type SchemaStateFunc func(interface{}) string
+type SchemaStateFunc func(any) string
 
 // SchemaValidateFunc is a function used to validate a single field in the
 // schema.
-type SchemaValidateFunc func(interface{}, string) ([]string, []error)
+type SchemaValidateFunc func(any, string) ([]string, []error)
 
 func (s *Schema) GoString() string {
 	return fmt.Sprintf("*%#v", *s)
@@ -320,7 +320,7 @@ func (s *Schema) GoString() string {
 
 // Returns a default value for this schema by either reading Default or
 // evaluating DefaultFunc. If neither of these are defined, returns nil.
-func (s *Schema) DefaultValue() (interface{}, error) {
+func (s *Schema) DefaultValue() (any, error) {
 	if s.Default != nil {
 		return s.Default, nil
 	}
@@ -337,7 +337,7 @@ func (s *Schema) DefaultValue() (interface{}, error) {
 }
 
 // Returns a zero value for the schema.
-func (s *Schema) ZeroValue() interface{} {
+func (s *Schema) ZeroValue() any {
 	// If it's a set then we'll do a bit of extra work to provide the
 	// right hashing function in our empty value.
 	if s.Type == TypeSet {
@@ -473,7 +473,7 @@ func (m schemaMap) Diff(
 	s *terraform.InstanceState,
 	c *terraform.ResourceConfig,
 	customizeDiff CustomizeDiffFunc,
-	meta interface{},
+	meta any,
 	handleRequiresNew bool) (*terraform.InstanceDiff, error) {
 	result := new(terraform.InstanceDiff)
 	result.Attributes = make(map[string]*terraform.ResourceAttrDiff)
@@ -654,7 +654,7 @@ func (m schemaMap) Input(
 			continue
 		}
 
-		var value interface{}
+		var value any
 		switch v.Type {
 		case TypeBool, TypeInt, TypeFloat, TypeSet, TypeList:
 			continue
@@ -857,10 +857,10 @@ func isValidFieldName(name string) bool {
 // This helps facilitate diff logic for both ResourceData and ResoureDiff with
 // minimal divergence in code.
 type resourceDiffer interface {
-	diffChange(string) (interface{}, interface{}, bool, bool, bool)
-	Get(string) interface{}
-	GetChange(string) (interface{}, interface{})
-	GetOk(string) (interface{}, bool)
+	diffChange(string) (any, any, bool, bool, bool)
+	Get(string) any
+	GetChange(string) (any, any)
+	GetOk(string) (any, bool)
 	HasChange(string) bool
 	Id() string
 }
@@ -933,10 +933,10 @@ func (m schemaMap) diffList(
 	}
 
 	if o == nil {
-		o = []interface{}{}
+		o = []any{}
 	}
 	if n == nil {
-		n = []interface{}{}
+		n = []any{}
 	}
 	if s, ok := o.(*Set); ok {
 		o = s.List()
@@ -944,8 +944,8 @@ func (m schemaMap) diffList(
 	if s, ok := n.(*Set); ok {
 		n = s.List()
 	}
-	os := o.([]interface{})
-	vs := n.([]interface{})
+	os := o.([]any)
+	vs := n.([]any)
 
 	// If the new value was set, and the two are equal, then we're done.
 	// We have to do this check here because sets might be NOT
@@ -1269,7 +1269,7 @@ func (m schemaMap) diffString(
 	diff *terraform.InstanceDiff,
 	d resourceDiffer,
 	all bool) error {
-	var originalN interface{}
+	var originalN any
 	var os, ns string
 	o, n, _, computed, customized := d.diffChange(k)
 	if schema.StateFunc != nil && n != nil {
@@ -1325,7 +1325,7 @@ func (m schemaMap) diffString(
 func (m schemaMap) inputString(
 	input terraform.UIInput,
 	k string,
-	schema *Schema) (interface{}, error) {
+	schema *Schema) (any, error) {
 	result, err := input.Input(context.Background(), &terraform.InputOpts{
 		Id:          k,
 		Query:       k,
@@ -1389,19 +1389,19 @@ func (m schemaMap) validate(
 }
 
 // isWhollyKnown returns false if the argument contains an UnknownVariableValue
-func isWhollyKnown(raw interface{}) bool {
+func isWhollyKnown(raw any) bool {
 	switch raw := raw.(type) {
 	case string:
 		if raw == hcl2shim.UnknownVariableValue {
 			return false
 		}
-	case []interface{}:
+	case []any:
 		for _, v := range raw {
 			if !isWhollyKnown(v) {
 				return false
 			}
 		}
-	case map[string]interface{}:
+	case map[string]any:
 		for _, v := range raw {
 			if !isWhollyKnown(v) {
 				return false
@@ -1436,7 +1436,7 @@ func (m schemaMap) validateConflictingAttributes(
 
 func (m schemaMap) validateList(
 	k string,
-	raw interface{},
+	raw any,
 	schema *Schema,
 	c *terraform.ResourceConfig) ([]string, []error) {
 	// first check if the list is wholly unknown
@@ -1458,7 +1458,7 @@ func (m schemaMap) validateList(
 	// If we support promotion and the raw value isn't a slice, wrap
 	// it in []interface{} and check again.
 	if schema.PromoteSingle && rawV.Kind() != reflect.Slice {
-		raw = []interface{}{raw}
+		raw = []any{raw}
 		rawV = reflect.ValueOf(raw)
 	}
 
@@ -1488,7 +1488,7 @@ func (m schemaMap) validateList(
 	}
 
 	// Now build the []interface{}
-	raws := make([]interface{}, rawV.Len())
+	raws := make([]any, rawV.Len())
 	for i, _ := range raws {
 		raws[i] = rawV.Index(i).Interface()
 	}
@@ -1528,7 +1528,7 @@ func (m schemaMap) validateList(
 
 func (m schemaMap) validateMap(
 	k string,
-	raw interface{},
+	raw any,
 	schema *Schema,
 	c *terraform.ResourceConfig) ([]string, []error) {
 	// first check if the list is wholly unknown
@@ -1564,7 +1564,7 @@ func (m schemaMap) validateMap(
 	// If it is not a slice, validate directly
 	if rawV.Kind() != reflect.Slice {
 		mapIface := rawV.Interface()
-		if _, errs := validateMapValues(k, mapIface.(map[string]interface{}), schema); len(errs) > 0 {
+		if _, errs := validateMapValues(k, mapIface.(map[string]any), schema); len(errs) > 0 {
 			return nil, errs
 		}
 		if schema.ValidateFunc != nil {
@@ -1574,7 +1574,7 @@ func (m schemaMap) validateMap(
 	}
 
 	// It is a slice, verify that all the elements are maps
-	raws := make([]interface{}, rawV.Len())
+	raws := make([]any, rawV.Len())
 	for i, _ := range raws {
 		raws[i] = rawV.Index(i).Interface()
 	}
@@ -1586,15 +1586,15 @@ func (m schemaMap) validateMap(
 				"%s: should be a map", k)}
 		}
 		mapIface := v.Interface()
-		if _, errs := validateMapValues(k, mapIface.(map[string]interface{}), schema); len(errs) > 0 {
+		if _, errs := validateMapValues(k, mapIface.(map[string]any), schema); len(errs) > 0 {
 			return nil, errs
 		}
 	}
 
 	if schema.ValidateFunc != nil {
-		validatableMap := make(map[string]interface{})
+		validatableMap := make(map[string]any)
 		for _, raw := range raws {
-			for k, v := range raw.(map[string]interface{}) {
+			for k, v := range raw.(map[string]any) {
 				validatableMap[k] = v
 			}
 		}
@@ -1605,7 +1605,7 @@ func (m schemaMap) validateMap(
 	return nil, nil
 }
 
-func validateMapValues(k string, m map[string]interface{}, schema *Schema) ([]string, []error) {
+func validateMapValues(k string, m map[string]any, schema *Schema) ([]string, []error) {
 	for key, raw := range m {
 		valueType, err := getValueType(k, schema)
 		if err != nil {
@@ -1674,7 +1674,7 @@ func (m schemaMap) validateObject(
 		return nil, nil
 	}
 
-	if _, ok := raw.(map[string]interface{}); !ok && !c.IsComputed(k) {
+	if _, ok := raw.(map[string]any); !ok && !c.IsComputed(k) {
 		return nil, []error{fmt.Errorf(
 			"%s: expected object, got %s",
 			k, reflect.ValueOf(raw).Kind())}
@@ -1698,7 +1698,7 @@ func (m schemaMap) validateObject(
 	}
 
 	// Detect any extra/unknown keys and report those as errors.
-	if m, ok := raw.(map[string]interface{}); ok {
+	if m, ok := raw.(map[string]any); ok {
 		for subk, _ := range m {
 			if _, ok := schema[subk]; !ok {
 				if subk == TimeoutsConfigKey {
@@ -1715,7 +1715,7 @@ func (m schemaMap) validateObject(
 
 func (m schemaMap) validatePrimitive(
 	k string,
-	raw interface{},
+	raw any,
 	schema *Schema,
 	c *terraform.ResourceConfig) ([]string, []error) {
 
@@ -1747,7 +1747,7 @@ func (m schemaMap) validatePrimitive(
 		return nil, nil
 	}
 
-	var decoded interface{}
+	var decoded any
 	switch schema.Type {
 	case TypeBool:
 		// Verify that we can parse this as the correct type
@@ -1803,7 +1803,7 @@ func (m schemaMap) validatePrimitive(
 
 func (m schemaMap) validateType(
 	k string,
-	raw interface{},
+	raw any,
 	schema *Schema,
 	c *terraform.ResourceConfig) ([]string, []error) {
 	var ws []string
@@ -1831,7 +1831,7 @@ func (m schemaMap) validateType(
 }
 
 // Zero returns the zero value for a type.
-func (t ValueType) Zero() interface{} {
+func (t ValueType) Zero() any {
 	switch t {
 	case TypeInvalid:
 		return nil
@@ -1844,13 +1844,13 @@ func (t ValueType) Zero() interface{} {
 	case TypeString:
 		return ""
 	case TypeList:
-		return []interface{}{}
+		return []any{}
 	case TypeMap:
-		return map[string]interface{}{}
+		return map[string]any{}
 	case TypeSet:
 		return new(Set)
 	case typeObject:
-		return map[string]interface{}{}
+		return map[string]any{}
 	default:
 		panic(fmt.Sprintf("unknown type %s", t))
 	}

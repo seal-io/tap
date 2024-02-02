@@ -14,7 +14,7 @@ func TestSetAdd(t *testing.T) {
 	s.Add(5)
 	s.Add(25)
 
-	expected := []interface{}{1, 25, 5}
+	expected := []any{1, 25, 5}
 	actual := s.List()
 	if !reflect.DeepEqual(actual, expected) {
 		t.Fatalf("bad: %#v", actual)
@@ -28,7 +28,7 @@ func TestSetAdd_negative(t *testing.T) {
 	s.Add(-1)
 	s.Add(1)
 
-	expected := []interface{}{-1}
+	expected := []any{-1}
 	actual := s.List()
 	if !reflect.DeepEqual(actual, expected) {
 		t.Fatalf("bad: %#v", actual)
@@ -64,7 +64,7 @@ func TestSetDifference(t *testing.T) {
 	difference := s1.Difference(s2)
 	difference.Add(2)
 
-	expected := []interface{}{1, 2}
+	expected := []any{1, 2}
 	actual := difference.List()
 	if !reflect.DeepEqual(actual, expected) {
 		t.Fatalf("bad: %#v", actual)
@@ -84,7 +84,7 @@ func TestSetIntersection(t *testing.T) {
 	intersection := s1.Intersection(s2)
 	intersection.Add(2)
 
-	expected := []interface{}{2, 5}
+	expected := []any{2, 5}
 	actual := intersection.List()
 	if !reflect.DeepEqual(actual, expected) {
 		t.Fatalf("bad: %#v", actual)
@@ -104,14 +104,14 @@ func TestSetUnion(t *testing.T) {
 	union := s1.Union(s2)
 	union.Add(2)
 
-	expected := []interface{}{1, 2, 25, 5}
+	expected := []any{1, 2, 25, 5}
 	actual := union.List()
 	if !reflect.DeepEqual(actual, expected) {
 		t.Fatalf("bad: %#v", actual)
 	}
 }
 
-func testSetInt(v interface{}) int {
+func testSetInt(v any) int {
 	return v.(int)
 }
 
@@ -154,29 +154,29 @@ func TestHashEqual(t *testing.T) {
 			},
 		},
 	}
-	n1 := map[string]interface{}{"foo": "bar"}
-	n2 := map[string]interface{}{"foo": "baz"}
+	n1 := map[string]any{"foo": "bar"}
+	n2 := map[string]any{"foo": "baz"}
 
-	r1 := map[string]interface{}{
+	r1 := map[string]any{
 		"bar":    "baz",
-		"nested": NewSet(HashResource(nested), []interface{}{n1}),
+		"nested": NewSet(HashResource(nested), []any{n1}),
 	}
-	r2 := map[string]interface{}{
+	r2 := map[string]any{
 		"bar":    "qux",
-		"nested": NewSet(HashResource(nested), []interface{}{n2}),
+		"nested": NewSet(HashResource(nested), []any{n2}),
 	}
-	r3 := map[string]interface{}{
+	r3 := map[string]any{
 		"bar":    "baz",
-		"nested": NewSet(HashResource(nested), []interface{}{n2}),
+		"nested": NewSet(HashResource(nested), []any{n2}),
 	}
-	r4 := map[string]interface{}{
+	r4 := map[string]any{
 		"bar":    "qux",
-		"nested": NewSet(HashResource(nested), []interface{}{n1}),
+		"nested": NewSet(HashResource(nested), []any{n1}),
 	}
-	s1 := NewSet(HashResource(root), []interface{}{r1})
-	s2 := NewSet(HashResource(root), []interface{}{r2})
-	s3 := NewSet(HashResource(root), []interface{}{r3})
-	s4 := NewSet(HashResource(root), []interface{}{r4})
+	s1 := NewSet(HashResource(root), []any{r1})
+	s2 := NewSet(HashResource(root), []any{r2})
+	s3 := NewSet(HashResource(root), []any{r3})
+	s4 := NewSet(HashResource(root), []any{r4})
 
 	cases := []struct {
 		name     string

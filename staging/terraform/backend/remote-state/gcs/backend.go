@@ -182,7 +182,7 @@ func (b *Backend) configure(ctx context.Context) error {
 		var delegates []string
 
 		if v, ok := data.GetOk("impersonate_service_account_delegates"); ok {
-			d := v.([]interface{})
+			d := v.([]any)
 			if len(delegates) > 0 {
 				delegates = make([]string, 0, len(d))
 			}

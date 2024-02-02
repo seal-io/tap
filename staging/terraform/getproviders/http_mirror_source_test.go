@@ -30,7 +30,7 @@ func TestHTTPMirrorSource(t *testing.T) {
 	if err != nil {
 		t.Fatalf("httptest.NewTLSServer returned a server with an invalid URL")
 	}
-	creds := svcauth.StaticCredentialsSource(map[svchost.Hostname]map[string]interface{}{
+	creds := svcauth.StaticCredentialsSource(map[svchost.Hostname]map[string]any{
 		svchost.Hostname(baseURL.Host): {
 			"token": "placeholder-token",
 		},

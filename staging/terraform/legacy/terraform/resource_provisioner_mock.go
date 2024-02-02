@@ -14,7 +14,7 @@ import (
 type MockResourceProvisioner struct {
 	sync.Mutex
 	// Anything you want, in case you need to store extra data with the mock.
-	Meta interface{}
+	Meta any
 
 	GetConfigSchemaCalled       bool
 	GetConfigSchemaReturnSchema *configschema.Block

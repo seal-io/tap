@@ -30,7 +30,7 @@ func TestBackendConfig(t *testing.T) {
 	defer Reset()
 	testID := "test_lock_id"
 
-	config := map[string]interface{}{
+	config := map[string]any{
 		"lock_id": testID,
 	}
 

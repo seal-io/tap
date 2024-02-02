@@ -39,7 +39,7 @@ func (w *newValueWriter) init() {
 
 // WriteField overrides MapValueWriter's WriteField, adding the ability to flag
 // the address as computed.
-func (w *newValueWriter) WriteField(address []string, value interface{}, computed bool) error {
+func (w *newValueWriter) WriteField(address []string, value any, computed bool) error {
 	// Fail the write if we have a non-nil value and computed is true.
 	// NewComputed values should not have a value when written.
 	if value != nil && computed {
@@ -271,7 +271,7 @@ func (d *ResourceDiff) GetChangedKeysPrefix(prefix string) []string {
 
 // diffChange helps to implement resourceDiffer and derives its change values
 // from ResourceDiff's own change data, in addition to existing diff, config, and state.
-func (d *ResourceDiff) diffChange(key string) (interface{}, interface{}, bool, bool, bool) {
+func (d *ResourceDiff) diffChange(key string) (any, any, bool, bool, bool) {
 	old, new, customized := d.getChange(key)
 
 	if !old.Exists {
@@ -289,7 +289,7 @@ func (d *ResourceDiff) diffChange(key string) (interface{}, interface{}, bool, b
 // sets). The original value from the state is used as the old value.
 //
 // This function is only allowed on computed attributes.
-func (d *ResourceDiff) SetNew(key string, value interface{}) error {
+func (d *ResourceDiff) SetNew(key string, value any) error {
 	if err := d.checkKey(key, "SetNew", false); err != nil {
 		return err
 	}
@@ -310,7 +310,7 @@ func (d *ResourceDiff) SetNewComputed(key string) error {
 }
 
 // setDiff performs common diff setting behaviour.
-func (d *ResourceDiff) setDiff(key string, new interface{}, computed bool) error {
+func (d *ResourceDiff) setDiff(key string, new any, computed bool) error {
 	if err := d.clear(key); err != nil {
 		return err
 	}
@@ -364,7 +364,7 @@ func (d *ResourceDiff) ForceNew(key string) error {
 }
 
 // Get hands off to ResourceData.Get.
-func (d *ResourceDiff) Get(key string) interface{} {
+func (d *ResourceDiff) Get(key string) any {
 	r, _ := d.GetOk(key)
 	return r
 }
@@ -375,7 +375,7 @@ func (d *ResourceDiff) Get(key string) interface{} {
 // This implementation differs from ResourceData's in the way that we first get
 // results from the exact levels for the new diff, then from state and diff as
 // per normal.
-func (d *ResourceDiff) GetChange(key string) (interface{}, interface{}) {
+func (d *ResourceDiff) GetChange(key string) (any, any) {
 	old, new, _ := d.getChange(key)
 	return old.Value, new.Value
 }
@@ -383,7 +383,7 @@ func (d *ResourceDiff) GetChange(key string) (interface{}, interface{}) {
 // GetOk functions the same way as ResourceData.GetOk, but it also checks the
 // new diff levels to provide data consistent with the current state of the
 // customized diff.
-func (d *ResourceDiff) GetOk(key string) (interface{}, bool) {
+func (d *ResourceDiff) GetOk(key string) (any, bool) {
 	r := d.get(strings.Split(key, "."), "newDiff")
 	exists := r.Exists && !r.Computed
 	if exists {
@@ -409,7 +409,7 @@ func (d *ResourceDiff) GetOk(key string) (interface{}, bool) {
 // for the zero value of the attribute's type. This allows for attributes
 // without a default, to fully check for a literal assignment, regardless
 // of the zero-value for that type.
-func (d *ResourceDiff) GetOkExists(key string) (interface{}, bool) {
+func (d *ResourceDiff) GetOkExists(key string) (any, bool) {
 	r := d.get(strings.Split(key, "."), "newDiff")
 	exists := r.Exists && !r.Computed
 	return r.Value, exists

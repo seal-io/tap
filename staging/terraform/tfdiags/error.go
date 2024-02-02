@@ -30,7 +30,7 @@ func (e nativeError) FromExpr() *FromExpr {
 	return nil
 }
 
-func (e nativeError) ExtraInfo() interface{} {
+func (e nativeError) ExtraInfo() any {
 	// Native errors don't carry any "extra information".
 	return nil
 }

@@ -13,13 +13,13 @@ import (
 
 type evaluatedString struct {
 	String string
-	Json   interface{}
+	Json   any
 
 	IsMultiline bool
 	IsNull      bool
 }
 
-func evaluatePrimitiveString(value interface{}, opts computed.RenderHumanOpts) evaluatedString {
+func evaluatePrimitiveString(value any, opts computed.RenderHumanOpts) evaluatedString {
 	if value == nil {
 		return evaluatedString{
 			String: opts.Colorize.Color("[dark_gray]null[reset]"),
@@ -30,7 +30,7 @@ func evaluatePrimitiveString(value interface{}, opts computed.RenderHumanOpts) e
 	str := value.(string)
 
 	if strings.HasPrefix(str, "{") || strings.HasPrefix(str, "[") {
-		var jv interface{}
+		var jv any
 		if err := json.Unmarshal([]byte(str), &jv); err == nil {
 			return evaluatedString{
 				String: str,

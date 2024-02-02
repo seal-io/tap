@@ -31,7 +31,7 @@ func TestResourceApply_create(t *testing.T) {
 	}
 
 	called := false
-	r.Create = func(d *ResourceData, m interface{}) error {
+	r.Create = func(d *ResourceData, m any) error {
 		called = true
 		d.SetId("foo")
 		return nil
@@ -62,7 +62,7 @@ func TestResourceApply_create(t *testing.T) {
 			"id":  "foo",
 			"foo": "42",
 		},
-		Meta: map[string]interface{}{
+		Meta: map[string]any{
 			"schema_version": "2",
 		},
 	}
@@ -89,7 +89,7 @@ func TestResourceApply_Timeout_state(t *testing.T) {
 	}
 
 	called := false
-	r.Create = func(d *ResourceData, m interface{}) error {
+	r.Create = func(d *ResourceData, m any) error {
 		called = true
 		d.SetId("foo")
 		return nil
@@ -130,7 +130,7 @@ func TestResourceApply_Timeout_state(t *testing.T) {
 			"id":  "foo",
 			"foo": "42",
 		},
-		Meta: map[string]interface{}{
+		Meta: map[string]any{
 			"schema_version": "2",
 			TimeoutKey:       expectedForValues(40, 0, 80, 40, 0),
 		},
@@ -163,7 +163,7 @@ func TestResourceApply_Timeout_destroy(t *testing.T) {
 
 	called := false
 	var delTimeout time.Duration
-	r.Delete = func(d *ResourceData, m interface{}) error {
+	r.Delete = func(d *ResourceData, m any) error {
 		delTimeout = d.Timeout(TimeoutDelete)
 		called = true
 		return nil
@@ -214,15 +214,15 @@ func TestResourceDiff_Timeout_diff(t *testing.T) {
 		},
 	}
 
-	r.Create = func(d *ResourceData, m interface{}) error {
+	r.Create = func(d *ResourceData, m any) error {
 		d.SetId("foo")
 		return nil
 	}
 
 	conf := terraform.NewResourceConfigRaw(
-		map[string]interface{}{
+		map[string]any{
 			"foo": 42,
-			TimeoutsConfigKey: map[string]interface{}{
+			TimeoutsConfigKey: map[string]any{
 				"create": "2h",
 			},
 		},
@@ -269,13 +269,13 @@ func TestResourceDiff_CustomizeFunc(t *testing.T) {
 
 	var called bool
 
-	r.CustomizeDiff = func(d *ResourceDiff, m interface{}) error {
+	r.CustomizeDiff = func(d *ResourceDiff, m any) error {
 		called = true
 		return nil
 	}
 
 	conf := terraform.NewResourceConfigRaw(
-		map[string]interface{}{
+		map[string]any{
 			"foo": 42,
 		},
 	)
@@ -303,7 +303,7 @@ func TestResourceApply_destroy(t *testing.T) {
 	}
 
 	called := false
-	r.Delete = func(d *ResourceData, m interface{}) error {
+	r.Delete = func(d *ResourceData, m any) error {
 		called = true
 		return nil
 	}
@@ -347,12 +347,12 @@ func TestResourceApply_destroyCreate(t *testing.T) {
 	}
 
 	change := false
-	r.Create = func(d *ResourceData, m interface{}) error {
+	r.Create = func(d *ResourceData, m any) error {
 		change = d.HasChange("tags")
 		d.SetId("foo")
 		return nil
 	}
-	r.Delete = func(d *ResourceData, m interface{}) error {
+	r.Delete = func(d *ResourceData, m any) error {
 		return nil
 	}
 
@@ -413,7 +413,7 @@ func TestResourceApply_destroyPartial(t *testing.T) {
 		SchemaVersion: 3,
 	}
 
-	r.Delete = func(d *ResourceData, m interface{}) error {
+	r.Delete = func(d *ResourceData, m any) error {
 		d.Set("foo", 42)
 		return fmt.Errorf("some error")
 	}
@@ -440,7 +440,7 @@ func TestResourceApply_destroyPartial(t *testing.T) {
 			"id":  "bar",
 			"foo": "42",
 		},
-		Meta: map[string]interface{}{
+		Meta: map[string]any{
 			"schema_version": "3",
 		},
 	}
@@ -460,7 +460,7 @@ func TestResourceApply_update(t *testing.T) {
 		},
 	}
 
-	r.Update = func(d *ResourceData, m interface{}) error {
+	r.Update = func(d *ResourceData, m any) error {
 		d.Set("foo", 42)
 		return nil
 	}
@@ -552,14 +552,14 @@ func TestResourceApply_isNewResource(t *testing.T) {
 		},
 	}
 
-	updateFunc := func(d *ResourceData, m interface{}) error {
+	updateFunc := func(d *ResourceData, m any) error {
 		d.Set("foo", "updated")
 		if d.IsNewResource() {
 			d.Set("foo", "new-resource")
 		}
 		return nil
 	}
-	r.Create = func(d *ResourceData, m interface{}) error {
+	r.Create = func(d *ResourceData, m any) error {
 		d.SetId("foo")
 		d.Set("foo", "created")
 		return updateFunc(d, m)
@@ -653,7 +653,7 @@ func TestResourceInternalValidate(t *testing.T) {
 		// Update undefined for non-ForceNew field
 		2: {
 			&Resource{
-				Create: func(d *ResourceData, meta interface{}) error { return nil },
+				Create: func(d *ResourceData, meta any) error { return nil },
 				Schema: map[string]*Schema{
 					"boo": &Schema{
 						Type:     TypeInt,
@@ -668,8 +668,8 @@ func TestResourceInternalValidate(t *testing.T) {
 		// Update defined for ForceNew field
 		3: {
 			&Resource{
-				Create: func(d *ResourceData, meta interface{}) error { return nil },
-				Update: func(d *ResourceData, meta interface{}) error { return nil },
+				Create: func(d *ResourceData, meta any) error { return nil },
+				Update: func(d *ResourceData, meta any) error { return nil },
 				Schema: map[string]*Schema{
 					"goo": &Schema{
 						Type:     TypeInt,
@@ -699,7 +699,7 @@ func TestResourceInternalValidate(t *testing.T) {
 		// non-writable *must not* have Create
 		5: {
 			&Resource{
-				Create: func(d *ResourceData, meta interface{}) error { return nil },
+				Create: func(d *ResourceData, meta any) error { return nil },
 				Schema: map[string]*Schema{
 					"goo": &Schema{
 						Type:     TypeInt,
@@ -714,9 +714,9 @@ func TestResourceInternalValidate(t *testing.T) {
 		// writable must have Read
 		6: {
 			&Resource{
-				Create: func(d *ResourceData, meta interface{}) error { return nil },
-				Update: func(d *ResourceData, meta interface{}) error { return nil },
-				Delete: func(d *ResourceData, meta interface{}) error { return nil },
+				Create: func(d *ResourceData, meta any) error { return nil },
+				Update: func(d *ResourceData, meta any) error { return nil },
+				Delete: func(d *ResourceData, meta any) error { return nil },
 				Schema: map[string]*Schema{
 					"goo": &Schema{
 						Type:     TypeInt,
@@ -731,9 +731,9 @@ func TestResourceInternalValidate(t *testing.T) {
 		// writable must have Delete
 		7: {
 			&Resource{
-				Create: func(d *ResourceData, meta interface{}) error { return nil },
-				Read:   func(d *ResourceData, meta interface{}) error { return nil },
-				Update: func(d *ResourceData, meta interface{}) error { return nil },
+				Create: func(d *ResourceData, meta any) error { return nil },
+				Read:   func(d *ResourceData, meta any) error { return nil },
+				Update: func(d *ResourceData, meta any) error { return nil },
 				Schema: map[string]*Schema{
 					"goo": &Schema{
 						Type:     TypeInt,
@@ -747,10 +747,10 @@ func TestResourceInternalValidate(t *testing.T) {
 
 		8: { // Reserved name at root should be disallowed
 			&Resource{
-				Create: func(d *ResourceData, meta interface{}) error { return nil },
-				Read:   func(d *ResourceData, meta interface{}) error { return nil },
-				Update: func(d *ResourceData, meta interface{}) error { return nil },
-				Delete: func(d *ResourceData, meta interface{}) error { return nil },
+				Create: func(d *ResourceData, meta any) error { return nil },
+				Read:   func(d *ResourceData, meta any) error { return nil },
+				Update: func(d *ResourceData, meta any) error { return nil },
+				Delete: func(d *ResourceData, meta any) error { return nil },
 				Schema: map[string]*Schema{
 					"count": {
 						Type:     TypeInt,
@@ -764,10 +764,10 @@ func TestResourceInternalValidate(t *testing.T) {
 
 		9: { // Reserved name at nested levels should be allowed
 			&Resource{
-				Create: func(d *ResourceData, meta interface{}) error { return nil },
-				Read:   func(d *ResourceData, meta interface{}) error { return nil },
-				Update: func(d *ResourceData, meta interface{}) error { return nil },
-				Delete: func(d *ResourceData, meta interface{}) error { return nil },
+				Create: func(d *ResourceData, meta any) error { return nil },
+				Read:   func(d *ResourceData, meta any) error { return nil },
+				Update: func(d *ResourceData, meta any) error { return nil },
+				Delete: func(d *ResourceData, meta any) error { return nil },
 				Schema: map[string]*Schema{
 					"parent_list": &Schema{
 						Type:     TypeString,
@@ -789,10 +789,10 @@ func TestResourceInternalValidate(t *testing.T) {
 
 		10: { // Provider reserved name should be allowed in resource
 			&Resource{
-				Create: func(d *ResourceData, meta interface{}) error { return nil },
-				Read:   func(d *ResourceData, meta interface{}) error { return nil },
-				Update: func(d *ResourceData, meta interface{}) error { return nil },
-				Delete: func(d *ResourceData, meta interface{}) error { return nil },
+				Create: func(d *ResourceData, meta any) error { return nil },
+				Read:   func(d *ResourceData, meta any) error { return nil },
+				Update: func(d *ResourceData, meta any) error { return nil },
+				Delete: func(d *ResourceData, meta any) error { return nil },
 				Schema: map[string]*Schema{
 					"alias": &Schema{
 						Type:     TypeString,
@@ -806,7 +806,7 @@ func TestResourceInternalValidate(t *testing.T) {
 
 		11: { // ID should be allowed in data source
 			&Resource{
-				Read: func(d *ResourceData, meta interface{}) error { return nil },
+				Read: func(d *ResourceData, meta any) error { return nil },
 				Schema: map[string]*Schema{
 					"id": &Schema{
 						Type:     TypeString,
@@ -820,10 +820,10 @@ func TestResourceInternalValidate(t *testing.T) {
 
 		12: { // Deprecated ID should be allowed in resource
 			&Resource{
-				Create: func(d *ResourceData, meta interface{}) error { return nil },
-				Read:   func(d *ResourceData, meta interface{}) error { return nil },
-				Update: func(d *ResourceData, meta interface{}) error { return nil },
-				Delete: func(d *ResourceData, meta interface{}) error { return nil },
+				Create: func(d *ResourceData, meta any) error { return nil },
+				Read:   func(d *ResourceData, meta any) error { return nil },
+				Update: func(d *ResourceData, meta any) error { return nil },
+				Delete: func(d *ResourceData, meta any) error { return nil },
 				Schema: map[string]*Schema{
 					"id": &Schema{
 						Type:       TypeString,
@@ -838,21 +838,21 @@ func TestResourceInternalValidate(t *testing.T) {
 
 		13: { // non-writable must not define CustomizeDiff
 			&Resource{
-				Read: func(d *ResourceData, meta interface{}) error { return nil },
+				Read: func(d *ResourceData, meta any) error { return nil },
 				Schema: map[string]*Schema{
 					"goo": &Schema{
 						Type:     TypeInt,
 						Optional: true,
 					},
 				},
-				CustomizeDiff: func(*ResourceDiff, interface{}) error { return nil },
+				CustomizeDiff: func(*ResourceDiff, any) error { return nil },
 			},
 			false,
 			true,
 		},
 		14: { // Deprecated resource
 			&Resource{
-				Read: func(d *ResourceData, meta interface{}) error { return nil },
+				Read: func(d *ResourceData, meta any) error { return nil },
 				Schema: map[string]*Schema{
 					"goo": &Schema{
 						Type:     TypeInt,
@@ -895,7 +895,7 @@ func TestResourceRefresh(t *testing.T) {
 		},
 	}
 
-	r.Read = func(d *ResourceData, m interface{}) error {
+	r.Read = func(d *ResourceData, m any) error {
 		if m != 42 {
 			return fmt.Errorf("meta not passed")
 		}
@@ -916,7 +916,7 @@ func TestResourceRefresh(t *testing.T) {
 			"id":  "bar",
 			"foo": "13",
 		},
-		Meta: map[string]interface{}{
+		Meta: map[string]any{
 			"schema_version": "2",
 		},
 	}
@@ -941,7 +941,7 @@ func TestResourceRefresh_blankId(t *testing.T) {
 		},
 	}
 
-	r.Read = func(d *ResourceData, m interface{}) error {
+	r.Read = func(d *ResourceData, m any) error {
 		d.SetId("foo")
 		return nil
 	}
@@ -970,7 +970,7 @@ func TestResourceRefresh_delete(t *testing.T) {
 		},
 	}
 
-	r.Read = func(d *ResourceData, m interface{}) error {
+	r.Read = func(d *ResourceData, m any) error {
 		d.SetId("")
 		return nil
 	}
@@ -1002,11 +1002,11 @@ func TestResourceRefresh_existsError(t *testing.T) {
 		},
 	}
 
-	r.Exists = func(*ResourceData, interface{}) (bool, error) {
+	r.Exists = func(*ResourceData, any) (bool, error) {
 		return false, fmt.Errorf("error")
 	}
 
-	r.Read = func(d *ResourceData, m interface{}) error {
+	r.Read = func(d *ResourceData, m any) error {
 		panic("shouldn't be called")
 	}
 
@@ -1036,11 +1036,11 @@ func TestResourceRefresh_noExists(t *testing.T) {
 		},
 	}
 
-	r.Exists = func(*ResourceData, interface{}) (bool, error) {
+	r.Exists = func(*ResourceData, any) (bool, error) {
 		return false, nil
 	}
 
-	r.Read = func(d *ResourceData, m interface{}) error {
+	r.Read = func(d *ResourceData, m any) error {
 		panic("shouldn't be called")
 	}
 
@@ -1072,14 +1072,14 @@ func TestResourceRefresh_needsMigration(t *testing.T) {
 		},
 	}
 
-	r.Read = func(d *ResourceData, m interface{}) error {
+	r.Read = func(d *ResourceData, m any) error {
 		return d.Set("newfoo", d.Get("newfoo").(int)+1)
 	}
 
 	r.MigrateState = func(
 		v int,
 		s *terraform.InstanceState,
-		meta interface{}) (*terraform.InstanceState, error) {
+		meta any) (*terraform.InstanceState, error) {
 		// Real state migration functions will probably switch on this value,
 		// but we'll just assert on it for now.
 		if v != 1 {
@@ -1107,7 +1107,7 @@ func TestResourceRefresh_needsMigration(t *testing.T) {
 		Attributes: map[string]string{
 			"oldfoo": "1.2",
 		},
-		Meta: map[string]interface{}{
+		Meta: map[string]any{
 			"schema_version": "1",
 		},
 	}
@@ -1123,7 +1123,7 @@ func TestResourceRefresh_needsMigration(t *testing.T) {
 			"id":     "bar",
 			"newfoo": "13",
 		},
-		Meta: map[string]interface{}{
+		Meta: map[string]any{
 			"schema_version": "2",
 		},
 	}
@@ -1144,14 +1144,14 @@ func TestResourceRefresh_noMigrationNeeded(t *testing.T) {
 		},
 	}
 
-	r.Read = func(d *ResourceData, m interface{}) error {
+	r.Read = func(d *ResourceData, m any) error {
 		return d.Set("newfoo", d.Get("newfoo").(int)+1)
 	}
 
 	r.MigrateState = func(
 		v int,
 		s *terraform.InstanceState,
-		meta interface{}) (*terraform.InstanceState, error) {
+		meta any) (*terraform.InstanceState, error) {
 		t.Fatal("Migrate function shouldn't be called!")
 		return nil, nil
 	}
@@ -1161,7 +1161,7 @@ func TestResourceRefresh_noMigrationNeeded(t *testing.T) {
 		Attributes: map[string]string{
 			"newfoo": "12",
 		},
-		Meta: map[string]interface{}{
+		Meta: map[string]any{
 			"schema_version": "2",
 		},
 	}
@@ -1177,7 +1177,7 @@ func TestResourceRefresh_noMigrationNeeded(t *testing.T) {
 			"id":     "bar",
 			"newfoo": "13",
 		},
-		Meta: map[string]interface{}{
+		Meta: map[string]any{
 			"schema_version": "2",
 		},
 	}
@@ -1199,14 +1199,14 @@ func TestResourceRefresh_stateSchemaVersionUnset(t *testing.T) {
 		},
 	}
 
-	r.Read = func(d *ResourceData, m interface{}) error {
+	r.Read = func(d *ResourceData, m any) error {
 		return d.Set("newfoo", d.Get("newfoo").(int)+1)
 	}
 
 	r.MigrateState = func(
 		v int,
 		s *terraform.InstanceState,
-		meta interface{}) (*terraform.InstanceState, error) {
+		meta any) (*terraform.InstanceState, error) {
 		s.Attributes["newfoo"] = s.Attributes["oldfoo"]
 		return s, nil
 	}
@@ -1229,7 +1229,7 @@ func TestResourceRefresh_stateSchemaVersionUnset(t *testing.T) {
 			"id":     "bar",
 			"newfoo": "13",
 		},
-		Meta: map[string]interface{}{
+		Meta: map[string]any{
 			"schema_version": "1",
 		},
 	}
@@ -1250,7 +1250,7 @@ func TestResourceRefresh_migrateStateErr(t *testing.T) {
 		},
 	}
 
-	r.Read = func(d *ResourceData, m interface{}) error {
+	r.Read = func(d *ResourceData, m any) error {
 		t.Fatal("Read should never be called!")
 		return nil
 	}
@@ -1258,7 +1258,7 @@ func TestResourceRefresh_migrateStateErr(t *testing.T) {
 	r.MigrateState = func(
 		v int,
 		s *terraform.InstanceState,
-		meta interface{}) (*terraform.InstanceState, error) {
+		meta any) (*terraform.InstanceState, error) {
 		return s, fmt.Errorf("triggering an error")
 	}
 
@@ -1303,7 +1303,7 @@ func TestResourceData(t *testing.T) {
 	}
 
 	// Set expectations
-	state.Meta = map[string]interface{}{
+	state.Meta = map[string]any{
 		"schema_version": "2",
 	}
 
@@ -1390,7 +1390,7 @@ func TestResource_UpgradeState(t *testing.T) {
 				"id":     cty.String,
 				"oldfoo": cty.Number,
 			}),
-			Upgrade: func(m map[string]interface{}, meta interface{}) (map[string]interface{}, error) {
+			Upgrade: func(m map[string]any, meta any) (map[string]any, error) {
 
 				oldfoo, ok := m["oldfoo"].(float64)
 				if !ok {
@@ -1421,7 +1421,7 @@ func TestResource_UpgradeState(t *testing.T) {
 	}
 
 	// unmarshal the state using the json default types
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(js, &m); err != nil {
 		t.Fatal(err)
 	}
@@ -1431,7 +1431,7 @@ func TestResource_UpgradeState(t *testing.T) {
 		t.Fatalf("err: %s", err)
 	}
 
-	expected := map[string]interface{}{
+	expected := map[string]any{
 		"id":     "bar",
 		"newfoo": 12,
 	}
@@ -1461,7 +1461,7 @@ func TestResource_ValidateUpgradeState(t *testing.T) {
 		Type: cty.Object(map[string]cty.Type{
 			"id": cty.String,
 		}),
-		Upgrade: func(m map[string]interface{}, _ interface{}) (map[string]interface{}, error) {
+		Upgrade: func(m map[string]any, _ any) (map[string]any, error) {
 			return m, nil
 		},
 	})
@@ -1483,7 +1483,7 @@ func TestResource_ValidateUpgradeState(t *testing.T) {
 	if err := r.InternalValidate(nil, true); err == nil {
 		t.Fatal("StateUpgrader must have an Upgrade func")
 	}
-	r.StateUpgraders[0].Upgrade = func(m map[string]interface{}, _ interface{}) (map[string]interface{}, error) {
+	r.StateUpgraders[0].Upgrade = func(m map[string]any, _ any) (map[string]any, error) {
 		return m, nil
 	}
 
@@ -1494,7 +1494,7 @@ func TestResource_ValidateUpgradeState(t *testing.T) {
 		Type: cty.Object(map[string]cty.Type{
 			"id": cty.String,
 		}),
-		Upgrade: func(m map[string]interface{}, _ interface{}) (map[string]interface{}, error) {
+		Upgrade: func(m map[string]any, _ any) (map[string]any, error) {
 			return m, nil
 		},
 	})
@@ -1508,7 +1508,7 @@ func TestResource_ValidateUpgradeState(t *testing.T) {
 		Type: cty.Object(map[string]cty.Type{
 			"id": cty.String,
 		}),
-		Upgrade: func(m map[string]interface{}, _ interface{}) (map[string]interface{}, error) {
+		Upgrade: func(m map[string]any, _ any) (map[string]any, error) {
 			return m, nil
 		},
 	})
@@ -1527,7 +1527,7 @@ func TestResource_ValidateUpgradeState(t *testing.T) {
 		Type: cty.Object(map[string]cty.Type{
 			"id": cty.String,
 		}),
-		Upgrade: func(m map[string]interface{}, _ interface{}) (map[string]interface{}, error) {
+		Upgrade: func(m map[string]any, _ any) (map[string]any, error) {
 			return m, nil
 		},
 	})
@@ -1548,7 +1548,7 @@ func TestResource_migrateAndUpgrade(t *testing.T) {
 			},
 		},
 		// this MigrateState will take the state to version 2
-		MigrateState: func(v int, is *terraform.InstanceState, _ interface{}) (*terraform.InstanceState, error) {
+		MigrateState: func(v int, is *terraform.InstanceState, _ any) (*terraform.InstanceState, error) {
 			switch v {
 			case 0:
 				_, ok := is.Attributes["zero"]
@@ -1572,7 +1572,7 @@ func TestResource_migrateAndUpgrade(t *testing.T) {
 		},
 	}
 
-	r.Read = func(d *ResourceData, m interface{}) error {
+	r.Read = func(d *ResourceData, m any) error {
 		return d.Set("four", 4)
 	}
 
@@ -1583,7 +1583,7 @@ func TestResource_migrateAndUpgrade(t *testing.T) {
 				"id":  cty.String,
 				"two": cty.Number,
 			}),
-			Upgrade: func(m map[string]interface{}, meta interface{}) (map[string]interface{}, error) {
+			Upgrade: func(m map[string]any, meta any) (map[string]any, error) {
 				_, ok := m["two"].(float64)
 				if !ok {
 					return nil, fmt.Errorf("two not found in %#v", m)
@@ -1599,7 +1599,7 @@ func TestResource_migrateAndUpgrade(t *testing.T) {
 				"id":    cty.String,
 				"three": cty.Number,
 			}),
-			Upgrade: func(m map[string]interface{}, meta interface{}) (map[string]interface{}, error) {
+			Upgrade: func(m map[string]any, meta any) (map[string]any, error) {
 				_, ok := m["three"].(float64)
 				if !ok {
 					return nil, fmt.Errorf("three not found in %#v", m)
@@ -1618,7 +1618,7 @@ func TestResource_migrateAndUpgrade(t *testing.T) {
 				"id":   "bar",
 				"zero": "0",
 			},
-			Meta: map[string]interface{}{
+			Meta: map[string]any{
 				"schema_version": "0",
 			},
 		},
@@ -1628,7 +1628,7 @@ func TestResource_migrateAndUpgrade(t *testing.T) {
 				"id":  "bar",
 				"one": "1",
 			},
-			Meta: map[string]interface{}{
+			Meta: map[string]any{
 				"schema_version": "1",
 			},
 		},
@@ -1638,7 +1638,7 @@ func TestResource_migrateAndUpgrade(t *testing.T) {
 				"id":  "bar",
 				"two": "2",
 			},
-			Meta: map[string]interface{}{
+			Meta: map[string]any{
 				"schema_version": "2",
 			},
 		},
@@ -1648,7 +1648,7 @@ func TestResource_migrateAndUpgrade(t *testing.T) {
 				"id":    "bar",
 				"three": "3",
 			},
-			Meta: map[string]interface{}{
+			Meta: map[string]any{
 				"schema_version": "3",
 			},
 		},
@@ -1658,7 +1658,7 @@ func TestResource_migrateAndUpgrade(t *testing.T) {
 				"id":   "bar",
 				"four": "4",
 			},
-			Meta: map[string]interface{}{
+			Meta: map[string]any{
 				"schema_version": "4",
 			},
 		},
@@ -1677,7 +1677,7 @@ func TestResource_migrateAndUpgrade(t *testing.T) {
 					"id":   "bar",
 					"four": "4",
 				},
-				Meta: map[string]interface{}{
+				Meta: map[string]any{
 					"schema_version": "4",
 				},
 			}

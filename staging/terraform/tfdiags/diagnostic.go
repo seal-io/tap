@@ -24,7 +24,7 @@ type Diagnostic interface {
 	// access associated information, so in most cases it'll be more convienient
 	// to use the package-level ExtraInfo function to try to unpack a particular
 	// specialized interface from this value.
-	ExtraInfo() interface{}
+	ExtraInfo() any
 }
 
 type Severity rune

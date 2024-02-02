@@ -67,7 +67,7 @@ func deprecatedAssumeRoleSchema() *schema.Schema {
 					Type:        schema.TypeInt,
 					Optional:    true,
 					Description: "The time after which the established session for assuming role expires.",
-					ValidateFunc: func(v interface{}, k string) ([]string, []error) {
+					ValidateFunc: func(v any, k string) ([]string, []error) {
 						min := 900
 						max := 3600
 						value, ok := v.(int)
@@ -155,7 +155,7 @@ func New() backend.Backend {
 				Optional:    true,
 				Description: "The directory where state files will be saved inside the bucket",
 				Default:     "env:",
-				ValidateFunc: func(v interface{}, s string) ([]string, []error) {
+				ValidateFunc: func(v any, s string) ([]string, []error) {
 					prefix := v.(string)
 					if strings.HasPrefix(prefix, "/") || strings.HasPrefix(prefix, "./") {
 						return nil, []error{fmt.Errorf("workspace_key_prefix must not start with '/' or './'")}
@@ -168,7 +168,7 @@ func New() backend.Backend {
 				Type:        schema.TypeString,
 				Optional:    true,
 				Description: "The path of the state file inside the bucket",
-				ValidateFunc: func(v interface{}, s string) ([]string, []error) {
+				ValidateFunc: func(v any, s string) ([]string, []error) {
 					if strings.HasPrefix(v.(string), "/") || strings.HasSuffix(v.(string), "/") {
 						return nil, []error{fmt.Errorf("key can not start and end with '/'")}
 					}
@@ -196,7 +196,7 @@ func New() backend.Backend {
 				Optional:    true,
 				Description: "Object ACL to be applied to the state file",
 				Default:     "",
-				ValidateFunc: func(v interface{}, k string) ([]string, []error) {
+				ValidateFunc: func(v any, k string) ([]string, []error) {
 					if value := v.(string); value != "" {
 						acls := oss.ACLType(value)
 						if acls != oss.ACLPrivate && acls != oss.ACLPublicRead && acls != oss.ACLPublicReadWrite {
@@ -242,7 +242,7 @@ func New() backend.Backend {
 				Type:        schema.TypeInt,
 				Optional:    true,
 				Description: "The time after which the established session for assuming role expires.",
-				ValidateFunc: func(v interface{}, k string) ([]string, []error) {
+				ValidateFunc: func(v any, k string) ([]string, []error) {
 					min := 900
 					max := 3600
 					value, ok := v.(int)
@@ -337,7 +337,7 @@ func (b *Backend) configure(ctx context.Context) error {
 	} else if v, ok := d.GetOk("assume_role"); ok {
 		// deprecated assume_role block
 		for _, v := range v.(*schema.Set).List() {
-			assumeRole := v.(map[string]interface{})
+			assumeRole := v.(map[string]any)
 			if assumeRole["role_arn"].(string) != "" {
 				roleArn = assumeRole["role_arn"].(string)
 			}
@@ -544,9 +544,9 @@ func (a *Invoker) Run(f func() error) error {
 	return err
 }
 
-var providerConfig map[string]interface{}
+var providerConfig map[string]any
 
-func getConfigFromProfile(d *schema.ResourceData, ProfileKey string) (interface{}, error) {
+func getConfigFromProfile(d *schema.ResourceData, ProfileKey string) (any, error) {
 
 	if providerConfig == nil {
 		if v, ok := d.GetOk("profile"); !ok || v.(string) == "" {
@@ -564,21 +564,21 @@ func getConfigFromProfile(d *schema.ResourceData, ProfileKey string) (interface{
 				profilePath = fmt.Sprintf("%s/.aliyun/config.json", os.Getenv("USERPROFILE"))
 			}
 		}
-		providerConfig = make(map[string]interface{})
+		providerConfig = make(map[string]any)
 		_, err = os.Stat(profilePath)
 		if !os.IsNotExist(err) {
 			data, err := ioutil.ReadFile(profilePath)
 			if err != nil {
 				return nil, err
 			}
-			config := map[string]interface{}{}
+			config := map[string]any{}
 			err = json.Unmarshal(data, &config)
 			if err != nil {
 				return nil, err
 			}
-			for _, v := range config["profiles"].([]interface{}) {
-				if current == v.(map[string]interface{})["name"] {
-					providerConfig = v.(map[string]interface{})
+			for _, v := range config["profiles"].([]any) {
+				if current == v.(map[string]any)["name"] {
+					providerConfig = v.(map[string]any)
 				}
 			}
 		}
@@ -652,7 +652,7 @@ func getAuthCredentialByEcsRoleName(ecsRoleName string) (accessKey, secretKey, t
 		err = fmt.Errorf("get Ecs sts token err, httpStatus: %d, message = %s", response.GetHttpStatus(), response.GetHttpContentString())
 		return
 	}
-	var data interface{}
+	var data any
 	err = json.Unmarshal(response.GetHttpContentBytes(), &data)
 	if err != nil {
 		err = fmt.Errorf("refresh Ecs sts token err, json.Unmarshal fail: %s", err.Error())

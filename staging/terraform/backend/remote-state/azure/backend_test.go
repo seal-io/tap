@@ -20,7 +20,7 @@ func TestBackendConfig(t *testing.T) {
 	// This test just instantiates the client. Shouldn't make any actual
 	// requests nor incur any costs.
 
-	config := map[string]interface{}{
+	config := map[string]any{
 		"storage_account_name": "tfaccount",
 		"container_name":       "tfcontainer",
 		"key":                  "state",
@@ -56,7 +56,7 @@ func TestAccBackendAccessKeyBasic(t *testing.T) {
 		t.Fatalf("Error creating Test Resources: %q", err)
 	}
 
-	b := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]interface{}{
+	b := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]any{
 		"storage_account_name": res.storageAccountName,
 		"container_name":       res.storageContainerName,
 		"key":                  res.storageKeyName,
@@ -86,7 +86,7 @@ func TestAccBackendSASTokenBasic(t *testing.T) {
 		t.Fatalf("Error building SAS Token: %+v", err)
 	}
 
-	b := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]interface{}{
+	b := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]any{
 		"storage_account_name": res.storageAccountName,
 		"container_name":       res.storageContainerName,
 		"key":                  res.storageKeyName,
@@ -111,7 +111,7 @@ func TestAccBackendOIDCBasic(t *testing.T) {
 		t.Fatalf("Error creating Test Resources: %q", err)
 	}
 
-	b := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]interface{}{
+	b := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]any{
 		"storage_account_name": res.storageAccountName,
 		"container_name":       res.storageContainerName,
 		"key":                  res.storageKeyName,
@@ -141,7 +141,7 @@ func TestAccBackendAzureADAuthBasic(t *testing.T) {
 		t.Fatalf("Error creating Test Resources: %q", err)
 	}
 
-	b := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]interface{}{
+	b := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]any{
 		"storage_account_name": res.storageAccountName,
 		"container_name":       res.storageContainerName,
 		"key":                  res.storageKeyName,
@@ -167,7 +167,7 @@ func TestAccBackendManagedServiceIdentityBasic(t *testing.T) {
 		t.Fatalf("Error creating Test Resources: %q", err)
 	}
 
-	b := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]interface{}{
+	b := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]any{
 		"storage_account_name": res.storageAccountName,
 		"container_name":       res.storageContainerName,
 		"key":                  res.storageKeyName,
@@ -202,7 +202,7 @@ func TestAccBackendServicePrincipalClientCertificateBasic(t *testing.T) {
 		t.Fatalf("Error creating Test Resources: %q", err)
 	}
 
-	b := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]interface{}{
+	b := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]any{
 		"storage_account_name":        res.storageAccountName,
 		"container_name":              res.storageContainerName,
 		"key":                         res.storageKeyName,
@@ -232,7 +232,7 @@ func TestAccBackendServicePrincipalClientSecretBasic(t *testing.T) {
 		t.Fatalf("Error creating Test Resources: %q", err)
 	}
 
-	b := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]interface{}{
+	b := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]any{
 		"storage_account_name": res.storageAccountName,
 		"container_name":       res.storageContainerName,
 		"key":                  res.storageKeyName,
@@ -268,7 +268,7 @@ func TestAccBackendServicePrincipalClientSecretCustomEndpoint(t *testing.T) {
 		t.Fatalf("Error creating Test Resources: %q", err)
 	}
 
-	b := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]interface{}{
+	b := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]any{
 		"storage_account_name": res.storageAccountName,
 		"container_name":       res.storageContainerName,
 		"key":                  res.storageKeyName,
@@ -297,7 +297,7 @@ func TestAccBackendAccessKeyLocked(t *testing.T) {
 		t.Fatalf("Error creating Test Resources: %q", err)
 	}
 
-	b1 := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]interface{}{
+	b1 := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]any{
 		"storage_account_name": res.storageAccountName,
 		"container_name":       res.storageContainerName,
 		"key":                  res.storageKeyName,
@@ -306,7 +306,7 @@ func TestAccBackendAccessKeyLocked(t *testing.T) {
 		"endpoint":             os.Getenv("ARM_ENDPOINT"),
 	})).(*Backend)
 
-	b2 := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]interface{}{
+	b2 := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]any{
 		"storage_account_name": res.storageAccountName,
 		"container_name":       res.storageContainerName,
 		"key":                  res.storageKeyName,
@@ -335,7 +335,7 @@ func TestAccBackendServicePrincipalLocked(t *testing.T) {
 		t.Fatalf("Error creating Test Resources: %q", err)
 	}
 
-	b1 := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]interface{}{
+	b1 := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]any{
 		"storage_account_name": res.storageAccountName,
 		"container_name":       res.storageContainerName,
 		"key":                  res.storageKeyName,
@@ -348,7 +348,7 @@ func TestAccBackendServicePrincipalLocked(t *testing.T) {
 		"endpoint":             os.Getenv("ARM_ENDPOINT"),
 	})).(*Backend)
 
-	b2 := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]interface{}{
+	b2 := backend.TestBackendConfig(t, New(), backend.TestWrapConfig(map[string]any{
 		"storage_account_name": res.storageAccountName,
 		"container_name":       res.storageContainerName,
 		"key":                  res.storageKeyName,

@@ -3523,7 +3523,7 @@ func file_tfplugin6_proto_rawDescGZIP() []byte {
 
 var file_tfplugin6_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
 var file_tfplugin6_proto_msgTypes = make([]protoimpl.MessageInfo, 51)
-var file_tfplugin6_proto_goTypes = []interface{}{
+var file_tfplugin6_proto_goTypes = []any{
 	(StringKind)(0),                              // 0: tfplugin6.StringKind
 	(Diagnostic_Severity)(0),                     // 1: tfplugin6.Diagnostic.Severity
 	(Schema_NestedBlock_NestingMode)(0),          // 2: tfplugin6.Schema.NestedBlock.NestingMode
@@ -3675,7 +3675,7 @@ func file_tfplugin6_proto_init() {
 		return
 	}
 	if !protoimpl.UnsafeEnabled {
-		file_tfplugin6_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
+		file_tfplugin6_proto_msgTypes[0].Exporter = func(v any, i int) any {
 			switch v := v.(*DynamicValue); i {
 			case 0:
 				return &v.state
@@ -3687,7 +3687,7 @@ func file_tfplugin6_proto_init() {
 				return nil
 			}
 		}
-		file_tfplugin6_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
+		file_tfplugin6_proto_msgTypes[1].Exporter = func(v any, i int) any {
 			switch v := v.(*Diagnostic); i {
 			case 0:
 				return &v.state
@@ -3699,7 +3699,7 @@ func file_tfplugin6_proto_init() {
 				return nil
 			}
 		}
-		file_tfplugin6_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
+		file_tfplugin6_proto_msgTypes[2].Exporter = func(v any, i int) any {
 			switch v := v.(*AttributePath); i {
 			case 0:
 				return &v.state
@@ -3711,7 +3711,7 @@ func file_tfplugin6_proto_init() {
 				return nil
 			}
 		}
-		file_tfplugin6_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
+		file_tfplugin6_proto_msgTypes[3].Exporter = func(v any, i int) any {
 			switch v := v.(*StopProvider); i {
 			case 0:
 				return &v.state
@@ -3723,7 +3723,7 @@ func file_tfplugin6_proto_init() {
 				return nil
 			}
 		}
-		file_tfplugin6_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
+		file_tfplugin6_proto_msgTypes[4].Exporter = func(v any, i int) any {
 			switch v := v.(*RawState); i {
 			case 0:
 				return &v.state
@@ -3735,7 +3735,7 @@ func file_tfplugin6_proto_init() {
 				return nil
 			}
 		}
-		file_tfplugin6_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
+		file_tfplugin6_proto_msgTypes[5].Exporter = func(v any, i int) any {
 			switch v := v.(*Schema); i {
 			case 0:
 				return &v.state
@@ -3747,7 +3747,7 @@ func file_tfplugin6_proto_init() {
 				return nil
 			}
 		}
-		file_tfplugin6_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
+		file_tfplugin6_proto_msgTypes[6].Exporter = func(v any, i int) any {
 			switch v := v.(*GetProviderSchema); i {
 			case 0:
 				return &v.state
@@ -3759,7 +3759,7 @@ func file_tfplugin6_proto_init() {
 				return nil
 			}
 		}
-		file_tfplugin6_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
+		file_tfplugin6_proto_msgTypes[7].Exporter = func(v any, i int) any {
 			switch v := v.(*ValidateProviderConfig); i {
 			case 0:
 				return &v.state
@@ -3771,7 +3771,7 @@ func file_tfplugin6_proto_init() {
 				return nil
 			}
 		}
-		file_tfplugin6_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
+		file_tfplugin6_proto_msgTypes[8].Exporter = func(v any, i int) any {
 			switch v := v.(*UpgradeResourceState); i {
 			case 0:
 				return &v.state
@@ -3783,7 +3783,7 @@ func file_tfplugin6_proto_init() {
 				return nil
 			}
 		}
-		file_tfplugin6_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
+		file_tfplugin6_proto_msgTypes[9].Exporter = func(v any, i int) any {
 			switch v := v.(*ValidateResourceConfig); i {
 			case 0:
 				return &v.state
@@ -3795,7 +3795,7 @@ func file_tfplugin6_proto_init() {
 				return nil
 			}
 		}
-		file_tfplugin6_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
+		file_tfplugin6_proto_msgTypes[10].Exporter = func(v any, i int) any {
 			switch v := v.(*ValidateDataResourceConfig); i {
 			case 0:
 				return &v.state
@@ -3807,7 +3807,7 @@ func file_tfplugin6_proto_init() {
 				return nil
 			}
 		}
-		file_tfplugin6_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
+		file_tfplugin6_proto_msgTypes[11].Exporter = func(v any, i int) any {
 			switch v := v.(*ConfigureProvider); i {
 			case 0:
 				return &v.state
@@ -3819,7 +3819,7 @@ func file_tfplugin6_proto_init() {
 				return nil
 			}
 		}
-		file_tfplugin6_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
+		file_tfplugin6_proto_msgTypes[12].Exporter = func(v any, i int) any {
 			switch v := v.(*ReadResource); i {
 			case 0:
 				return &v.state
@@ -3831,7 +3831,7 @@ func file_tfplugin6_proto_init() {
 				return nil
 			}
 		}
-		file_tfplugin6_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
+		file_tfplugin6_proto_msgTypes[13].Exporter = func(v any, i int) any {
 			switch v := v.(*PlanResourceChange); i {
 			case 0:
 				return &v.state
@@ -3843,7 +3843,7 @@ func file_tfplugin6_proto_init() {
 				return nil
 			}
 		}
-		file_tfplugin6_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
+		file_tfplugin6_proto_msgTypes[14].Exporter = func(v any, i int) any {
 			switch v := v.(*ApplyResourceChange); i {
 			case 0:
 				return &v.state
@@ -3855,7 +3855,7 @@ func file_tfplugin6_proto_init() {
 				return nil
 			}
 		}
-		file_tfplugin6_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
+		file_tfplugin6_proto_msgTypes[15].Exporter = func(v any, i int) any {
 			switch v := v.(*ImportResourceState); i {
 			case 0:
 				return &v.state
@@ -3867,7 +3867,7 @@ func file_tfplugin6_proto_init() {
 				return nil
 			}
 		}
-		file_tfplugin6_proto_msgTypes[16].Exporter = func(v interface{}, i int) interface{} {
+		file_tfplugin6_proto_msgTypes[16].Exporter = func(v any, i int) any {
 			switch v := v.(*ReadDataSource); i {
 			case 0:
 				return &v.state
@@ -3879,7 +3879,7 @@ func file_tfplugin6_proto_init() {
 				return nil
 			}
 		}
-		file_tfplugin6_proto_msgTypes[17].Exporter = func(v interface{}, i int) interface{} {
+		file_tfplugin6_proto_msgTypes[17].Exporter = func(v any, i int) any {
 			switch v := v.(*AttributePath_Step); i {
 			case 0:
 				return &v.state
@@ -3891,7 +3891,7 @@ func file_tfplugin6_proto_init() {
 				return nil
 			}
 		}
-		file_tfplugin6_proto_msgTypes[18].Exporter = func(v interface{}, i int) interface{} {
+		file_tfplugin6_proto_msgTypes[18].Exporter = func(v any, i int) any {
 			switch v := v.(*StopProvider_Request); i {
 			case 0:
 				return &v.state
@@ -3903,7 +3903,7 @@ func file_tfplugin6_proto_init() {
 				return nil
 			}
 		}
-		file_tfplugin6_proto_msgTypes[19].Exporter = func(v interface{}, i int) interface{} {
+		file_tfplugin6_proto_msgTypes[19].Exporter = func(v any, i int) any {
 			switch v := v.(*StopProvider_Response); i {
 			case 0:
 				return &v.state
@@ -3915,7 +3915,7 @@ func file_tfplugin6_proto_init() {
 				return nil
 			}
 		}
-		file_tfplugin6_proto_msgTypes[21].Exporter = func(v interface{}, i int) interface{} {
+		file_tfplugin6_proto_msgTypes[21].Exporter = func(v any, i int) any {
 			switch v := v.(*Schema_Block); i {
 			case 0:
 				return &v.state
@@ -3927,7 +3927,7 @@ func file_tfplugin6_proto_init() {
 				return nil
 			}
 		}
-		file_tfplugin6_proto_msgTypes[22].Exporter = func(v interface{}, i int) interface{} {
+		file_tfplugin6_proto_msgTypes[22].Exporter = func(v any, i int) any {
 			switch v := v.(*Schema_Attribute); i {
 			case 0:
 				return &v.state
@@ -3939,7 +3939,7 @@ func file_tfplugin6_proto_init() {
 				return nil
 			}
 		}
-		file_tfplugin6_proto_msgTypes[23].Exporter = func(v interface{}, i int) interface{} {
+		file_tfplugin6_proto_msgTypes[23].Exporter = func(v any, i int) any {
 			switch v := v.(*Schema_NestedBlock); i {
 			case 0:
 				return &v.state
@@ -3951,7 +3951,7 @@ func file_tfplugin6_proto_init() {
 				return nil
 			}
 		}
-		file_tfplugin6_proto_msgTypes[24].Exporter = func(v interface{}, i int) interface{} {
+		file_tfplugin6_proto_msgTypes[24].Exporter = func(v any, i int) any {
 			switch v := v.(*Schema_Object); i {
 			case 0:
 				return &v.state
@@ -3963,7 +3963,7 @@ func file_tfplugin6_proto_init() {
 				return nil
 			}
 		}
-		file_tfplugin6_proto_msgTypes[25].Exporter = func(v interface{}, i int) interface{} {
+		file_tfplugin6_proto_msgTypes[25].Exporter = func(v any, i int) any {
 			switch v := v.(*GetProviderSchema_Request); i {
 			case 0:
 				return &v.state
@@ -3975,7 +3975,7 @@ func file_tfplugin6_proto_init() {
 				return nil
 			}
 		}
-		file_tfplugin6_proto_msgTypes[26].Exporter = func(v interface{}, i int) interface{} {
+		file_tfplugin6_proto_msgTypes[26].Exporter = func(v any, i int) any {
 			switch v := v.(*GetProviderSchema_Response); i {
 			case 0:
 				return &v.state
@@ -3987,7 +3987,7 @@ func file_tfplugin6_proto_init() {
 				return nil
 			}
 		}
-		file_tfplugin6_proto_msgTypes[27].Exporter = func(v interface{}, i int) interface{} {
+		file_tfplugin6_proto_msgTypes[27].Exporter = func(v any, i int) any {
 			switch v := v.(*GetProviderSchema_ServerCapabilities); i {
 			case 0:
 				return &v.state
@@ -3999,7 +3999,7 @@ func file_tfplugin6_proto_init() {
 				return nil
 			}
 		}
-		file_tfplugin6_proto_msgTypes[30].Exporter = func(v interface{}, i int) interface{} {
+		file_tfplugin6_proto_msgTypes[30].Exporter = func(v any, i int) any {
 			switch v := v.(*ValidateProviderConfig_Request); i {
 			case 0:
 				return &v.state
@@ -4011,7 +4011,7 @@ func file_tfplugin6_proto_init() {
 				return nil
 			}
 		}
-		file_tfplugin6_proto_msgTypes[31].Exporter = func(v interface{}, i int) interface{} {
+		file_tfplugin6_proto_msgTypes[31].Exporter = func(v any, i int) any {
 			switch v := v.(*ValidateProviderConfig_Response); i {
 			case 0:
 				return &v.state
@@ -4023,7 +4023,7 @@ func file_tfplugin6_proto_init() {
 				return nil
 			}
 		}
-		file_tfplugin6_proto_msgTypes[32].Exporter = func(v interface{}, i int) interface{} {
+		file_tfplugin6_proto_msgTypes[32].Exporter = func(v any, i int) any {
 			switch v := v.(*UpgradeResourceState_Request); i {
 			case 0:
 				return &v.state
@@ -4035,7 +4035,7 @@ func file_tfplugin6_proto_init() {
 				return nil
 			}
 		}
-		file_tfplugin6_proto_msgTypes[33].Exporter = func(v interface{}, i int) interface{} {
+		file_tfplugin6_proto_msgTypes[33].Exporter = func(v any, i int) any {
 			switch v := v.(*UpgradeResourceState_Response); i {
 			case 0:
 				return &v.state
@@ -4047,7 +4047,7 @@ func file_tfplugin6_proto_init() {
 				return nil
 			}
 		}
-		file_tfplugin6_proto_msgTypes[34].Exporter = func(v interface{}, i int) interface{} {
+		file_tfplugin6_proto_msgTypes[34].Exporter = func(v any, i int) any {
 			switch v := v.(*ValidateResourceConfig_Request); i {
 			case 0:
 				return &v.state
@@ -4059,7 +4059,7 @@ func file_tfplugin6_proto_init() {
 				return nil
 			}
 		}
-		file_tfplugin6_proto_msgTypes[35].Exporter = func(v interface{}, i int) interface{} {
+		file_tfplugin6_proto_msgTypes[35].Exporter = func(v any, i int) any {
 			switch v := v.(*ValidateResourceConfig_Response); i {
 			case 0:
 				return &v.state
@@ -4071,7 +4071,7 @@ func file_tfplugin6_proto_init() {
 				return nil
 			}
 		}
-		file_tfplugin6_proto_msgTypes[36].Exporter = func(v interface{}, i int) interface{} {
+		file_tfplugin6_proto_msgTypes[36].Exporter = func(v any, i int) any {
 			switch v := v.(*ValidateDataResourceConfig_Request); i {
 			case 0:
 				return &v.state
@@ -4083,7 +4083,7 @@ func file_tfplugin6_proto_init() {
 				return nil
 			}
 		}
-		file_tfplugin6_proto_msgTypes[37].Exporter = func(v interface{}, i int) interface{} {
+		file_tfplugin6_proto_msgTypes[37].Exporter = func(v any, i int) any {
 			switch v := v.(*ValidateDataResourceConfig_Response); i {
 			case 0:
 				return &v.state
@@ -4095,7 +4095,7 @@ func file_tfplugin6_proto_init() {
 				return nil
 			}
 		}
-		file_tfplugin6_proto_msgTypes[38].Exporter = func(v interface{}, i int) interface{} {
+		file_tfplugin6_proto_msgTypes[38].Exporter = func(v any, i int) any {
 			switch v := v.(*ConfigureProvider_Request); i {
 			case 0:
 				return &v.state
@@ -4107,7 +4107,7 @@ func file_tfplugin6_proto_init() {
 				return nil
 			}
 		}
-		file_tfplugin6_proto_msgTypes[39].Exporter = func(v interface{}, i int) interface{} {
+		file_tfplugin6_proto_msgTypes[39].Exporter = func(v any, i int) any {
 			switch v := v.(*ConfigureProvider_Response); i {
 			case 0:
 				return &v.state
@@ -4119,7 +4119,7 @@ func file_tfplugin6_proto_init() {
 				return nil
 			}
 		}
-		file_tfplugin6_proto_msgTypes[40].Exporter = func(v interface{}, i int) interface{} {
+		file_tfplugin6_proto_msgTypes[40].Exporter = func(v any, i int) any {
 			switch v := v.(*ReadResource_Request); i {
 			case 0:
 				return &v.state
@@ -4131,7 +4131,7 @@ func file_tfplugin6_proto_init() {
 				return nil
 			}
 		}
-		file_tfplugin6_proto_msgTypes[41].Exporter = func(v interface{}, i int) interface{} {
+		file_tfplugin6_proto_msgTypes[41].Exporter = func(v any, i int) any {
 			switch v := v.(*ReadResource_Response); i {
 			case 0:
 				return &v.state
@@ -4143,7 +4143,7 @@ func file_tfplugin6_proto_init() {
 				return nil
 			}
 		}
-		file_tfplugin6_proto_msgTypes[42].Exporter = func(v interface{}, i int) interface{} {
+		file_tfplugin6_proto_msgTypes[42].Exporter = func(v any, i int) any {
 			switch v := v.(*PlanResourceChange_Request); i {
 			case 0:
 				return &v.state
@@ -4155,7 +4155,7 @@ func file_tfplugin6_proto_init() {
 				return nil
 			}
 		}
-		file_tfplugin6_proto_msgTypes[43].Exporter = func(v interface{}, i int) interface{} {
+		file_tfplugin6_proto_msgTypes[43].Exporter = func(v any, i int) any {
 			switch v := v.(*PlanResourceChange_Response); i {
 			case 0:
 				return &v.state
@@ -4167,7 +4167,7 @@ func file_tfplugin6_proto_init() {
 				return nil
 			}
 		}
-		file_tfplugin6_proto_msgTypes[44].Exporter = func(v interface{}, i int) interface{} {
+		file_tfplugin6_proto_msgTypes[44].Exporter = func(v any, i int) any {
 			switch v := v.(*ApplyResourceChange_Request); i {
 			case 0:
 				return &v.state
@@ -4179,7 +4179,7 @@ func file_tfplugin6_proto_init() {
 				return nil
 			}
 		}
-		file_tfplugin6_proto_msgTypes[45].Exporter = func(v interface{}, i int) interface{} {
+		file_tfplugin6_proto_msgTypes[45].Exporter = func(v any, i int) any {
 			switch v := v.(*ApplyResourceChange_Response); i {
 			case 0:
 				return &v.state
@@ -4191,7 +4191,7 @@ func file_tfplugin6_proto_init() {
 				return nil
 			}
 		}
-		file_tfplugin6_proto_msgTypes[46].Exporter = func(v interface{}, i int) interface{} {
+		file_tfplugin6_proto_msgTypes[46].Exporter = func(v any, i int) any {
 			switch v := v.(*ImportResourceState_Request); i {
 			case 0:
 				return &v.state
@@ -4203,7 +4203,7 @@ func file_tfplugin6_proto_init() {
 				return nil
 			}
 		}
-		file_tfplugin6_proto_msgTypes[47].Exporter = func(v interface{}, i int) interface{} {
+		file_tfplugin6_proto_msgTypes[47].Exporter = func(v any, i int) any {
 			switch v := v.(*ImportResourceState_ImportedResource); i {
 			case 0:
 				return &v.state
@@ -4215,7 +4215,7 @@ func file_tfplugin6_proto_init() {
 				return nil
 			}
 		}
-		file_tfplugin6_proto_msgTypes[48].Exporter = func(v interface{}, i int) interface{} {
+		file_tfplugin6_proto_msgTypes[48].Exporter = func(v any, i int) any {
 			switch v := v.(*ImportResourceState_Response); i {
 			case 0:
 				return &v.state
@@ -4227,7 +4227,7 @@ func file_tfplugin6_proto_init() {
 				return nil
 			}
 		}
-		file_tfplugin6_proto_msgTypes[49].Exporter = func(v interface{}, i int) interface{} {
+		file_tfplugin6_proto_msgTypes[49].Exporter = func(v any, i int) any {
 			switch v := v.(*ReadDataSource_Request); i {
 			case 0:
 				return &v.state
@@ -4239,7 +4239,7 @@ func file_tfplugin6_proto_init() {
 				return nil
 			}
 		}
-		file_tfplugin6_proto_msgTypes[50].Exporter = func(v interface{}, i int) interface{} {
+		file_tfplugin6_proto_msgTypes[50].Exporter = func(v any, i int) any {
 			switch v := v.(*ReadDataSource_Response); i {
 			case 0:
 				return &v.state
@@ -4252,7 +4252,7 @@ func file_tfplugin6_proto_init() {
 			}
 		}
 	}
-	file_tfplugin6_proto_msgTypes[17].OneofWrappers = []interface{}{
+	file_tfplugin6_proto_msgTypes[17].OneofWrappers = []any{
 		(*AttributePath_Step_AttributeName)(nil),
 		(*AttributePath_Step_ElementKeyString)(nil),
 		(*AttributePath_Step_ElementKeyInt)(nil),
@@ -4489,7 +4489,7 @@ func RegisterProviderServer(s *grpc.Server, srv ProviderServer) {
 	s.RegisterService(&_Provider_serviceDesc, srv)
 }
 
-func _Provider_GetProviderSchema_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Provider_GetProviderSchema_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
 	in := new(GetProviderSchema_Request)
 	if err := dec(in); err != nil {
 		return nil, err
@@ -4501,13 +4501,13 @@ func _Provider_GetProviderSchema_Handler(srv interface{}, ctx context.Context, d
 		Server:     srv,
 		FullMethod: "/tfplugin6.Provider/GetProviderSchema",
 	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+	handler := func(ctx context.Context, req any) (any, error) {
 		return srv.(ProviderServer).GetProviderSchema(ctx, req.(*GetProviderSchema_Request))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Provider_ValidateProviderConfig_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Provider_ValidateProviderConfig_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
 	in := new(ValidateProviderConfig_Request)
 	if err := dec(in); err != nil {
 		return nil, err
@@ -4519,13 +4519,13 @@ func _Provider_ValidateProviderConfig_Handler(srv interface{}, ctx context.Conte
 		Server:     srv,
 		FullMethod: "/tfplugin6.Provider/ValidateProviderConfig",
 	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+	handler := func(ctx context.Context, req any) (any, error) {
 		return srv.(ProviderServer).ValidateProviderConfig(ctx, req.(*ValidateProviderConfig_Request))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Provider_ValidateResourceConfig_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Provider_ValidateResourceConfig_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
 	in := new(ValidateResourceConfig_Request)
 	if err := dec(in); err != nil {
 		return nil, err
@@ -4537,13 +4537,13 @@ func _Provider_ValidateResourceConfig_Handler(srv interface{}, ctx context.Conte
 		Server:     srv,
 		FullMethod: "/tfplugin6.Provider/ValidateResourceConfig",
 	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+	handler := func(ctx context.Context, req any) (any, error) {
 		return srv.(ProviderServer).ValidateResourceConfig(ctx, req.(*ValidateResourceConfig_Request))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Provider_ValidateDataResourceConfig_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Provider_ValidateDataResourceConfig_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
 	in := new(ValidateDataResourceConfig_Request)
 	if err := dec(in); err != nil {
 		return nil, err
@@ -4555,13 +4555,13 @@ func _Provider_ValidateDataResourceConfig_Handler(srv interface{}, ctx context.C
 		Server:     srv,
 		FullMethod: "/tfplugin6.Provider/ValidateDataResourceConfig",
 	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+	handler := func(ctx context.Context, req any) (any, error) {
 		return srv.(ProviderServer).ValidateDataResourceConfig(ctx, req.(*ValidateDataResourceConfig_Request))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Provider_UpgradeResourceState_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Provider_UpgradeResourceState_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
 	in := new(UpgradeResourceState_Request)
 	if err := dec(in); err != nil {
 		return nil, err
@@ -4573,13 +4573,13 @@ func _Provider_UpgradeResourceState_Handler(srv interface{}, ctx context.Context
 		Server:     srv,
 		FullMethod: "/tfplugin6.Provider/UpgradeResourceState",
 	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+	handler := func(ctx context.Context, req any) (any, error) {
 		return srv.(ProviderServer).UpgradeResourceState(ctx, req.(*UpgradeResourceState_Request))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Provider_ConfigureProvider_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Provider_ConfigureProvider_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
 	in := new(ConfigureProvider_Request)
 	if err := dec(in); err != nil {
 		return nil, err
@@ -4591,13 +4591,13 @@ func _Provider_ConfigureProvider_Handler(srv interface{}, ctx context.Context, d
 		Server:     srv,
 		FullMethod: "/tfplugin6.Provider/ConfigureProvider",
 	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+	handler := func(ctx context.Context, req any) (any, error) {
 		return srv.(ProviderServer).ConfigureProvider(ctx, req.(*ConfigureProvider_Request))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Provider_ReadResource_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Provider_ReadResource_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
 	in := new(ReadResource_Request)
 	if err := dec(in); err != nil {
 		return nil, err
@@ -4609,13 +4609,13 @@ func _Provider_ReadResource_Handler(srv interface{}, ctx context.Context, dec fu
 		Server:     srv,
 		FullMethod: "/tfplugin6.Provider/ReadResource",
 	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+	handler := func(ctx context.Context, req any) (any, error) {
 		return srv.(ProviderServer).ReadResource(ctx, req.(*ReadResource_Request))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Provider_PlanResourceChange_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Provider_PlanResourceChange_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
 	in := new(PlanResourceChange_Request)
 	if err := dec(in); err != nil {
 		return nil, err
@@ -4627,13 +4627,13 @@ func _Provider_PlanResourceChange_Handler(srv interface{}, ctx context.Context, 
 		Server:     srv,
 		FullMethod: "/tfplugin6.Provider/PlanResourceChange",
 	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+	handler := func(ctx context.Context, req any) (any, error) {
 		return srv.(ProviderServer).PlanResourceChange(ctx, req.(*PlanResourceChange_Request))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Provider_ApplyResourceChange_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Provider_ApplyResourceChange_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
 	in := new(ApplyResourceChange_Request)
 	if err := dec(in); err != nil {
 		return nil, err
@@ -4645,13 +4645,13 @@ func _Provider_ApplyResourceChange_Handler(srv interface{}, ctx context.Context,
 		Server:     srv,
 		FullMethod: "/tfplugin6.Provider/ApplyResourceChange",
 	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+	handler := func(ctx context.Context, req any) (any, error) {
 		return srv.(ProviderServer).ApplyResourceChange(ctx, req.(*ApplyResourceChange_Request))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Provider_ImportResourceState_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Provider_ImportResourceState_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
 	in := new(ImportResourceState_Request)
 	if err := dec(in); err != nil {
 		return nil, err
@@ -4663,13 +4663,13 @@ func _Provider_ImportResourceState_Handler(srv interface{}, ctx context.Context,
 		Server:     srv,
 		FullMethod: "/tfplugin6.Provider/ImportResourceState",
 	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+	handler := func(ctx context.Context, req any) (any, error) {
 		return srv.(ProviderServer).ImportResourceState(ctx, req.(*ImportResourceState_Request))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Provider_ReadDataSource_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Provider_ReadDataSource_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
 	in := new(ReadDataSource_Request)
 	if err := dec(in); err != nil {
 		return nil, err
@@ -4681,13 +4681,13 @@ func _Provider_ReadDataSource_Handler(srv interface{}, ctx context.Context, dec 
 		Server:     srv,
 		FullMethod: "/tfplugin6.Provider/ReadDataSource",
 	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+	handler := func(ctx context.Context, req any) (any, error) {
 		return srv.(ProviderServer).ReadDataSource(ctx, req.(*ReadDataSource_Request))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Provider_StopProvider_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Provider_StopProvider_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
 	in := new(StopProvider_Request)
 	if err := dec(in); err != nil {
 		return nil, err
@@ -4699,7 +4699,7 @@ func _Provider_StopProvider_Handler(srv interface{}, ctx context.Context, dec fu
 		Server:     srv,
 		FullMethod: "/tfplugin6.Provider/StopProvider",
 	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+	handler := func(ctx context.Context, req any) (any, error) {
 		return srv.(ProviderServer).StopProvider(ctx, req.(*StopProvider_Request))
 	}
 	return interceptor(ctx, in, info, handler)

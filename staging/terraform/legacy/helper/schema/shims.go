@@ -49,20 +49,20 @@ func diffFromValues(prior, planned cty.Value, res *Resource, cust CustomizeDiffF
 // During apply the only unknown values are those which are to be computed by
 // the resource itself. These may have been marked as unknown config values, and
 // need to be removed to prevent the UnknownVariableValue from appearing the diff.
-func removeConfigUnknowns(cfg map[string]interface{}) {
+func removeConfigUnknowns(cfg map[string]any) {
 	for k, v := range cfg {
 		switch v := v.(type) {
 		case string:
 			if v == hcl2shim.UnknownVariableValue {
 				delete(cfg, k)
 			}
-		case []interface{}:
+		case []any:
 			for _, i := range v {
-				if m, ok := i.(map[string]interface{}); ok {
+				if m, ok := i.(map[string]any); ok {
 					removeConfigUnknowns(m)
 				}
 			}
-		case map[string]interface{}:
+		case map[string]any:
 			removeConfigUnknowns(v)
 		}
 	}
@@ -78,13 +78,13 @@ func ApplyDiff(base cty.Value, d *terraform.InstanceDiff, schema *configschema.B
 
 // StateValueToJSONMap converts a cty.Value to generic JSON map via the cty JSON
 // encoding.
-func StateValueToJSONMap(val cty.Value, ty cty.Type) (map[string]interface{}, error) {
+func StateValueToJSONMap(val cty.Value, ty cty.Type) (map[string]any, error) {
 	js, err := ctyjson.Marshal(val, ty)
 	if err != nil {
 		return nil, err
 	}
 
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(js, &m); err != nil {
 		return nil, err
 	}
@@ -94,7 +94,7 @@ func StateValueToJSONMap(val cty.Value, ty cty.Type) (map[string]interface{}, er
 
 // JSONMapToStateValue takes a generic json map[string]interface{} and converts it
 // to the specific type, ensuring that the values conform to the schema.
-func JSONMapToStateValue(m map[string]interface{}, block *configschema.Block) (cty.Value, error) {
+func JSONMapToStateValue(m map[string]any, block *configschema.Block) (cty.Value, error) {
 	var val cty.Value
 
 	js, err := json.Marshal(m)

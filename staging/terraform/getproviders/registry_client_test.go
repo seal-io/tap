@@ -111,16 +111,16 @@ func testRegistryServices(t *testing.T) (services *disco.Disco, baseURL string, 
 	server := httptest.NewServer(http.HandlerFunc(fakeRegistryHandler))
 
 	services = disco.New()
-	services.ForceHostServices(svchost.Hostname("example.com"), map[string]interface{}{
+	services.ForceHostServices(svchost.Hostname("example.com"), map[string]any{
 		"providers.v1": server.URL + "/providers/v1/",
 	})
-	services.ForceHostServices(svchost.Hostname("not.example.com"), map[string]interface{}{})
-	services.ForceHostServices(svchost.Hostname("too-new.example.com"), map[string]interface{}{
+	services.ForceHostServices(svchost.Hostname("not.example.com"), map[string]any{})
+	services.ForceHostServices(svchost.Hostname("too-new.example.com"), map[string]any{
 		// This service doesn't actually work; it's here only to be
 		// detected as "too new" by the discovery logic.
 		"providers.v99": server.URL + "/providers/v99/",
 	})
-	services.ForceHostServices(svchost.Hostname("fails.example.com"), map[string]interface{}{
+	services.ForceHostServices(svchost.Hostname("fails.example.com"), map[string]any{
 		"providers.v1": server.URL + "/fails-immediately/",
 	})
 
@@ -129,7 +129,7 @@ func testRegistryServices(t *testing.T) (services *disco.Disco, baseURL string, 
 	// hostname. It behaves the same as example.com, which should be preferred
 	// if you're not testing something specific to the default registry in order
 	// to ensure that most things are hostname-agnostic.
-	services.ForceHostServices(svchost.Hostname("registry.terraform.io"), map[string]interface{}{
+	services.ForceHostServices(svchost.Hostname("registry.terraform.io"), map[string]any{
 		"providers.v1": server.URL + "/providers/v1/",
 	})
 
@@ -275,7 +275,7 @@ func fakeRegistryHandler(resp http.ResponseWriter, req *http.Request) {
 				protocols = []string{"5.0"}
 			}
 
-			body := map[string]interface{}{
+			body := map[string]any{
 				"protocols":             protocols,
 				"os":                    pathParts[4],
 				"arch":                  pathParts[5],
@@ -284,8 +284,8 @@ func fakeRegistryHandler(resp http.ResponseWriter, req *http.Request) {
 				"download_url":          "/pkg/awesomesauce/happycloud_" + version + ".zip",
 				"shasums_url":           "/pkg/awesomesauce/happycloud_" + version + "_SHA256SUMS",
 				"shasums_signature_url": "/pkg/awesomesauce/happycloud_" + version + "_SHA256SUMS.sig",
-				"signing_keys": map[string]interface{}{
-					"gpg_public_keys": []map[string]interface{}{
+				"signing_keys": map[string]any{
+					"gpg_public_keys": []map[string]any{
 						{
 							"ascii_armor": HashicorpPublicKey,
 						},

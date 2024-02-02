@@ -50,7 +50,7 @@ func ExtraInfo[T any](diag Diagnostic) T {
 // of T, ExtraInfoNext does not consider whether value "previous" directly
 // implements interface T, on the assumption that the previous call to ExtraInfo
 // with the same T caused "previous" to already be that result.
-func ExtraInfoNext[T any](previous interface{}) T {
+func ExtraInfoNext[T any](previous any) T {
 	// As long as T is an interface type as documented, zero will always be
 	// a nil interface value for us to return in the non-matching case.
 	var zero T
@@ -102,7 +102,7 @@ type DiagnosticExtraUnwrapper interface {
 	//
 	// Implementers should never create unwrap "cycles" where a nested extra
 	// value returns a value that was also wrapping it.
-	UnwrapDiagnosticExtra() interface{}
+	UnwrapDiagnosticExtra() any
 }
 
 // DiagnosticExtraBecauseUnknown is an interface implemented by values in

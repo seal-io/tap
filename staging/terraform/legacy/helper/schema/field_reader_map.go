@@ -40,7 +40,7 @@ func (r *MapFieldReader) ReadField(address []string) (FieldReadResult, error) {
 }
 
 func (r *MapFieldReader) readMap(k string, schema *Schema) (FieldReadResult, error) {
-	result := make(map[string]interface{})
+	result := make(map[string]any)
 	resultSet := false
 
 	// If the name of the map field is directly in the map with an
@@ -69,7 +69,7 @@ func (r *MapFieldReader) readMap(k string, schema *Schema) (FieldReadResult, err
 		return FieldReadResult{}, nil
 	}
 
-	var resultVal interface{}
+	var resultVal any
 	if resultSet {
 		resultVal = result
 	}

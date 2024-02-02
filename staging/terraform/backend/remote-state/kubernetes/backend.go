@@ -271,7 +271,7 @@ func (b *Backend) configure(ctx context.Context) error {
 
 	if v, ok := data.GetOk("labels"); ok {
 		labels := map[string]string{}
-		for k, vv := range v.(map[string]interface{}) {
+		for k, vv := range v.(map[string]any) {
 			labels[k] = vv.(string)
 		}
 		b.labels = labels
@@ -314,7 +314,7 @@ func tryLoadingConfigFile(d *schema.ResourceData) (*restclient.Config, error) {
 	configPaths := []string{}
 	if v, ok := d.Get("config_path").(string); ok && v != "" {
 		configPaths = []string{v}
-	} else if v, ok := d.Get("config_paths").([]interface{}); ok && len(v) > 0 {
+	} else if v, ok := d.Get("config_paths").([]any); ok && len(v) > 0 {
 		for _, p := range v {
 			configPaths = append(configPaths, p.(string))
 		}
@@ -367,11 +367,11 @@ func tryLoadingConfigFile(d *schema.ResourceData) (*restclient.Config, error) {
 
 	if v, ok := d.GetOk("exec"); ok {
 		exec := &clientcmdapi.ExecConfig{}
-		if spec, ok := v.([]interface{})[0].(map[string]interface{}); ok {
+		if spec, ok := v.([]any)[0].(map[string]any); ok {
 			exec.APIVersion = spec["api_version"].(string)
 			exec.Command = spec["command"].(string)
-			exec.Args = expandStringSlice(spec["args"].([]interface{}))
-			for kk, vv := range spec["env"].(map[string]interface{}) {
+			exec.Args = expandStringSlice(spec["args"].([]any))
+			for kk, vv := range spec["env"].(map[string]any) {
 				exec.Env = append(exec.Env, clientcmdapi.ExecEnvVar{Name: kk, Value: vv.(string)})
 			}
 		} else {
@@ -394,7 +394,7 @@ func tryLoadingConfigFile(d *schema.ResourceData) (*restclient.Config, error) {
 	return cfg, nil
 }
 
-func expandStringSlice(s []interface{}) []string {
+func expandStringSlice(s []any) []string {
 	result := make([]string, len(s), len(s))
 	for k, v := range s {
 		// Handle the Terraform parser bug which turns empty strings in lists to nil.

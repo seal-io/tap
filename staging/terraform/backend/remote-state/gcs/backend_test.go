@@ -222,7 +222,7 @@ func setupBackend(t *testing.T, bucket, prefix, key, kmsName string) backend.Bac
 			"the TF_ACC and GOOGLE_PROJECT environment variables are set.")
 	}
 
-	config := map[string]interface{}{
+	config := map[string]any{
 		"bucket": bucket,
 		"prefix": prefix,
 	}

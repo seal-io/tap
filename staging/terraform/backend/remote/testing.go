@@ -39,7 +39,7 @@ const (
 
 var (
 	tfeHost  = svchost.Hostname(defaultHostname)
-	credsSrc = auth.StaticCredentialsSource(map[svchost.Hostname]map[string]interface{}{
+	credsSrc = auth.StaticCredentialsSource(map[svchost.Hostname]map[string]any{
 		tfeHost: {"token": testCred},
 	})
 )
@@ -287,7 +287,7 @@ func testServer(t *testing.T) *httptest.Server {
 // testDisco returns a *disco.Disco mapping app.terraform.io and
 // localhost to a local test server.
 func testDisco(s *httptest.Server) *disco.Disco {
-	services := map[string]interface{}{
+	services := map[string]any{
 		"state.v2":    fmt.Sprintf("%s/api/v2/", s.URL),
 		"tfe.v2.1":    fmt.Sprintf("%s/api/v2/", s.URL),
 		"versions.v1": fmt.Sprintf("%s/v1/versions/", s.URL),

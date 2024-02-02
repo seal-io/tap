@@ -208,11 +208,11 @@ func TestMultiLevelFieldReaderReadFieldMerge(t *testing.T) {
 			},
 
 			Result: FieldReadResult{
-				Value: []interface{}{
-					map[string]interface{}{
+				Value: []any{
+					map[string]any{
 						"foo": "bar",
 					},
-					map[string]interface{}{
+					map[string]any{
 						"bar": "baz",
 					},
 				},

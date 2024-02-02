@@ -23,8 +23,8 @@ type FieldReadResult struct {
 	// or the items that should be removed (if they existed). NegValue
 	// doesn't make sense for primitives but is important for any
 	// container types such as maps, sets, lists.
-	Value          interface{}
-	ValueProcessed interface{}
+	Value          any
+	ValueProcessed any
 
 	// Exists is true if the field was found in the data. False means
 	// it wasn't found if there was no error.
@@ -37,7 +37,7 @@ type FieldReadResult struct {
 
 // ValueOrZero returns the value of this result or the zero value of the
 // schema type, ensuring a consistent non-nil return value.
-func (r *FieldReadResult) ValueOrZero(s *Schema) interface{} {
+func (r *FieldReadResult) ValueOrZero(s *Schema) any {
 	if r.Value != nil {
 		return r.Value
 	}
@@ -200,14 +200,14 @@ func readListField(
 	// If we have an empty list, then return an empty list
 	if countResult.Computed || countResult.Value.(int) == 0 {
 		return FieldReadResult{
-			Value:    []interface{}{},
+			Value:    []any{},
 			Exists:   countResult.Exists,
 			Computed: countResult.Computed,
 		}, nil
 	}
 
 	// Go through each count, and get the item value out of it
-	result := make([]interface{}, countResult.Value.(int))
+	result := make([]any, countResult.Value.(int))
 	for i, _ := range result {
 		is := strconv.FormatInt(int64(i), 10)
 		addrPadded[len(addrPadded)-1] = is
@@ -238,7 +238,7 @@ func readObjectField(
 	r FieldReader,
 	addr []string,
 	schema map[string]*Schema) (FieldReadResult, error) {
-	result := make(map[string]interface{})
+	result := make(map[string]any)
 	exists := false
 	for field, s := range schema {
 		addrRead := make([]string, len(addr), len(addr)+1)
@@ -262,7 +262,7 @@ func readObjectField(
 }
 
 // convert map values to the proper primitive type based on schema.Elem
-func mapValuesToPrimitive(k string, m map[string]interface{}, schema *Schema) error {
+func mapValuesToPrimitive(k string, m map[string]any, schema *Schema) error {
 	elemType, err := getValueType(k, schema)
 	if err != nil {
 		return err
@@ -288,8 +288,8 @@ func mapValuesToPrimitive(k string, m map[string]interface{}, schema *Schema) er
 }
 
 func stringToPrimitive(
-	value string, computed bool, schema *Schema) (interface{}, error) {
-	var returnVal interface{}
+	value string, computed bool, schema *Schema) (any, error) {
+	var returnVal any
 	switch schema.Type {
 	case TypeBool:
 		if value == "" {

@@ -30,7 +30,7 @@ func TestRemoteClient(t *testing.T) {
 	}
 	defer dbCleaner.Query(fmt.Sprintf("DROP SCHEMA IF EXISTS %s CASCADE", schemaName))
 
-	config := backend.TestWrapConfig(map[string]interface{}{
+	config := backend.TestWrapConfig(map[string]any{
 		"conn_str":    connStr,
 		"schema_name": schemaName,
 	})
@@ -58,7 +58,7 @@ func TestRemoteLocks(t *testing.T) {
 	}
 	defer dbCleaner.Query(fmt.Sprintf("DROP SCHEMA IF EXISTS %s CASCADE", schemaName))
 
-	config := backend.TestWrapConfig(map[string]interface{}{
+	config := backend.TestWrapConfig(map[string]any{
 		"conn_str":    connStr,
 		"schema_name": schemaName,
 	})

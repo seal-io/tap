@@ -41,7 +41,7 @@ func (m *MockHttpServerCallback) StateDELETE(req *http.Request) {
 }
 
 // StateDELETE indicates an expected call of StateDELETE.
-func (mr *MockHttpServerCallbackMockRecorder) StateDELETE(req interface{}) *gomock.Call {
+func (mr *MockHttpServerCallbackMockRecorder) StateDELETE(req any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "StateDELETE", reflect.TypeOf((*MockHttpServerCallback)(nil).StateDELETE), req)
 }
@@ -53,7 +53,7 @@ func (m *MockHttpServerCallback) StateGET(req *http.Request) {
 }
 
 // StateGET indicates an expected call of StateGET.
-func (mr *MockHttpServerCallbackMockRecorder) StateGET(req interface{}) *gomock.Call {
+func (mr *MockHttpServerCallbackMockRecorder) StateGET(req any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "StateGET", reflect.TypeOf((*MockHttpServerCallback)(nil).StateGET), req)
 }
@@ -65,7 +65,7 @@ func (m *MockHttpServerCallback) StateLOCK(req *http.Request) {
 }
 
 // StateLOCK indicates an expected call of StateLOCK.
-func (mr *MockHttpServerCallbackMockRecorder) StateLOCK(req interface{}) *gomock.Call {
+func (mr *MockHttpServerCallbackMockRecorder) StateLOCK(req any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "StateLOCK", reflect.TypeOf((*MockHttpServerCallback)(nil).StateLOCK), req)
 }
@@ -77,7 +77,7 @@ func (m *MockHttpServerCallback) StatePOST(req *http.Request) {
 }
 
 // StatePOST indicates an expected call of StatePOST.
-func (mr *MockHttpServerCallbackMockRecorder) StatePOST(req interface{}) *gomock.Call {
+func (mr *MockHttpServerCallbackMockRecorder) StatePOST(req any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "StatePOST", reflect.TypeOf((*MockHttpServerCallback)(nil).StatePOST), req)
 }
@@ -89,7 +89,7 @@ func (m *MockHttpServerCallback) StateUNLOCK(req *http.Request) {
 }
 
 // StateUNLOCK indicates an expected call of StateUNLOCK.
-func (mr *MockHttpServerCallbackMockRecorder) StateUNLOCK(req interface{}) *gomock.Call {
+func (mr *MockHttpServerCallbackMockRecorder) StateUNLOCK(req any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "StateUNLOCK", reflect.TypeOf((*MockHttpServerCallback)(nil).StateUNLOCK), req)
 }

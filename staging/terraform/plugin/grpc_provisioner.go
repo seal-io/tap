@@ -25,7 +25,7 @@ type GRPCProvisionerPlugin struct {
 	GRPCProvisioner func() proto.ProvisionerServer
 }
 
-func (p *GRPCProvisionerPlugin) GRPCClient(ctx context.Context, broker *plugin.GRPCBroker, c *grpc.ClientConn) (interface{}, error) {
+func (p *GRPCProvisionerPlugin) GRPCClient(ctx context.Context, broker *plugin.GRPCBroker, c *grpc.ClientConn) (any, error) {
 	return &GRPCProvisioner{
 		client: proto.NewProvisionerClient(c),
 		ctx:    ctx,

@@ -279,7 +279,7 @@ func upgradeInstanceObjectV3ToV4(rsOld *resourceStateV2, isOld *instanceStateV2,
 		}
 	}
 
-	private := map[string]interface{}{}
+	private := map[string]any{}
 	for k, v := range isOld.Meta {
 		if k == "schema_version" && migratedSchemaVersion {
 			// We're gonna promote this into our first-class schema version field
@@ -303,7 +303,7 @@ func upgradeInstanceObjectV3ToV4(rsOld *resourceStateV2, isOld *instanceStateV2,
 		status = "tainted"
 	}
 
-	var instKeyRaw interface{}
+	var instKeyRaw any
 	switch tk := instKey.(type) {
 	case addrs.IntKey:
 		instKeyRaw = int(tk)

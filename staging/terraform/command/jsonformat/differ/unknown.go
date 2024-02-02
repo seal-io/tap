@@ -25,7 +25,7 @@ func checkForUnknownNestedAttribute(change structured.Change, attribute *jsonpro
 
 	// We want our child attributes to show up as computed instead of deleted.
 	// Let's populate that here.
-	childUnknown := make(map[string]interface{})
+	childUnknown := make(map[string]any)
 	for key := range attribute.Attributes {
 		childUnknown[key] = true
 	}
@@ -42,7 +42,7 @@ func checkForUnknownBlock(change structured.Change, block *jsonprovider.Block) (
 
 	// We want our child attributes to show up as computed instead of deleted.
 	// Let's populate that here.
-	childUnknown := make(map[string]interface{})
+	childUnknown := make(map[string]any)
 	for key := range block.Attributes {
 		childUnknown[key] = true
 	}

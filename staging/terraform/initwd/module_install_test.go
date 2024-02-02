@@ -837,7 +837,7 @@ func assertDiagnosticSummary(t *testing.T, diags tfdiags.Diagnostics, want strin
 	return true
 }
 
-func assertResultDeepEqual(t *testing.T, got, want interface{}) bool {
+func assertResultDeepEqual(t *testing.T, got, want any) bool {
 	t.Helper()
 	if diff := deep.Equal(got, want); diff != nil {
 		for _, problem := range diff {

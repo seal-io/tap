@@ -72,7 +72,7 @@ type Provider struct {
 	// the provider.
 	MetaReset func() error
 
-	meta interface{}
+	meta any
 
 	// a mutex is required because TestReset can directly replace the stopCtx
 	stopMu        sync.Mutex
@@ -89,7 +89,7 @@ type Provider struct {
 // the subsequent resources as the meta parameter. This return value is
 // usually used to pass along a configured API client, a configuration
 // structure, etc.
-type ConfigureFunc func(*ResourceData) (interface{}, error)
+type ConfigureFunc func(*ResourceData) (any, error)
 
 // InternalValidate should be called to validate the structure
 // of the provider.
@@ -141,14 +141,14 @@ func isReservedProviderFieldName(name string) bool {
 
 // Meta returns the metadata associated with this provider that was
 // returned by the Configure call. It will be nil until Configure is called.
-func (p *Provider) Meta() interface{} {
+func (p *Provider) Meta() any {
 	return p.meta
 }
 
 // SetMeta can be used to forcefully set the Meta object of the provider.
 // Note that if Configure is called the return value will override anything
 // set here.
-func (p *Provider) SetMeta(v interface{}) {
+func (p *Provider) SetMeta(v any) {
 	p.meta = v
 }
 

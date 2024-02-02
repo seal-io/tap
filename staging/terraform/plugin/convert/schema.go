@@ -174,7 +174,7 @@ func schemaNestedBlock(b *proto.Schema_NestedBlock) *configschema.NestedBlock {
 // sortedKeys returns the lexically sorted keys from the given map. This is
 // used to make schema conversions are deterministic. This panics if map keys
 // are not a string.
-func sortedKeys(m interface{}) []string {
+func sortedKeys(m any) []string {
 	v := reflect.ValueOf(m)
 	keys := make([]string, v.Len())
 

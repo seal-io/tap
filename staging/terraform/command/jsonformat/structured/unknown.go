@@ -37,7 +37,7 @@ func (change Change) IsUnknown() bool {
 // about the type being processed to provide a list of known children that might
 // not be present in the before or after values. These values will be propagated
 // as the unknown values in the before value should it be needed.
-func (change Change) CheckForUnknown(childUnknown interface{}, process ProcessUnknown, processBefore ProcessUnknownWithBefore) (computed.Diff, bool) {
+func (change Change) CheckForUnknown(childUnknown any, process ProcessUnknown, processBefore ProcessUnknownWithBefore) (computed.Diff, bool) {
 	unknown := change.IsUnknown()
 
 	if !unknown {

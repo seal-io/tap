@@ -13,7 +13,7 @@ type MockResourceProvider struct {
 	sync.Mutex
 
 	// Anything you want, in case you need to store extra data with the mock.
-	Meta interface{}
+	Meta any
 
 	CloseCalled                    bool
 	CloseError                     error

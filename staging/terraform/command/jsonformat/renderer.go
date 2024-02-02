@@ -25,11 +25,11 @@ import (
 type JSONLogType string
 
 type JSONLog struct {
-	Message    string                 `json:"@message"`
-	Type       JSONLogType            `json:"type"`
-	Diagnostic *viewsjson.Diagnostic  `json:"diagnostic"`
-	Outputs    viewsjson.Outputs      `json:"outputs"`
-	Hook       map[string]interface{} `json:"hook"`
+	Message    string                `json:"@message"`
+	Type       JSONLogType           `json:"type"`
+	Diagnostic *viewsjson.Diagnostic `json:"diagnostic"`
+	Outputs    viewsjson.Outputs     `json:"outputs"`
+	Hook       map[string]any        `json:"hook"`
 }
 
 const (
@@ -155,7 +155,7 @@ func (renderer Renderer) RenderLog(log *JSONLog) error {
 	case LogProvisionProgress:
 		provisioner := log.Hook["provisioner"].(string)
 		output := log.Hook["output"].(string)
-		resource := log.Hook["resource"].(map[string]interface{})
+		resource := log.Hook["resource"].(map[string]any)
 		resourceAddr := resource["addr"].(string)
 
 		msg := fmt.Sprintf(renderer.Colorize.Color("[bold]%s: (%s):[reset] %s"),

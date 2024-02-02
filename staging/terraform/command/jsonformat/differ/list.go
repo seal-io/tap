@@ -44,7 +44,7 @@ func computeAttributeDiffAsList(change structured.Change, elementType cty.Type) 
 		return ComputeDiffForType(value, elementType)
 	}
 
-	isObjType := func(_ interface{}) bool {
+	isObjType := func(_ any) bool {
 		return elementType.IsObjectType()
 	}
 

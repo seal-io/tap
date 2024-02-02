@@ -8,7 +8,7 @@ import (
 	"testing"
 )
 
-func prettyJSON(o interface{}) (string, error) {
+func prettyJSON(o any) (string, error) {
 	bytes, err := json.MarshalIndent(o, "", "\t")
 	if err != nil {
 		return "", err

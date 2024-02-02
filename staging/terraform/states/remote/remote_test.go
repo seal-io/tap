@@ -37,7 +37,7 @@ type mockClient struct {
 
 type mockClientRequest struct {
 	Method  string
-	Content map[string]interface{}
+	Content map[string]any
 }
 
 func (c *mockClient) Get() (*Payload, error) {
@@ -71,7 +71,7 @@ func (c *mockClient) appendLog(method string, content []byte) {
 	// using this to test our own State implementation here and that always
 	// uses the JSON state format, so this is fine.
 
-	var contentVal map[string]interface{}
+	var contentVal map[string]any
 	if content != nil {
 		err := json.Unmarshal(content, &contentVal)
 		if err != nil {
@@ -122,7 +122,7 @@ func (c *mockClientForcePusher) Delete() error {
 	return nil
 }
 func (c *mockClientForcePusher) appendLog(method string, content []byte) {
-	var contentVal map[string]interface{}
+	var contentVal map[string]any
 	if content != nil {
 		err := json.Unmarshal(content, &contentVal)
 		if err != nil {

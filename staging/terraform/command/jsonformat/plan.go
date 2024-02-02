@@ -435,7 +435,7 @@ func resourceChangeComment(resource jsonplan.ResourceChange, action plans.Action
 			// which module instance keys are actually declared.
 			buf.WriteString(fmt.Sprintf("\n  # (because %s is not in configuration)", resource.ModuleAddress))
 		case jsonplan.ResourceInstanceDeleteBecauseWrongRepetition:
-			var index interface{}
+			var index any
 			if resource.Index != nil {
 				if err := json.Unmarshal(resource.Index, &index); err != nil {
 					panic(err)

@@ -171,7 +171,7 @@ func assertExactDiagnostics(t *testing.T, diags hcl.Diagnostics, want []string) 
 	return bad
 }
 
-func assertResultDeepEqual(t *testing.T, got, want interface{}) bool {
+func assertResultDeepEqual(t *testing.T, got, want any) bool {
 	t.Helper()
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("wrong result\ngot: %swant: %s", spew.Sdump(got), spew.Sdump(want))

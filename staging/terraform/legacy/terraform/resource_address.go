@@ -468,7 +468,7 @@ func (addr *ResourceAddress) Contains(other *ResourceAddress) bool {
 //
 // See also Contains, which takes a more hierarchical approach to comparing
 // addresses.
-func (addr *ResourceAddress) Equals(raw interface{}) bool {
+func (addr *ResourceAddress) Equals(raw any) bool {
 	other, ok := raw.(*ResourceAddress)
 	if !ok {
 		return false

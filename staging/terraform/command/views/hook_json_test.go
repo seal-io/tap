@@ -93,7 +93,7 @@ func TestJSONHook_create(t *testing.T) {
 	}
 	hook.applyingLock.Unlock()
 
-	wantResource := map[string]interface{}{
+	wantResource := map[string]any{
 		"addr":             string("test_instance.boop"),
 		"implied_provider": string("test"),
 		"module":           string(""),
@@ -102,13 +102,13 @@ func TestJSONHook_create(t *testing.T) {
 		"resource_name":    string("boop"),
 		"resource_type":    string("test_instance"),
 	}
-	want := []map[string]interface{}{
+	want := []map[string]any{
 		{
 			"@level":   "info",
 			"@message": "test_instance.boop: Creating...",
 			"@module":  "terraform.ui",
 			"type":     "apply_start",
-			"hook": map[string]interface{}{
+			"hook": map[string]any{
 				"action":   string("create"),
 				"resource": wantResource,
 			},
@@ -118,7 +118,7 @@ func TestJSONHook_create(t *testing.T) {
 			"@message": "test_instance.boop: Provisioning with 'local-exec'...",
 			"@module":  "terraform.ui",
 			"type":     "provision_start",
-			"hook": map[string]interface{}{
+			"hook": map[string]any{
 				"provisioner": "local-exec",
 				"resource":    wantResource,
 			},
@@ -128,7 +128,7 @@ func TestJSONHook_create(t *testing.T) {
 			"@message": `test_instance.boop: (local-exec): Executing: ["/bin/sh" "-c" "touch /etc/motd"]`,
 			"@module":  "terraform.ui",
 			"type":     "provision_progress",
-			"hook": map[string]interface{}{
+			"hook": map[string]any{
 				"output":      `Executing: ["/bin/sh" "-c" "touch /etc/motd"]`,
 				"provisioner": "local-exec",
 				"resource":    wantResource,
@@ -139,7 +139,7 @@ func TestJSONHook_create(t *testing.T) {
 			"@message": "test_instance.boop: (local-exec) Provisioning complete",
 			"@module":  "terraform.ui",
 			"type":     "provision_complete",
-			"hook": map[string]interface{}{
+			"hook": map[string]any{
 				"provisioner": "local-exec",
 				"resource":    wantResource,
 			},
@@ -149,7 +149,7 @@ func TestJSONHook_create(t *testing.T) {
 			"@message": "test_instance.boop: Still creating... [10s elapsed]",
 			"@module":  "terraform.ui",
 			"type":     "apply_progress",
-			"hook": map[string]interface{}{
+			"hook": map[string]any{
 				"action":          string("create"),
 				"elapsed_seconds": float64(10),
 				"resource":        wantResource,
@@ -160,7 +160,7 @@ func TestJSONHook_create(t *testing.T) {
 			"@message": "test_instance.boop: Still creating... [20s elapsed]",
 			"@module":  "terraform.ui",
 			"type":     "apply_progress",
-			"hook": map[string]interface{}{
+			"hook": map[string]any{
 				"action":          string("create"),
 				"elapsed_seconds": float64(20),
 				"resource":        wantResource,
@@ -171,7 +171,7 @@ func TestJSONHook_create(t *testing.T) {
 			"@message": "test_instance.boop: Creation complete after 22s [id=test]",
 			"@module":  "terraform.ui",
 			"type":     "apply_complete",
-			"hook": map[string]interface{}{
+			"hook": map[string]any{
 				"action":          string("create"),
 				"elapsed_seconds": float64(22),
 				"id_key":          "id",
@@ -224,7 +224,7 @@ func TestJSONHook_errors(t *testing.T) {
 	}
 	hook.applyingLock.Unlock()
 
-	wantResource := map[string]interface{}{
+	wantResource := map[string]any{
 		"addr":             string("test_instance.boop"),
 		"implied_provider": string("test"),
 		"module":           string(""),
@@ -233,13 +233,13 @@ func TestJSONHook_errors(t *testing.T) {
 		"resource_name":    string("boop"),
 		"resource_type":    string("test_instance"),
 	}
-	want := []map[string]interface{}{
+	want := []map[string]any{
 		{
 			"@level":   "info",
 			"@message": "test_instance.boop: Destroying...",
 			"@module":  "terraform.ui",
 			"type":     "apply_start",
-			"hook": map[string]interface{}{
+			"hook": map[string]any{
 				"action":   string("delete"),
 				"resource": wantResource,
 			},
@@ -249,7 +249,7 @@ func TestJSONHook_errors(t *testing.T) {
 			"@message": "test_instance.boop: (local-exec) Provisioning errored",
 			"@module":  "terraform.ui",
 			"type":     "provision_errored",
-			"hook": map[string]interface{}{
+			"hook": map[string]any{
 				"provisioner": "local-exec",
 				"resource":    wantResource,
 			},
@@ -259,7 +259,7 @@ func TestJSONHook_errors(t *testing.T) {
 			"@message": "test_instance.boop: Destruction errored after 0s",
 			"@module":  "terraform.ui",
 			"type":     "apply_errored",
-			"hook": map[string]interface{}{
+			"hook": map[string]any{
 				"action":          string("delete"),
 				"elapsed_seconds": float64(0),
 				"resource":        wantResource,
@@ -292,7 +292,7 @@ func TestJSONHook_refresh(t *testing.T) {
 	action, err = hook.PostRefresh(addr, states.CurrentGen, state, state)
 	testHookReturnValues(t, action, err)
 
-	wantResource := map[string]interface{}{
+	wantResource := map[string]any{
 		"addr":             string("data.test_data_source.beep"),
 		"implied_provider": string("test"),
 		"module":           string(""),
@@ -301,13 +301,13 @@ func TestJSONHook_refresh(t *testing.T) {
 		"resource_name":    string("beep"),
 		"resource_type":    string("test_data_source"),
 	}
-	want := []map[string]interface{}{
+	want := []map[string]any{
 		{
 			"@level":   "info",
 			"@message": "data.test_data_source.beep: Refreshing state... [id=honk]",
 			"@module":  "terraform.ui",
 			"type":     "refresh_start",
-			"hook": map[string]interface{}{
+			"hook": map[string]any{
 				"resource": wantResource,
 				"id_key":   "id",
 				"id_value": "honk",
@@ -318,7 +318,7 @@ func TestJSONHook_refresh(t *testing.T) {
 			"@message": "data.test_data_source.beep: Refresh complete [id=honk]",
 			"@module":  "terraform.ui",
 			"type":     "refresh_complete",
-			"hook": map[string]interface{}{
+			"hook": map[string]any{
 				"resource": wantResource,
 				"id_key":   "id",
 				"id_value": "honk",

@@ -355,7 +355,7 @@ func (s *State) Remove(addr ...string) error {
 	}
 
 	// Go through each result and grab what we need
-	removed := make(map[interface{}]struct{})
+	removed := make(map[any]struct{})
 	for _, r := range results {
 		// Convert the path to our own type
 		path := append([]string{"root"}, r.Path...)
@@ -907,7 +907,7 @@ type OutputState struct {
 	Type string `json:"type"`
 	// Value contains the value of the output, in the structure described
 	// by the Type field.
-	Value interface{} `json:"value"`
+	Value any `json:"value"`
 
 	mu sync.Mutex
 }
@@ -970,7 +970,7 @@ type ModuleState struct {
 
 	// Locals are kept only transiently in-memory, because we can always
 	// re-compute them.
-	Locals map[string]interface{} `json:"-"`
+	Locals map[string]any `json:"-"`
 
 	// Outputs declared by the module and maintained for each module
 	// even though only the root module technically needs to be kept.
@@ -1310,9 +1310,9 @@ func (m *ModuleState) String() string {
 			switch vTyped := v.Value.(type) {
 			case string:
 				buf.WriteString(fmt.Sprintf("%s = %s\n", k, vTyped))
-			case []interface{}:
+			case []any:
 				buf.WriteString(fmt.Sprintf("%s = %s\n", k, vTyped))
-			case map[string]interface{}:
+			case map[string]any:
 				var mapKeys []string
 				for key, _ := range vTyped {
 					mapKeys = append(mapKeys, key)
@@ -1634,7 +1634,7 @@ type InstanceState struct {
 	// ignored by Terraform core. It's meant to be used for accounting by
 	// external client code. The value here must only contain Go primitives
 	// and collections.
-	Meta map[string]interface{} `json:"meta"`
+	Meta map[string]any `json:"meta"`
 
 	ProviderMeta cty.Value
 
@@ -1655,7 +1655,7 @@ func (s *InstanceState) init() {
 		s.Attributes = make(map[string]string)
 	}
 	if s.Meta == nil {
-		s.Meta = make(map[string]interface{})
+		s.Meta = make(map[string]any)
 	}
 	s.Ephemeral.init()
 }
@@ -1670,7 +1670,7 @@ func NewInstanceStateShimmedFromValue(state cty.Value, schemaVersion int) *Insta
 	return &InstanceState{
 		ID:         attrs["id"],
 		Attributes: attrs,
-		Meta: map[string]interface{}{
+		Meta: map[string]any{
 			"schema_version": schemaVersion,
 		},
 	}

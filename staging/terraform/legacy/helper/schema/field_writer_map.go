@@ -55,7 +55,7 @@ func (w *MapFieldWriter) clearTree(addr []string) {
 	}
 }
 
-func (w *MapFieldWriter) WriteField(addr []string, value interface{}) error {
+func (w *MapFieldWriter) WriteField(addr []string, value any) error {
 	w.lock.Lock()
 	defer w.lock.Unlock()
 	if w.result == nil {
@@ -92,7 +92,7 @@ func (w *MapFieldWriter) WriteField(addr []string, value interface{}) error {
 	return w.set(addr, value)
 }
 
-func (w *MapFieldWriter) set(addr []string, value interface{}) error {
+func (w *MapFieldWriter) set(addr []string, value any) error {
 	schemaList := addrToSchema(addr, w.Schema)
 	if len(schemaList) == 0 {
 		return fmt.Errorf("Invalid address to set: %#v", addr)
@@ -117,16 +117,16 @@ func (w *MapFieldWriter) set(addr []string, value interface{}) error {
 
 func (w *MapFieldWriter) setList(
 	addr []string,
-	v interface{},
+	v any,
 	schema *Schema) error {
 	k := strings.Join(addr, ".")
-	setElement := func(idx string, value interface{}) error {
+	setElement := func(idx string, value any) error {
 		addrCopy := make([]string, len(addr), len(addr)+1)
 		copy(addrCopy, addr)
 		return w.set(append(addrCopy, idx), value)
 	}
 
-	var vs []interface{}
+	var vs []any
 	if err := mapstructure.Decode(v, &vs); err != nil {
 		return fmt.Errorf("%s: %s", k, err)
 	}
@@ -163,11 +163,11 @@ func (w *MapFieldWriter) setList(
 
 func (w *MapFieldWriter) setMap(
 	addr []string,
-	value interface{},
+	value any,
 	schema *Schema) error {
 	k := strings.Join(addr, ".")
 	v := reflect.ValueOf(value)
-	vs := make(map[string]interface{})
+	vs := make(map[string]any)
 
 	if value == nil {
 		// The empty string here means the map is removed.
@@ -210,10 +210,10 @@ func (w *MapFieldWriter) setMap(
 
 func (w *MapFieldWriter) setObject(
 	addr []string,
-	value interface{},
+	value any,
 	schema *Schema) error {
 	// Set the entire object. First decode into a proper structure
-	var v map[string]interface{}
+	var v map[string]any
 	if err := mapstructure.Decode(value, &v); err != nil {
 		return fmt.Errorf("%s: %s", strings.Join(addr, "."), err)
 	}
@@ -240,7 +240,7 @@ func (w *MapFieldWriter) setObject(
 
 func (w *MapFieldWriter) setPrimitive(
 	addr []string,
-	v interface{},
+	v any,
 	schema *Schema) error {
 	k := strings.Join(addr, ".")
 
@@ -285,7 +285,7 @@ func (w *MapFieldWriter) setPrimitive(
 
 func (w *MapFieldWriter) setSet(
 	addr []string,
-	value interface{},
+	value any,
 	schema *Schema) error {
 	addrCopy := make([]string, len(addr), len(addr)+1)
 	copy(addrCopy, addr)

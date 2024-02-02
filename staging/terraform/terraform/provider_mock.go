@@ -24,7 +24,7 @@ type MockProvider struct {
 	sync.Mutex
 
 	// Anything you want, in case you need to store extra data with the mock.
-	Meta interface{}
+	Meta any
 
 	GetProviderSchemaCalled   bool
 	GetProviderSchemaResponse *providers.GetProviderSchemaResponse
