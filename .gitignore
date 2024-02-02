@@ -1,0 +1,26 @@
+## Files
+*.dll
+*.exe
+.DS_Store
+kubeconfig
+*.tfplan
+*.tfstate
+*.backup
+*.db
+*.log
+*.bak
+*.sig
+*~
+.*.swp
+*.test
+.terraform.lock.hcl
+
+## Directories
+bin/
+.sbin/
+.dist/
+.idea/
+.vscode/
+.multipass/
+.terraform/
+.tap/
