@@ -24,6 +24,7 @@ func (b *Block) AsHCLBlock() *hcl.Block {
 		DefRange:    b.DefRange(),
 		TypeRange:   b.TypeRange,
 		LabelRanges: b.LabelRanges,
+		Tokens:      b.Tokens.AsHCLTokens(),
 	}
 }
 
@@ -320,6 +321,7 @@ type Attribute struct {
 	SrcRange    hcl.Range
 	NameRange   hcl.Range
 	EqualsRange hcl.Range
+	Tokens      Tokens
 }
 
 func (a *Attribute) walkChildNodes(w internalWalkFunc) {
@@ -341,6 +343,7 @@ func (a *Attribute) AsHCLAttribute() *hcl.Attribute {
 
 		Range:     a.SrcRange,
 		NameRange: a.NameRange,
+		Tokens:    a.Tokens.AsHCLTokens(),
 	}
 }
 
@@ -377,6 +380,7 @@ type Block struct {
 	LabelRanges     []hcl.Range
 	OpenBraceRange  hcl.Range
 	CloseBraceRange hcl.Range
+	Tokens          Tokens
 }
 
 func (b *Block) walkChildNodes(w internalWalkFunc) {

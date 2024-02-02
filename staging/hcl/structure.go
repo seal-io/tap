@@ -27,6 +27,7 @@ type Block struct {
 	DefRange    Range   // Range that can be considered the "definition" for seeking in an editor
 	TypeRange   Range   // Range for the block type declaration specifically.
 	LabelRanges []Range // Ranges for the label values specifically.
+	Tokens      Tokens
 }
 
 // Blocks is a sequence of Block.
@@ -91,6 +92,7 @@ type Attribute struct {
 
 	Range     Range
 	NameRange Range
+	Tokens    Tokens
 }
 
 // Expression is a literal value or an expression provided in the

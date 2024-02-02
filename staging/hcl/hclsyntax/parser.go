@@ -10,8 +10,9 @@ import (
 	"unicode/utf8"
 
 	"github.com/apparentlymart/go-textseg/v15/textseg"
-	"github.com/hashicorp/hcl/v2"
 	"github.com/zclconf/go-cty/cty"
+
+	"github.com/hashicorp/hcl/v2"
 )
 
 type parser struct {
@@ -244,6 +245,7 @@ func (p *parser) finishParsingBodyAttribute(ident Token, singleLine bool) (Node,
 		panic("finishParsingBodyAttribute called with next not equals")
 	}
 
+	var startIndex = p.NextIndex
 	var endRange hcl.Range
 
 	expr, diags := p.ParseExpression()
@@ -291,6 +293,7 @@ func (p *parser) finishParsingBodyAttribute(ident Token, singleLine bool) (Node,
 		SrcRange:    hcl.RangeBetween(ident.Range, endRange),
 		NameRange:   ident.Range,
 		EqualsRange: eqTok.Range,
+		Tokens:      p.Tokens[startIndex:p.NextIndex],
 	}, diags
 }
 
@@ -300,6 +303,7 @@ func (p *parser) finishParsingBodyBlock(ident Token) (Node, hcl.Diagnostics) {
 	var labels []string
 	var labelRanges []hcl.Range
 
+	var startIndex int
 	var oBrace Token
 
 Token:
@@ -309,6 +313,7 @@ Token:
 		switch tok.Type {
 
 		case TokenOBrace:
+			startIndex = p.NextIndex
 			oBrace = p.Read()
 			break Token
 
@@ -371,6 +376,7 @@ Token:
 				LabelRanges:     labelRanges,
 				OpenBraceRange:  ident.Range, // placeholder
 				CloseBraceRange: ident.Range, // placeholder
+				Tokens:          p.Tokens[startIndex:p.NextIndex],
 			}, diags
 		}
 	}
@@ -472,6 +478,7 @@ Token:
 		LabelRanges:     labelRanges,
 		OpenBraceRange:  oBrace.Range,
 		CloseBraceRange: cBraceRange,
+		Tokens:          p.Tokens[startIndex:p.NextIndex],
 	}, diags
 }
 

@@ -1,5 +1,11 @@
+// Copyright (c) 2024 Seal, Inc.
 // Copyright (c) HashiCorp, Inc.
 // SPDX-License-Identifier: MPL-2.0
+
+// Package hcl borrows from the https://github.com/hashicorp/hcl/tree/v2.19.1.
+//
+// This package adds some modelling types and general utility functions,
+// it is not exactly the same with the original implementation but works well for us.
 
 // Package hcl contains the main modelling types and general utility functions
 // for HCL.
