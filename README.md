@@ -140,6 +140,10 @@ $ tf --version
 
 Put the `tap.hcl` file in the same directory as the `main.tf` file, and then execute `tf plan` or `tf apply` to see the effect.
 
+### Example YouTube Overview
+
+[![](https://img.youtube.com/vi/hk-uvKwsDPs/maxresdefault.jpg)](https://www.youtube.com/watch?v=hk-uvKwsDPs)
+
 ## Requirements
 
 - [Go](https://golang.org/doc/install) 1.20+ (to build the provider plugin)
