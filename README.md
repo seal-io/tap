@@ -14,8 +14,8 @@ This tool is maintained by [Seal](https://github.com/seal-io).
 
 In some cases, consuming native [Terraform Override](https://developer.hashicorp.com/terraform/language/files/override)
 can complete some additional expansion, like overriding a nested block or changing a predefined attribute, but the
-capabilities are limited. For example, it is not possible to conditionally make changes to top-level blocks of the same
-**resource/data type**, delete certain (nested) blocks or attributes.
+capabilities are limited. For example, it needs accurate block header to patch, and it's impossible to conditionally
+make changes to nested blocks or attributes.
 
 **TAP** is designed to satisfy the above features.
 
@@ -83,7 +83,8 @@ resource "kubernetes_deployment" {
 > **TAP** recognizes the path syntax according to the `path_syntax` attribute in the `tap` block, in which the default
 > value is `json_pointer`. We are going to support more path syntax in the future.
 
-**TAP**, at present, only supports patching `resource` and `data` blocks, and filters out the target blocks by `type_alias` or `name_match` attributes.
+**TAP**, at present, only supports patching `resource` and `data` blocks, and filters out the target blocks
+by `type_alias` or `name_match` attributes.
 
 ```hcl
 # tap.hcl
@@ -95,19 +96,20 @@ tap {
 resource "kubernetes_deployment" {
   type_alias = ["kubernetes_deployment_v1"]
   name_match = ["nginx"]
-  
+
   # ... operations
 }
 
 data "kubernetes_config_map" {
   type_alias = ["kubernetes_config_map_v1"]
   name_match = ["nginx"]
-  
+
   # ... operations
 }
 ```
 
-**TAP** also allows ignoring error if patching fails, and it can be configured by the `continue_on_error` attribute in the `tap` block.
+**TAP** also allows ignoring error if patching fails, and it can be configured by the `continue_on_error` attribute in
+the `tap` block.
 
 ```hcl
 # tap.hcl
@@ -138,7 +140,8 @@ $ mv "${GOPATH}"/bin/tap "${GOPATH}"/bin/tf
 $ tf --version
 ```
 
-Put the `tap.hcl` file in the same directory as the `main.tf` file, and then execute `tf plan` or `tf apply` to see the effect.
+Put the `tap.hcl` file in the same directory as the `main.tf` file, and then execute `tf plan` or `tf apply` to see the
+effect.
 
 ### Example YouTube Overview
 
