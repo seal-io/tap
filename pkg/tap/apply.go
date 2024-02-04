@@ -3,9 +3,8 @@ package tap
 import (
 	"fmt"
 
-	"golang.org/x/exp/slices"
-
 	"github.com/hashicorp/terraform/configs"
+	"golang.org/x/exp/slices"
 )
 
 // Apply applies the tap configuration to the Terraform configuration.

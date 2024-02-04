@@ -5,11 +5,10 @@ import (
 	"os"
 	"strings"
 
-	"github.com/spf13/afero"
-
 	"github.com/hashicorp/hcl/v2"
 	"github.com/hashicorp/hcl/v2/gohcl"
 	"github.com/hashicorp/hcl/v2/hclparse"
+	"github.com/spf13/afero"
 
 	"github.com/seal-io/tap/utils/pointer"
 )

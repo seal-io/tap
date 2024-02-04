@@ -6,10 +6,9 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/spf13/afero"
-
 	"github.com/hashicorp/terraform/configs"
 	"github.com/hashicorp/terraform/modsdir"
+	"github.com/spf13/afero"
 )
 
 type Config = configs.Config
